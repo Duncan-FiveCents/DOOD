@@ -7,13 +7,20 @@ date-created: 22/11/2022
 '''
 
 import pygame
-import pygame.gfxdraw
 
 from window import Window
+from raycasting import RayCasting
+from player import Player
+from line import Line
+
+WINDOW = Window()
+RAYS = RayCasting(WINDOW.screen)
+PLAYER = Player()
+
+TESTMAP = [Line([200,200],[400,200])]
 
 if __name__ == "__main__":
     pygame.init()
-    WINDOW = Window()
 
     while True:
         for event in pygame.event.get():
@@ -21,6 +28,8 @@ if __name__ == "__main__":
                 pygame.quit()
                 exit()
 
-        WINDOW.screen.fill(WINDOW.bg)
-        WINDOW.frame.tick(60)
-        pygame.display.flip()
+        WINDOW.clearScreen()
+
+        RAYS.base(PLAYER.pos,TESTMAP)
+
+        WINDOW.updateFrame()
