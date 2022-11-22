@@ -1,7 +1,7 @@
-# concept.py
+# main.py
 
 '''
-title: proof of concept/testing for rendering
+title: DOOD
 author: Duncan Nickel
 date-created: 22/11/2022
 '''
