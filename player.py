@@ -7,7 +7,9 @@ date-created: 22/11/2022
 '''
 
 import pygame
+from math import pi
 
 class Player:
-    def __init__(self):
-        self.pos = [0,0] # Player position within the world
+    def __init__(self,STARTPOS):
+        self.pos = STARTPOS # Player position within the world
+        self.angle = pi
