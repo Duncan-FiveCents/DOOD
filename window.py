@@ -18,7 +18,7 @@ class Window:
         pygame.display.set_caption(self.title) # sets the title of the window to title value
 
     def updateFrame(self):
-        self.frame.tick(60)
+        self.frame.tick(30)
         pygame.display.flip()
 
     def clearScreen(self):
