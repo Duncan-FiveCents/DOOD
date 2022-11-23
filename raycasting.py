@@ -19,7 +19,7 @@ class RayCasting:
         self.width = SCREEN.get_width()
 
         self.mapSize = 8 # Width and height of map in tiles
-        self.tileSize = 50 # Should theoretically be dependent on window size, but I don't plan to change that
+        self.tileSize = 50 # Should theoretically be dependent on window/tile size, but I don't plan to change those
 
         self.FOV = pi / 2 # Math uses radians by default, but this comes out to 90 degrees
         self.half_FOV = self.FOV / 2 # Yes this is used often enough to warrant this
