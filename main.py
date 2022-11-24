@@ -7,7 +7,7 @@ date-created: 22/11/2022
 '''
 
 import pygame
-from math import sin,cos
+from math import sin,cos,pi
 
 from window import Window
 from raycasting import RayCasting
@@ -41,18 +41,8 @@ if __name__ == "__main__":
             if event.type == pygame.QUIT:
                 pygame.quit()
                 exit()
-        
-        # Move this into player.py later
-        speed = 3
-        if PRESSED[pygame.K_a]: PLAYER.angle -= 0.1
-        if PRESSED[pygame.K_d]: PLAYER.angle += 0.1
-        if PRESSED[pygame.K_w]:
-            PLAYER.pos[0] -= sin(PLAYER.angle) * speed
-            PLAYER.pos[1] += cos(PLAYER.angle) * speed
-
-        if PRESSED[pygame.K_s]:
-            PLAYER.pos[0] += sin(PLAYER.angle) * speed
-            PLAYER.pos[1] -= cos(PLAYER.angle) * speed
+    
+        PLAYER.movePlayer(PRESSED)
 
         WINDOW.clearScreen()
 

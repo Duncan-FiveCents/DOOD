@@ -7,7 +7,6 @@ date-created: 22/11/2022
 '''
 
 import pygame
-import pygame.gfxdraw
 from math import sin, cos, pi
 
 # I had to jump between tutorials and modify things to work with our mechanics
@@ -75,9 +74,8 @@ class RayCasting:
                     # Fixes the weird fish eye effect
                     depth *= cos(PLAYERANGLE-startAngle)
 
-                    # Initial value is absurdly high to ensure walls are big enough
                     # Decimal is to prevent accidentally dividing by zero
-                    wallHeight = 20000 / (depth+0.0001)
+                    wallHeight = 21000 / (depth+0.0001) # Initial value is absurdly high to ensure walls are big enough
                     colour = 255/(1+depth*depth*0.0001) # Creates the shadow effect to better portray depth
                     if wallHeight > self.surface.get_height(): wallHeight = self.surface.get_height() # Cuts the walls down if they're too big
                     pygame.draw.rect(
