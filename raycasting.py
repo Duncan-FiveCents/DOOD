@@ -17,17 +17,17 @@ class RayCasting:
         self.height = SCREEN.get_height()
         self.width = SCREEN.get_width()
 
-        self.mapSize = 8 # Width and height of map in tiles
-        self.tileSize = 50 # Should theoretically be dependent on window/tile size, but I don't plan to change those
+        self.mapSize = 10 # Width and height of map in tiles
+        self.tileSize = int(self.surface.get_width() / self.mapSize)
 
-        self.FOV = pi / 2 # Math uses radians by default, but this comes out to 90 degrees
+        self.FOV = pi / 2 # Math uses radians by default, so this comes out to 90 degrees
         self.half_FOV = self.FOV / 2 # Yes this is used often enough to warrant this
 
-        self.castedRays = 50 # Number of rays to be cast
+        self.castedRays = 100 # Number of rays to be cast
         self.stepAngle = self.FOV / self.castedRays
         self.maxDepth = self.mapSize * self.tileSize # Prevents the ray from casting out of bounds
 
-        self.scale = self.surface.get_width() / 2 / self.castedRays # Remove the /2 after testing
+        self.scale = self.surface.get_width() / self.castedRays
 
     # - Modifiers? I guess? - #
     def drawMap(self,MAP,PLAYERPOS,PLAYERANGLE): # For testing purposes. Either make into a minimap, or remove entirely.
@@ -47,8 +47,8 @@ class RayCasting:
     
     def draw3D(self): # Maybe put the other 3D rendering code into here?
         # Ceiling and floor
-        pygame.draw.rect(self.surface,(100,100,100),(self.surface.get_width()/2,self.surface.get_height()/2,self.surface.get_width(),self.surface.get_height()))
-        pygame.draw.rect(self.surface,(200,200,200),(self.surface.get_width()/2,-self.surface.get_height()/2,self.surface.get_width(),self.surface.get_height()))
+        pygame.draw.rect(self.surface,(100,100,100),(0,self.surface.get_height()/2,self.surface.get_width(),self.surface.get_height()))
+        pygame.draw.rect(self.surface,(200,200,200),(0,-self.surface.get_height()/2,self.surface.get_width(),self.surface.get_height()))
 
     def castRays(self,MAP,PLAYERPOS,PLAYERANGLE): # This is where the fun begins.
         startAngle = PLAYERANGLE - self.half_FOV
@@ -63,12 +63,13 @@ class RayCasting:
                 row = int(targetY/self.tileSize)
 
                 if MAP[row][column] in ["1","2","3"]:
-                    pygame.draw.rect(
-                    self.surface,
-                    (0,255,0),
-                    (column*self.tileSize,row*self.tileSize,self.tileSize,self.tileSize))
+                    # Raycasting code for map
+                    #pygame.draw.rect(
+                    #self.surface,
+                    #(0,255,0),
+                    #(column*self.tileSize,row*self.tileSize,self.tileSize,self.tileSize))
 
-                    pygame.draw.line(self.surface,(255,255,0),(PLAYERPOS),(targetX,targetY))
+                    #pygame.draw.line(self.surface,(255,255,0),(PLAYERPOS),(targetX,targetY))
 
                     ### --- This is all the 3D Rendering --- ###
                     # Fixes the weird fish eye effect
@@ -81,7 +82,7 @@ class RayCasting:
                     pygame.draw.rect(
                         self.surface,
                         (colour,colour,colour),
-                        (self.surface.get_height()+ray*self.scale,(self.surface.get_height()/2)-wallHeight/2,self.scale,wallHeight))
+                        (ray*self.scale,(self.surface.get_height()/2)-wallHeight/2,self.scale,wallHeight))
 
                     break # Stops the ray from being cast any further
 

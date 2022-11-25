@@ -16,21 +16,21 @@ from player import Player
 
 
 game_map = [
-    '11111111',
-    '10000001',
-    '10000111',
-    '10000001',
-    '10100001',
-    '10100001',
-    '10100001',
-    '11111111',
+    '1111111111',
+    '1000000001',
+    '1000011111',
+    '1000000001',
+    '1011100111',
+    '1010000001',
+    '1010000001',
+    '1111111111',
     
 ]
 
 WINDOW = Window()
 
 RAYS = RayCasting(WINDOW.screen)
-PLAYER = Player([(WINDOW.screen.get_width()/2)/2,(WINDOW.screen.get_width()/2)/2]) # Remove the extra /2 later, its for the map view
+PLAYER = Player([WINDOW.screen.get_width()/2,WINDOW.screen.get_width()/2])
 
 if __name__ == "__main__":
     pygame.init()
@@ -46,7 +46,6 @@ if __name__ == "__main__":
 
         WINDOW.clearScreen()
 
-        RAYS.drawMap(game_map,PLAYER.pos,PLAYER.angle)
         RAYS.draw3D()
         RAYS.castRays(game_map,PLAYER.pos,PLAYER.angle)
 

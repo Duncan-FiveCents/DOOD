@@ -12,11 +12,16 @@ from math import sin,cos,pi
 class Player:
     def __init__(self,STARTPOS):
         self.pos = STARTPOS # Player position within the world
-        self.speed = 3
+        self.speed = 7
         self.angle = pi
 
     # - Modifiers - #
     def movePlayer(self,PRESSED):
+        """Move the player around with WASD and the arrow keys to turn (maybe mouse later)
+
+        Args:
+            PRESSED (list): pygame ist of pressed keys
+        """
         if PRESSED[pygame.K_LEFT]: self.angle -= 0.1
         if PRESSED[pygame.K_RIGHT]: self.angle += 0.1
         if PRESSED[pygame.K_w]:
