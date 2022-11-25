@@ -17,7 +17,7 @@ class RayCasting:
         self.height = SCREEN.get_height()
         self.width = SCREEN.get_width()
 
-        self.mapSize = 10 # Width and height of map in tiles
+        self.mapSize = 20 # Width and height of map in tiles
         self.tileSize = int(self.surface.get_width() / self.mapSize)
 
         self.FOV = pi / 2 # Math uses radians by default, so this comes out to 90 degrees
@@ -82,7 +82,7 @@ class RayCasting:
                     pygame.draw.rect(
                         self.surface,
                         (colour,colour,colour),
-                        (ray*self.scale,(self.surface.get_height()/2)-wallHeight/2,self.scale * 1.1,wallHeight))
+                        (ray*self.scale,(self.surface.get_height()/2)-wallHeight/2,self.scale * 1.5,wallHeight))
 
                     break # Stops the ray from being cast any further
 
