@@ -82,7 +82,7 @@ class RayCasting:
                     pygame.draw.rect(
                         self.surface,
                         (colour,colour,colour),
-                        (ray*self.scale,(self.surface.get_height()/2)-wallHeight/2,self.scale,wallHeight))
+                        (ray*self.scale,(self.surface.get_height()/2)-wallHeight/2,self.scale * 1.1,wallHeight))
 
                     break # Stops the ray from being cast any further
 
