@@ -11,11 +11,12 @@ import pygame
 class Window:
     def __init__(self):
         self.title = "DOOD"
-        self.frame = pygame.time.Clock() # clock object that measures fps
+        self.frame = pygame.time.Clock()
+        # The game looks at feels better at this low of a resolution
         self.screen = pygame.display.set_mode((320,240),pygame.FULLSCREEN)
         self.bg = pygame.Color(0,0,0)
         self.screen.fill(self.bg)
-        pygame.display.set_caption(self.title) # sets the title of the window to title value
+        pygame.display.set_caption(self.title)
 
     def updateFrame(self):
         self.frame.tick(30)

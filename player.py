@@ -12,7 +12,7 @@ from math import sin,cos,pi
 class Player:
     def __init__(self,STARTPOS):
         self.pos = STARTPOS # Player position within the world
-        self.speed = 5
+        self.speed = 3
         self.angle = pi
 
     # - Modifiers - #

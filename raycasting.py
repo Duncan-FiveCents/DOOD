@@ -17,13 +17,13 @@ class RayCasting:
         self.height = SCREEN.get_height()
         self.width = SCREEN.get_width()
 
-        self.mapSize = 20 # Width and height of map in tiles
+        self.mapSize = 10 # Width and height of map in tiles
         self.tileSize = int(self.surface.get_width() / self.mapSize)
 
         self.FOV = pi / 2 # Math uses radians by default, so this comes out to 90 degrees
         self.half_FOV = self.FOV / 2 # Yes this is used often enough to warrant this
 
-        self.castedRays = 100 # Number of rays to be cast
+        self.castedRays = 200 # Number of rays to be cast
         self.stepAngle = self.FOV / self.castedRays
         self.maxDepth = self.mapSize * self.tileSize # Prevents the ray from casting out of bounds
 
@@ -77,12 +77,12 @@ class RayCasting:
 
                     # Decimal is to prevent accidentally dividing by zero
                     wallHeight = 21000 / (depth+0.0001) # Initial value is absurdly high to ensure walls are big enough
-                    colour = 255/(1+depth*depth*0.0001) # Creates the shadow effect to better portray depth
+                    colour = 255/(1+depth**2*0.00002) # Creates the shadow effect to better portray depth
                     if wallHeight > self.surface.get_height(): wallHeight = self.surface.get_height() # Cuts the walls down if they're too big
                     pygame.draw.rect(
                         self.surface,
                         (colour,colour,colour),
-                        (ray*self.scale,(self.surface.get_height()/2)-wallHeight/2,self.scale * 1.5,wallHeight))
+                        (ray*self.scale,(self.surface.get_height()/2)-wallHeight/2,self.scale*1.5,wallHeight))
 
                     break # Stops the ray from being cast any further
 
