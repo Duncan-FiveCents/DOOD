@@ -15,15 +15,23 @@ class Player:
         self.speed = 3
         self.angle = pi
 
+        pygame.mouse.set_visible(False)
+
     # - Modifiers - #
-    def movePlayer(self,PRESSED):
+    def movePlayer(self,PRESSED,SCREEN_DIM):
         """Move the player around with WASD and the arrow keys to turn (maybe mouse later)
 
         Args:
             PRESSED (list): pygame ist of pressed keys
         """
-        if PRESSED[pygame.K_LEFT]: self.angle -= 0.1
-        if PRESSED[pygame.K_RIGHT]: self.angle += 0.1
+        # Mouse Movement 
+        pygame.mouse.set_pos(SCREEN_DIM)
+        mouseMoved = pygame.mouse.get_rel()
+
+        print(mouseMoved[0])
+        self.angle += (mouseMoved[0])
+
+        # WASD
         if PRESSED[pygame.K_w]:
             self.pos[0] -= sin(self.angle) * self.speed
             self.pos[1] += cos(self.angle) * self.speed

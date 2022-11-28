@@ -41,7 +41,7 @@ if __name__ == "__main__":
                 pygame.quit()
                 exit()
     
-        PLAYER.movePlayer(PRESSED)
+        PLAYER.movePlayer(PRESSED,(WINDOW.screen.get_width(),WINDOW.screen.get_height()))
 
         WINDOW.clearScreen()
 
