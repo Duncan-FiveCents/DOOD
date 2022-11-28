@@ -49,8 +49,16 @@ if __name__ == "__main__":
         RAYS.castRays(game_map,PLAYER.pos,PLAYER.angle)
         
         WINDOW.frame.get_fps()
-        TEST = pygame.font.Font(pygame.font.get_default_font(),10)
-        
-        WINDOW.screen.blit(TEST.render(str(int(WINDOW.frame.get_fps())),False,(0,0,0)),(0,0))
+        FPS = pygame.font.Font(pygame.font.get_default_font(),10)
+        WINDOW.screen.blit(FPS.render(str(int(WINDOW.frame.get_fps())),False,(0,0,0)),(0,0))
+
+        # TestHUD, remove later
+        HUD = pygame.image.load("UI/UI placeholder.png").convert()
+        HUD = pygame.transform.scale2x(HUD)
+        WINDOW.screen.blit(HUD,(0,0))
+
+        GUN = pygame.image.load("UI/Gun placeholder.png").convert()
+        GUN = pygame.transform.scale2x(GUN)
+        WINDOW.screen.blit(GUN,(0,0))
 
         WINDOW.updateFrame()
