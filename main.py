@@ -47,5 +47,10 @@ if __name__ == "__main__":
 
         RAYS.draw3D()
         RAYS.castRays(game_map,PLAYER.pos,PLAYER.angle)
+        
+        WINDOW.frame.get_fps()
+        TEST = pygame.font.Font(pygame.font.get_default_font(),10)
+        
+        WINDOW.screen.blit(TEST.render(str(int(WINDOW.frame.get_fps())),False,(0,0,0)),(0,0))
 
         WINDOW.updateFrame()
