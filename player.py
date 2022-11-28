@@ -15,21 +15,22 @@ class Player:
         self.speed = 3
         self.angle = pi
 
+        self.sensitivityMult = 5 # Higher number, lower sensitity. We'll probably just use presets for this to avoid confusion
         pygame.mouse.set_visible(False)
 
     # - Modifiers - #
-    def movePlayer(self,PRESSED,SCREEN_DIM):
+    def movePlayer(self,PRESSED,SCREEN_CENTER):
         """Move the player around with WASD and the arrow keys to turn (maybe mouse later)
 
         Args:
             PRESSED (list): pygame ist of pressed keys
         """
         # Mouse Movement 
-        pygame.mouse.set_pos(SCREEN_DIM)
         mouseMoved = pygame.mouse.get_rel()
 
-        print(mouseMoved[0])
-        self.angle += (mouseMoved[0])
+        self.angle += (mouseMoved[0]/100*(1/self.sensitivityMult))
+
+        pygame.mouse.set_pos(SCREEN_CENTER)
 
         # WASD
         if PRESSED[pygame.K_w]:
