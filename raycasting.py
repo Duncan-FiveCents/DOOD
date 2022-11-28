@@ -14,11 +14,11 @@ from math import sin, cos, pi
 class RayCasting:
     def __init__(self,SCREEN):
         self.surface = SCREEN
-        self.height = SCREEN.get_height()
-        self.width = SCREEN.get_width()
+        self.height = self.surface.get_height()
+        self.width = self.surface.get_width()
 
         self.mapSize = 10 # Width and height of map in tiles
-        self.tileSize = int(self.surface.get_width() / self.mapSize)
+        self.tileSize = int(self.width / self.mapSize)
 
         self.FOV = pi / 2 # Math uses radians by default, so this comes out to 90 degrees
         self.half_FOV = self.FOV / 2 # Yes this is used often enough to warrant this
@@ -27,7 +27,7 @@ class RayCasting:
         self.stepAngle = self.FOV / self.castedRays
         self.maxDepth = self.mapSize * self.tileSize # Prevents the ray from casting out of bounds
 
-        self.scale = self.surface.get_width() / self.castedRays
+        self.scale = self.width / self.castedRays
 
         self.textures = {
             "1":pygame.image.load("textures/testTexture.png").convert()
@@ -51,8 +51,8 @@ class RayCasting:
     
     def draw3D(self): # Maybe put the other 3D rendering code into here?
         # Ceiling and floor
-        pygame.draw.rect(self.surface,(100,100,100),(0,self.surface.get_height()/2,self.surface.get_width(),self.surface.get_height()))
-        pygame.draw.rect(self.surface,(200,200,200),(0,-self.surface.get_height()/2,self.surface.get_width(),self.surface.get_height()))
+        pygame.draw.rect(self.surface,(100,100,100),(0,self.height/2,self.surface.get_width(),self.height))
+        pygame.draw.rect(self.surface,(200,200,200),(0,-self.height/2,self.surface.get_width(),self.height))
 
     def castRays(self,MAP,PLAYERPOS,PLAYERANGLE): # This is where the fun begins.
         startAngle = PLAYERANGLE - self.half_FOV
@@ -87,7 +87,7 @@ class RayCasting:
                     # Textures (doesn't display the corners yet but I'll fix it)
                     wallColumn = self.textures[MAP[row][column]].subsurface(int(row*column-1)%self.tileSize,0,int(self.scale),240) # Gets the chunk of the texture to show
                     wallColumn = pygame.transform.scale(wallColumn,(self.scale,wallHeight)) # Scales the texture to the correct size
-                    self.surface.blit(wallColumn,(ray*self.scale,(self.surface.get_height()/2)-wallHeight/2,self.scale*1.5,wallHeight)) # Renders the wall!
+                    self.surface.blit(wallColumn,(ray*self.scale,(self.height/2)-wallHeight/2,self.scale*1.5,wallHeight)) # Renders the wall!
 
                     break # Stops the ray from being cast any further
 
