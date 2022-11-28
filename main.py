@@ -28,7 +28,7 @@ game_map = [
 
 WINDOW = Window()
 
-RAYS = RayCasting(WINDOW.screen,1)
+RAYS = RayCasting(WINDOW.screen,5)
 PLAYER = Player([WINDOW.screen.get_width()/2,WINDOW.screen.get_width()/2])
 
 if __name__ == "__main__":

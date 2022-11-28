@@ -26,25 +26,24 @@ class Player:
             PRESSED (list): pygame ist of pressed keys
         """
         # Mouse Movement 
-        mouseMoved = pygame.mouse.get_rel()
+        mouseMoved = pygame.mouse.get_rel() # Gets distance of mouse movement in pixels
+        self.angle += (mouseMoved[0]/100*(1/self.sensitivityMult)) # Turns the character
+        pygame.mouse.set_pos(SCREEN_CENTER) # Moves the mouse to the center of the screen
 
-        self.angle += (mouseMoved[0]/100*(1/self.sensitivityMult))
-
-        pygame.mouse.set_pos(SCREEN_CENTER)
+        # Turning with arrow keys
+        if PRESSED[pygame.K_LEFT]: self.angle -= 0.1
+        if PRESSED[pygame.K_RIGHT]: self.angle += 0.1
 
         # WASD
         if PRESSED[pygame.K_w]:
             self.pos[0] -= sin(self.angle) * self.speed
             self.pos[1] += cos(self.angle) * self.speed
-
         if PRESSED[pygame.K_s]:
             self.pos[0] += sin(self.angle) * self.speed
             self.pos[1] -= cos(self.angle) * self.speed
-
         if PRESSED[pygame.K_a]:
             self.pos[0] += sin(self.angle+pi/2) * self.speed
             self.pos[1] -= cos(self.angle+pi/2) * self.speed
-        
         if PRESSED[pygame.K_d]:
             self.pos[0] += sin(self.angle-pi/2) * self.speed
             self.pos[1] -= cos(self.angle-pi/2) * self.speed
