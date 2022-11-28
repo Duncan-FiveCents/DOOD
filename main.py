@@ -27,7 +27,6 @@ game_map = [
 ]
 
 WINDOW = Window()
-frame = pygame.transform.scale(WINDOW.screen,(800,600))
 
 RAYS = RayCasting(WINDOW.screen)
 PLAYER = Player([WINDOW.screen.get_width()/2,WINDOW.screen.get_width()/2])
@@ -48,8 +47,5 @@ if __name__ == "__main__":
 
         RAYS.draw3D()
         RAYS.castRays(game_map,PLAYER.pos,PLAYER.angle)
-
-        frame = pygame.transform.scale(WINDOW.screen,(800,600))
-        WINDOW.screen.blit(frame,frame.get_rect())
 
         WINDOW.updateFrame()
