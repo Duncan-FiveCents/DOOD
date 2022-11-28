@@ -12,7 +12,7 @@ from math import sin, cos, pi
 # I had to jump between tutorials and modify things to work with our mechanics
 # So I can't take full credit for this, but it wasn't like I copy-pasted it in and it just worked
 class RayCasting:
-    def __init__(self,SCREEN):
+    def __init__(self,SCREEN,QUALITY):
         self.surface = SCREEN
         self.height = self.surface.get_height()
         self.width = self.surface.get_width()
@@ -23,7 +23,9 @@ class RayCasting:
         self.FOV = pi / 2 # Math uses radians by default, so this comes out to 90 degrees
         self.half_FOV = self.FOV / 2 # Yes this is used often enough to warrant this
 
-        self.castedRays = 160 # Number of rays to be cast
+        PRESETS = {1:80,2:100,3:120,4:120,5:160}
+
+        self.castedRays = PRESETS[QUALITY] # Number of rays to be cast, user can select this
         self.stepAngle = self.FOV / self.castedRays
         self.maxDepth = self.mapSize * self.tileSize # Prevents the ray from casting out of bounds
 
