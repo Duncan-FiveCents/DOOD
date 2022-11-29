@@ -12,6 +12,7 @@ from math import sin,cos,pi
 from window import Window
 from raycasting import RayCasting
 from player import Player
+from userInterface import HUD
 
 
 
@@ -30,6 +31,7 @@ WINDOW = Window()
 
 RAYS = RayCasting(WINDOW.screen,5)
 PLAYER = Player([WINDOW.screen.get_width()/2,WINDOW.screen.get_width()/2])
+UI = HUD(WINDOW)
 
 if __name__ == "__main__":
     pygame.init()
@@ -47,18 +49,7 @@ if __name__ == "__main__":
 
         RAYS.draw3D()
         RAYS.castRays(game_map,PLAYER.pos,PLAYER.angle)
-        
-        WINDOW.frame.get_fps()
-        FPS = pygame.font.Font(pygame.font.get_default_font(),10)
-        WINDOW.screen.blit(FPS.render(str(int(WINDOW.frame.get_fps())),False,(0,0,0)),(0,0))
 
-        # TestHUD, remove later
-        HUD = pygame.image.load("UI/UI placeholder.png").convert()
-        HUD = pygame.transform.scale2x(HUD)
-        WINDOW.screen.blit(HUD,(0,0))
-
-        GUN = pygame.image.load("UI/Gun placeholder.png").convert()
-        GUN = pygame.transform.scale2x(GUN)
-        WINDOW.screen.blit(GUN,(0,0))
+        UI.mainHud(None,None,None,None,True)
 
         WINDOW.updateFrame()

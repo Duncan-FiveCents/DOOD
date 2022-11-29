@@ -53,8 +53,8 @@ class RayCasting:
     
     def draw3D(self): # Maybe put the other 3D rendering code into here?
         # Ceiling and floor
-        pygame.draw.rect(self.surface,(100,100,100),(0,self.height/2,self.surface.get_width(),self.height))
-        pygame.draw.rect(self.surface,(200,200,200),(0,-self.height/2,self.surface.get_width(),self.height))
+        pygame.draw.rect(self.surface,(100,100,100),(0,self.height/3,self.surface.get_width(),self.height))
+        pygame.draw.rect(self.surface,(200,200,200),(0,-self.height/1.75,self.surface.get_width(),self.height))
 
     def castRays(self,MAP,PLAYERPOS,PLAYERANGLE): # This is where the fun begins.
         startAngle = PLAYERANGLE - self.half_FOV
@@ -89,7 +89,7 @@ class RayCasting:
                     # Textures (doesn't display the corners yet but I'll fix it)
                     wallColumn = self.textures[MAP[row][column]].subsurface(int(row*column-1)%self.tileSize,0,int(self.scale),240) # Gets the chunk of the texture to show
                     wallColumn = pygame.transform.scale(wallColumn,(self.scale,wallHeight)) # Scales the texture to the correct size
-                    self.surface.blit(wallColumn,(ray*self.scale,(self.height/2)-wallHeight/2,self.scale*1.5,wallHeight)) # Renders the wall!
+                    self.surface.blit(wallColumn,(ray*self.scale,((self.height/2)-wallHeight/2)*0.8,self.scale*1.5,wallHeight)) # Renders the wall!
 
                     break # Stops the ray from being cast any further
 
