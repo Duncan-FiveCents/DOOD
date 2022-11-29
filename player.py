@@ -47,3 +47,16 @@ class Player:
         if PRESSED[pygame.K_d]:
             self.pos[0] += sin(self.angle-pi/2) * self.speed
             self.pos[1] -= cos(self.angle-pi/2) * self.speed
+
+    def collision(self, MAP, MAPSIZE, TILESIZE, PRESSED):
+        """
+        Makes sure the player can't just walk through walls
+        :param MAPSIZE: int
+        :param TILESIZE: int
+        :return: None (?)
+        """
+        for i in range(MAPSIZE): # map rows
+            for j in range(MAPSIZE): # map columns
+                if MAP[i][j] in ["1", "2", "3"]:
+                    if PRESSED[pygame.K_w]:
+
