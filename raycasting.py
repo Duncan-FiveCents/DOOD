@@ -23,7 +23,7 @@ class RayCasting:
         self.FOV = pi / 2 # Math uses radians by default, so this comes out to 90 degrees
         self.half_FOV = self.FOV / 2 # Yes this is used often enough to warrant this
 
-        PRESETS = {1:80,2:128,3:160}
+        PRESETS = {1:32,2:80,3:128,4:160}
 
         self.castedRays = PRESETS[QUALITY] # Number of rays to be cast, user can select this
         self.stepAngle = self.FOV / self.castedRays
