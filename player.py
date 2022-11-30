@@ -18,12 +18,15 @@ class Player:
         self.sensitivityMult = 5 # Higher number, lower sensitity. We'll probably just use presets for this to avoid confusion
         pygame.mouse.set_visible(False)
 
+        self.activeWeapon = 1
+
     # - Modifiers - #
     def movePlayer(self,PRESSED,SCREEN_CENTER):
         """Move the player around with WASD and the arrow keys to turn (maybe mouse later)
 
         Args:
             PRESSED (list): pygame ist of pressed keys
+            SCREEN_CENTER (list): Coordinates of the center of the screen
         """
         # Mouse Movement 
         mouseMoved = pygame.mouse.get_rel() # Gets distance of mouse movement in pixels
@@ -47,3 +50,16 @@ class Player:
         if PRESSED[pygame.K_d]:
             self.pos[0] += sin(self.angle-pi/2) * self.speed
             self.pos[1] -= cos(self.angle-pi/2) * self.speed
+
+    def swapWeapon(self,WEAPON):
+        if WEAPON == 1 and self.activeWeapon != 1:
+            self.activeWeapon = 1
+        elif WEAPON == 2 and self.activeWeapon != 2:
+            self.activeWeapon = 2
+        elif WEAPON == 3 and self.activeWeapon != 3:
+            self.activeWeapon = 3
+        elif WEAPON == 4 and self.activeWeapon != 4:
+            self.activeWeapon = 4
+    
+    def pewpew(self):
+        pass

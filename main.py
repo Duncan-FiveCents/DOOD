@@ -29,7 +29,7 @@ game_map = [
 
 WINDOW = Window()
 
-RAYS = RayCasting(WINDOW.screen,1)
+RAYS = RayCasting(WINDOW.screen,4)
 PLAYER = Player([WINDOW.screen.get_width()/2,WINDOW.screen.get_width()/2])
 UI = HUD(WINDOW)
 
@@ -38,11 +38,15 @@ if __name__ == "__main__":
 
     while True:
         PRESSED = pygame.key.get_pressed()
+        MOUSE = pygame.mouse.get_pressed()
         for event in pygame.event.get():
             if event.type == pygame.QUIT or PRESSED[pygame.K_ESCAPE]: # ESC will be used to pause later
                 pygame.quit()
                 exit()
     
+        if PRESSED[pygame.K_SPACE] or MOUSE[0]:
+            PLAYER.pewpew()
+
         PLAYER.movePlayer(PRESSED,(WINDOW.screen.get_width()/2,WINDOW.screen.get_height()/2))
 
         WINDOW.clearScreen()
@@ -50,6 +54,10 @@ if __name__ == "__main__":
         RAYS.draw3D()
         RAYS.castRays(game_map,PLAYER.pos,PLAYER.angle)
 
-        UI.mainHud(None,None,None,None,True)
+        # User Interface
+        UI.mainHud(None,None,True)
+
+        if PRESSED[pygame.K_SPACE] or MOUSE[0]: UI.weaponHud(PLAYER.activeWeapon,True)
+        else: UI.weaponHud(PLAYER.activeWeapon,False)
 
         WINDOW.updateFrame()
