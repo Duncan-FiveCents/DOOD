@@ -19,6 +19,7 @@ class Player:
         pygame.mouse.set_visible(False)
 
         self.activeWeapon = 1
+        self.cooldown = 0
 
     # - Modifiers - #
     def movePlayer(self,PRESSED,SCREEN_CENTER):
@@ -33,11 +34,14 @@ class Player:
         self.angle += (mouseMoved[0]/100*(1/self.sensitivityMult)) # Turns the character
         pygame.mouse.set_pos(SCREEN_CENTER) # Moves the mouse to the center of the screen
 
+
         # Turning with arrow keys
         if PRESSED[pygame.K_LEFT]: self.angle -= 0.1
         if PRESSED[pygame.K_RIGHT]: self.angle += 0.1
 
         # WASD
+        TEMP_POS = self.pos
+
         if PRESSED[pygame.K_w]:
             self.pos[0] -= sin(self.angle) * self.speed
             self.pos[1] += cos(self.angle) * self.speed
@@ -50,6 +54,8 @@ class Player:
         if PRESSED[pygame.K_d]:
             self.pos[0] += sin(self.angle-pi/2) * self.speed
             self.pos[1] -= cos(self.angle-pi/2) * self.speed
+        
+        # Collision
 
     def swapWeapon(self,WEAPON):
         if WEAPON == 1 and self.activeWeapon != 1:

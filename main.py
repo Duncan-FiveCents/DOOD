@@ -31,9 +31,9 @@ game_map = [
 
 WINDOW = Window()
 
-RAYS = RayCasting(WINDOW.screen,4,len(game_map))
 PLAYER = Player([WINDOW.screen.get_width()/2,WINDOW.screen.get_width()/2])
 UI = HUD(WINDOW)
+RAYS = RayCasting(WINDOW.screen,4,len(game_map),UI.minimap)
 
 if __name__ == "__main__":
     pygame.init()
@@ -45,21 +45,29 @@ if __name__ == "__main__":
             if event.type == pygame.QUIT or PRESSED[pygame.K_ESCAPE]: # ESC will be used to pause later
                 pygame.quit()
                 exit()
-    
-        if PRESSED[pygame.K_SPACE] or MOUSE[0]:
+        
+        if (PRESSED[pygame.K_SPACE] or MOUSE[0]) and PLAYER.cooldown == 0:
             PLAYER.pewpew()
+            PLAYER.cooldown = 20
 
         PLAYER.movePlayer(PRESSED,(WINDOW.screen.get_width()/2,WINDOW.screen.get_height()/2))
 
         WINDOW.clearScreen()
 
+        # Raycasting
         RAYS.draw3D()
         RAYS.castRays(game_map,PLAYER.pos,PLAYER.angle)
 
         # User Interface
         UI.mainHud(None,None,True)
 
-        if PRESSED[pygame.K_SPACE] or MOUSE[0]: UI.weaponHud(PLAYER.activeWeapon,True)
+        if PLAYER.cooldown > 15: UI.weaponHud(PLAYER.activeWeapon,True)
         else: UI.weaponHud(PLAYER.activeWeapon,False)
+        if PLAYER.cooldown != 0: PLAYER.cooldown -= 1
+
+        RAYS.drawMap(game_map,PLAYER.pos,PLAYER.angle)
+
+        MINIMAP = pygame.transform.scale(UI.minimap,(140,140))
+        WINDOW.screen.blit(MINIMAP,(500,0))
 
         WINDOW.updateFrame()

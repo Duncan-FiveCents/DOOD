@@ -16,10 +16,13 @@ class HUD:
         self.font = "UI\Pixel Combat.otf"
 
         self.HUD = pygame.image.load("UI\DOOD UI1.png").convert()
+        self.crosshair = pygame.image.load("UI\crosshair.png").convert()
 
         self.weapons = [
             [pygame.image.load("UI\Gun placeholder.png").convert(),pygame.image.load("UI\shooting gun placeholder.png").convert()]
             ]
+
+        self.minimap = pygame.surface.Surface((640,640))
 
     def mainHud(self,HEALTH,SHIELD,FPSCOUNTER):
         # Base Hud
@@ -28,6 +31,8 @@ class HUD:
         # These are rendered in real time to allow for graphical effects
         self.surface.blit(pygame.font.SysFont(self.font,28).render("WILLPOWER",False,(255,0,0)),(139,450))
         self.surface.blit(pygame.font.SysFont(self.font,28).render("SHIELD",False,(255,0,0)),(405,450))
+
+        self.surface.blit(self.crosshair,(0,0))
 
         if FPSCOUNTER: self.surface.blit(pygame.font.SysFont(self.font,30).render(str(int(self.window.frame.get_fps())),False,(0,0,0)),(616,364))
 

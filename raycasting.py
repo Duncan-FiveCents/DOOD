@@ -12,7 +12,7 @@ from math import sin, cos, pi
 # I had to jump between tutorials and modify things to work with our mechanics
 # So I can't take full credit for this, but it wasn't like I copy-pasted it in and it just worked
 class RayCasting:
-    def __init__(self,SCREEN,QUALITY,MAPSIZE):
+    def __init__(self,SCREEN,QUALITY,MAPSIZE,MINIMAP):
         self.surface = SCREEN
         self.height = self.surface.get_height()
         self.width = self.surface.get_width()
@@ -35,21 +35,23 @@ class RayCasting:
             "1":pygame.image.load("textures/testTexture.png").convert()
         }
 
+        self.minimap = MINIMAP
+
     # - Modifiers? I guess? - #
     def drawMap(self,MAP,PLAYERPOS,PLAYERANGLE): # For testing purposes. Either make into a minimap, or remove entirely.
         for i in range(self.mapSize): # Rows
             for j in range(self.mapSize): # Columns
                 pygame.draw.rect(
-                    self.surface,
+                    self.minimap,
                     (200,200,200) if MAP[i][j] in ["1","2","3"] else (100,100,100),
                     (j*self.tileSize,i*self.tileSize,self.tileSize,self.tileSize)
                 )
 
-        pygame.draw.circle(self.surface,(255,0,0),PLAYERPOS,8)
-        pygame.draw.line(self.surface,(255,255,255),(PLAYERPOS),(PLAYERPOS[0]-sin(PLAYERANGLE)*30,PLAYERPOS[1]+cos(PLAYERANGLE)*50),3)
+        pygame.draw.circle(self.minimap,(255,0,0),PLAYERPOS,8)
+        pygame.draw.line(self.minimap,(255,255,255),(PLAYERPOS),(PLAYERPOS[0]-sin(PLAYERANGLE)*30,PLAYERPOS[1]+cos(PLAYERANGLE)*50),3)
 
-        pygame.draw.line(self.surface,(0,255,0),(PLAYERPOS),(PLAYERPOS[0]-sin(PLAYERANGLE+self.half_FOV)*50,PLAYERPOS[1]+cos(PLAYERANGLE+self.half_FOV)*50),3)
-        pygame.draw.line(self.surface,(0,255,0),(PLAYERPOS),(PLAYERPOS[0]-sin(PLAYERANGLE-self.half_FOV)*50,PLAYERPOS[1]+cos(PLAYERANGLE-self.half_FOV)*50),3)
+        #pygame.draw.line(self.surface,(0,255,0),(PLAYERPOS),(PLAYERPOS[0]-sin(PLAYERANGLE+self.half_FOV)*50,PLAYERPOS[1]+cos(PLAYERANGLE+self.half_FOV)*50),3)
+        #pygame.draw.line(self.surface,(0,255,0),(PLAYERPOS),(PLAYERPOS[0]-sin(PLAYERANGLE-self.half_FOV)*50,PLAYERPOS[1]+cos(PLAYERANGLE-self.half_FOV)*50),3)
     
     def draw3D(self): # Maybe put the other 3D rendering code into here?
         # Ceiling and floor
