@@ -24,12 +24,14 @@ game_map = [
     '1011100111',
     '1010000001',
     '1010000001',
+    '1000000001',
+    '1000000001',
     '1111111111'
 ]
 
 WINDOW = Window()
 
-RAYS = RayCasting(WINDOW.screen,4)
+RAYS = RayCasting(WINDOW.screen,4,len(game_map))
 PLAYER = Player([WINDOW.screen.get_width()/2,WINDOW.screen.get_width()/2])
 UI = HUD(WINDOW)
 

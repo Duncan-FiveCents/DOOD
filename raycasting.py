@@ -12,12 +12,12 @@ from math import sin, cos, pi
 # I had to jump between tutorials and modify things to work with our mechanics
 # So I can't take full credit for this, but it wasn't like I copy-pasted it in and it just worked
 class RayCasting:
-    def __init__(self,SCREEN,QUALITY):
+    def __init__(self,SCREEN,QUALITY,MAPSIZE):
         self.surface = SCREEN
         self.height = self.surface.get_height()
         self.width = self.surface.get_width()
 
-        self.mapSize = 10 # Width and height of map in tiles
+        self.mapSize = MAPSIZE # Width and height of map in tiles
         self.tileSize = int(self.width / self.mapSize)
 
         self.FOV = pi / 2 # Math uses radians by default, so this comes out to 90 degrees
