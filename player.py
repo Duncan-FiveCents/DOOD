@@ -11,12 +11,11 @@ from math import sin,cos,pi
 
 class Player:
     def __init__(self,STARTPOS):
-        self.pos = STARTPOS # Player position within the world
+        self.rect = pygame.rect.Rect(STARTPOS[0],STARTPOS[1],10,10)
         self.speed = 3
         self.angle = pi
 
         self.sensitivityMult = 5 # Higher number, lower sensitity. We'll probably just use presets for this to avoid confusion
-        pygame.mouse.set_visible(False)
 
         self.activeWeapon = 1
         self.cooldown = 0
@@ -30,7 +29,9 @@ class Player:
             SCREEN_CENTER (list): Coordinates of the center of the screen
         """
         # Mouse Movement 
+        pygame.mouse.set_visible(False) # Makes mouse invisible during gameplay
         mouseMoved = pygame.mouse.get_rel() # Gets distance of mouse movement in pixels
+        print(mouseMoved)
         self.angle += (mouseMoved[0]/100*(1/self.sensitivityMult)) # Turns the character
         pygame.mouse.set_pos(SCREEN_CENTER) # Moves the mouse to the center of the screen
 
@@ -39,21 +40,20 @@ class Player:
         if PRESSED[pygame.K_LEFT]: self.angle -= 0.1
         if PRESSED[pygame.K_RIGHT]: self.angle += 0.1
 
-        # WASD
-        TEMP_POS = self.pos
-
+        # WASD Movement
         if PRESSED[pygame.K_w]:
-            self.pos[0] -= sin(self.angle) * self.speed
-            self.pos[1] += cos(self.angle) * self.speed
+            # Pygame rects don't allow float coordinates, so rounding it prevents the player from moving sideways if the angle is just slightly off
+            self.rect.centerx -= round(sin(self.angle) * self.speed)
+            self.rect.centery += round(cos(self.angle) * self.speed)
         if PRESSED[pygame.K_s]:
-            self.pos[0] += sin(self.angle) * self.speed
-            self.pos[1] -= cos(self.angle) * self.speed
+            self.rect.centerx += round(sin(self.angle) * self.speed)
+            self.rect.centery -= round(cos(self.angle) * self.speed)
         if PRESSED[pygame.K_a]:
-            self.pos[0] += sin(self.angle+pi/2) * self.speed
-            self.pos[1] -= cos(self.angle+pi/2) * self.speed
+            self.rect.centerx += round(sin(self.angle+pi/2) * self.speed)
+            self.rect.centery -= round(cos(self.angle+pi/2) * self.speed)
         if PRESSED[pygame.K_d]:
-            self.pos[0] += sin(self.angle-pi/2) * self.speed
-            self.pos[1] -= cos(self.angle-pi/2) * self.speed
+            self.rect.centerx += round(sin(self.angle-pi/2) * self.speed)
+            self.rect.centery -= round(cos(self.angle-pi/2) * self.speed)
         
         # Collision
 

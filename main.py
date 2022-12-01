@@ -7,14 +7,11 @@ date-created: 22/11/2022
 '''
 
 import pygame
-from math import sin,cos,pi
 
 from window import Window
 from raycasting import RayCasting
 from player import Player
 from userInterface import HUD
-
-
 
 game_map = [
     '1111111111',
@@ -56,18 +53,18 @@ if __name__ == "__main__":
 
         # Raycasting
         RAYS.draw3D()
-        RAYS.castRays(game_map,PLAYER.pos,PLAYER.angle)
+        RAYS.castRays(game_map,PLAYER.rect.center,PLAYER.angle)
 
         # User Interface
-        UI.mainHud(None,None,True)
-
         if PLAYER.cooldown > 15: UI.weaponHud(PLAYER.activeWeapon,True)
         else: UI.weaponHud(PLAYER.activeWeapon,False)
         if PLAYER.cooldown != 0: PLAYER.cooldown -= 1
 
-        RAYS.drawMap(game_map,PLAYER.pos,PLAYER.angle)
+        UI.mainHud(None,None,True)
 
-        MINIMAP = pygame.transform.scale(UI.minimap,(140,140))
-        WINDOW.screen.blit(MINIMAP,(500,0))
+        RAYS.drawMap(game_map,PLAYER.rect,PLAYER.angle)
+
+        MINIMAP = pygame.transform.scale(UI.minimap,(200,200))
+        WINDOW.screen.blit(MINIMAP,(440,0))
 
         WINDOW.updateFrame()

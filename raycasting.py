@@ -38,7 +38,7 @@ class RayCasting:
         self.minimap = MINIMAP
 
     # - Modifiers? I guess? - #
-    def drawMap(self,MAP,PLAYERPOS,PLAYERANGLE): # For testing purposes. Either make into a minimap, or remove entirely.
+    def drawMap(self,MAP,PLAYERRECT,PLAYERANGLE): # Minimap idea: make map move around player???
         for i in range(self.mapSize): # Rows
             for j in range(self.mapSize): # Columns
                 pygame.draw.rect(
@@ -47,8 +47,8 @@ class RayCasting:
                     (j*self.tileSize,i*self.tileSize,self.tileSize,self.tileSize)
                 )
 
-        pygame.draw.circle(self.minimap,(255,0,0),PLAYERPOS,8)
-        pygame.draw.line(self.minimap,(255,255,255),(PLAYERPOS),(PLAYERPOS[0]-sin(PLAYERANGLE)*30,PLAYERPOS[1]+cos(PLAYERANGLE)*50),3)
+        pygame.draw.rect(self.minimap,(255,0,0),PLAYERRECT)
+        pygame.draw.line(self.minimap,(255,255,255),((PLAYERRECT.centerx,PLAYERRECT.centery)),(PLAYERRECT.centerx-sin(PLAYERANGLE)*30,PLAYERRECT.centery+cos(PLAYERANGLE)*50),3)
 
         #pygame.draw.line(self.surface,(0,255,0),(PLAYERPOS),(PLAYERPOS[0]-sin(PLAYERANGLE+self.half_FOV)*50,PLAYERPOS[1]+cos(PLAYERANGLE+self.half_FOV)*50),3)
         #pygame.draw.line(self.surface,(0,255,0),(PLAYERPOS),(PLAYERPOS[0]-sin(PLAYERANGLE-self.half_FOV)*50,PLAYERPOS[1]+cos(PLAYERANGLE-self.half_FOV)*50),3)
@@ -73,11 +73,11 @@ class RayCasting:
                 if MAP[row][column] in ["1","2","3"]:
                     # Raycasting code for map
                     #pygame.draw.rect(
-                    #self.surface,
+                    #self.minimap,
                     #(0,255,0),
                     #(column*self.tileSize,row*self.tileSize,self.tileSize,self.tileSize))
 
-                    #pygame.draw.line(self.surface,(255,255,0),(PLAYERPOS),(targetX,targetY))
+                    #pygame.draw.line(self.minimap,(255,255,0),(PLAYERPOS),(targetX,targetY))
 
                     ### --- This is all the 3D Rendering --- ###
 
