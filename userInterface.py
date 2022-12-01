@@ -19,7 +19,7 @@ class HUD:
         self.crosshair = pygame.image.load("UI\crosshair.png").convert()
 
         self.weapons = [
-            [pygame.image.load("UI\Gun placeholder.png").convert(),pygame.image.load("UI\shooting gun placeholder.png").convert()]
+            [pygame.image.load("UI\DOOD Shell Gun.png").convert(),pygame.image.load("UI\shooting gun placeholder.png").convert()]
             ]
 
         self.minimap = pygame.surface.Surface((640,640))
