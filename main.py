@@ -47,7 +47,8 @@ if __name__ == "__main__":
             PLAYER.pewpew()
             PLAYER.cooldown = 20
 
-        PLAYER.movePlayer(PRESSED,(WINDOW.screen.get_width()/2,WINDOW.screen.get_height()/2))
+        PLAYER.turnPlayer(PRESSED,(WINDOW.screen.get_width()/2,WINDOW.screen.get_height()/2))
+        PLAYER.movePlayer(PRESSED)
 
         WINDOW.clearScreen()
 

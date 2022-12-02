@@ -21,23 +21,12 @@ class Player:
         self.cooldown = 0
 
     # - Modifiers - #
-    def movePlayer(self,PRESSED,SCREEN_CENTER):
-        """Move the player around with WASD and the arrow keys to turn (maybe mouse later)
+    def movePlayer(self,PRESSED):
+        """Move the player around with WASD
 
         Args:
             PRESSED (list): pygame ist of pressed keys
-            SCREEN_CENTER (list): Coordinates of the center of the screen
         """
-        # Mouse Movement
-        # Weird delay when turning? Mouse starts moving but the program doesn't immediately recognise it, but only after you move the player around for a bit
-        pygame.mouse.set_visible(False) # Makes mouse invisible during gameplay
-        mouseMoved = pygame.mouse.get_rel() # Gets distance of mouse movement in pixels
-        self.angle += (mouseMoved[0]/100/self.sensitivityMult) # Turns the character
-        #pygame.mouse.set_pos(SCREEN_CENTER) # Moves the mouse to the center of the screen
-
-        # Turning with arrow keys
-        if PRESSED[pygame.K_LEFT]: self.angle -= 0.1 * 5  / self.sensitivityMult
-        if PRESSED[pygame.K_RIGHT]: self.angle += 0.1 * 5 / self.sensitivityMult
 
         # WASD Movement
         if PRESSED[pygame.K_w]:
@@ -55,6 +44,24 @@ class Player:
             self.rect.centery -= round(cos(self.angle-pi/2) * self.speed)
         
         # Collision
+
+    def turnPlayer(self,PRESSED,SCREENCENTER):
+        """Turns the player either with the mouse or with the arrow keys
+
+        Args:
+            PRESSED (list): Pygame list of pressed keys
+            SCREENCENTER (list): Coordinates of the center of the screen
+        """
+        # Mouse Movement
+        # Weird delay when turning? Mouse starts moving but the program doesn't immediately recognise it, but only after you move the player around for a bit
+        pygame.mouse.set_visible(False) # Makes mouse invisible during gameplay
+        mouseMoved = pygame.mouse.get_rel() # Gets distance of mouse movement in pixels
+        self.angle += (mouseMoved[0]/100/self.sensitivityMult) # Turns the character
+        pygame.mouse.set_pos(SCREENCENTER) # Locks the mouse to the center of the screen
+
+        # Turning with arrow keys
+        if PRESSED[pygame.K_LEFT]: self.angle -= 0.1 * 5  / self.sensitivityMult
+        if PRESSED[pygame.K_RIGHT]: self.angle += 0.1 * 5 / self.sensitivityMult
 
     def swapWeapon(self,WEAPON):
         if WEAPON == 1 and self.activeWeapon != 1:
