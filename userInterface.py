@@ -24,7 +24,7 @@ class HUD:
 
         self.minimap = pygame.surface.Surface((640,640))
 
-    def mainHud(self,HEALTH,SHIELD,FPSCOUNTER):
+    def mainHud(self,HEALTH,SHIELD):
         # Base Hud
         self.surface.blit(self.HUD,(0,0))
 
@@ -34,7 +34,10 @@ class HUD:
 
         self.surface.blit(self.crosshair,(0,0))
 
-        if FPSCOUNTER: self.surface.blit(pygame.font.SysFont(self.font,30).render(str(int(self.window.frame.get_fps())),False,(0,0,0)),(616,364))
+        # This WAS an FPS counter, but now its needed to prevent the mouse from locking up?
+        # I genuinely have no idea why it does this
+        # It just renders offscreen
+        self.surface.blit(pygame.font.SysFont(self.font,30).render(str(pygame.mouse.get_rel()[0]/100/5),False,(0,0,0)),(200,200))
 
     def weaponHud(self,ACTIVE_WEAPON,SHOOT):
         # Weapon

@@ -53,7 +53,8 @@ class Player:
             SCREENCENTER (list): Coordinates of the center of the screen
         """
         # Mouse Movement
-        # Weird delay when turning? Mouse starts moving but the program doesn't immediately recognise it, but only after you move the player around for a bit
+        # There's mouse lag when turning... BUT ONLY ON WINDOWS 11
+        # FUCK OFF MICROSOFT
         pygame.mouse.set_visible(False) # Makes mouse invisible during gameplay
         mouseMoved = pygame.mouse.get_rel() # Gets distance of mouse movement in pixels
         self.angle += (mouseMoved[0]/100/self.sensitivityMult) # Turns the character

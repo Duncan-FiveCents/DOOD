@@ -61,7 +61,7 @@ if __name__ == "__main__":
         else: UI.weaponHud(PLAYER.activeWeapon,False)
         if PLAYER.cooldown != 0: PLAYER.cooldown -= 1
 
-        UI.mainHud(None,None,True)
+        UI.mainHud(None,None)
 
         RAYS.drawMap(game_map,PLAYER.rect,PLAYER.angle)
 
