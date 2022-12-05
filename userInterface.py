@@ -37,7 +37,7 @@ class HUD:
         # This WAS an FPS counter, but now its needed to prevent the mouse from locking up?
         # I genuinely have no idea why it does this
         # It just renders offscreen
-        self.surface.blit(pygame.font.SysFont(self.font,30).render(str(pygame.mouse.get_rel()[0]/100/5),False,(0,0,0)),(200,200))
+        self.surface.blit(pygame.font.SysFont(self.font,30).render(str(pygame.mouse.get_rel()[0]/100/5),False,(0,0,0)),(800,800))
 
     def weaponHud(self,ACTIVE_WEAPON,SHOOT):
         # Weapon
