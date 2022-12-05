@@ -20,6 +20,9 @@ class Player:
         self.activeWeapon = 1
         self.cooldown = 0
 
+        self.health = 100
+        self.sheild = 100
+
     # - Modifiers - #
     def movePlayer(self,PRESSED):
         """Move the player around with WASD

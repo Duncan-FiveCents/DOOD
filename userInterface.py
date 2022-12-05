@@ -9,7 +9,7 @@ date-created: 29/11/2022
 import pygame
 
 class HUD:
-    def __init__(self,SCREEN):
+    def __init__(self,SCREEN,SHOTGUN):
         pygame.font.init()
         self.window = SCREEN
         self.surface = self.window.screen
@@ -19,7 +19,7 @@ class HUD:
         self.crosshair = pygame.image.load("UI\crosshair.png").convert()
 
         self.weapons = [
-            [pygame.image.load("UI\DOOD Shell Gun.png").convert(),pygame.image.load("UI\DOOD Shell Gun3.png").convert()]
+            SHOTGUN
             ]
 
         self.minimap = pygame.surface.Surface((640,640))
@@ -39,7 +39,6 @@ class HUD:
         # It just renders offscreen
         self.surface.blit(pygame.font.SysFont(self.font,30).render(str(pygame.mouse.get_rel()[0]/100/5),False,(0,0,0)),(800,800))
 
-    def weaponHud(self,ACTIVE_WEAPON,SHOOT):
+    def weaponHud(self,ACTIVE_WEAPON):
         # Weapon
-        if SHOOT: self.surface.blit(self.weapons[ACTIVE_WEAPON-1][1],(0,0))
-        else: self.surface.blit(self.weapons[ACTIVE_WEAPON-1][0],(0,0))
+        self.surface.blit(self.weapons[ACTIVE_WEAPON-1].image,self.weapons[ACTIVE_WEAPON-1].rect)
