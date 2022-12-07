@@ -18,7 +18,7 @@ class RayCasting:
         self.width = self.surface.get_width()
 
         self.mapSize = MAPSIZE # Width and height of map in tiles
-        self.tileSize = int(800 / self.mapSize)
+        self.tileSize = int(1600 / self.mapSize)
 
         self.FOV = pi / 2 # Math uses radians by default, so this comes out to 90 degrees
         self.half_FOV = self.FOV / 2 # Yes this is used often enough to warrant this
