@@ -7,6 +7,7 @@ date-created: 05/12/2022
 '''
 
 import pygame
+from resource_path import resource_path
 
 class Weapon(pygame.sprite.Sprite):
     def __init__(self):
@@ -19,12 +20,12 @@ class Shotgun(Weapon):
         Weapon.__init__(self)
         self.image = pygame.image.load("UI\ShellGun\DOOD Shell Gun.png").convert()
         self.animation = [
-            pygame.image.load("UI\ShellGun\DOOD Shell Gun.png").convert(),
-            pygame.image.load("UI\ShellGun\DOOD Shell Gun2.png").convert(),
-            pygame.image.load("UI\ShellGun\DOOD Shell Gun3.png").convert(),
-            pygame.image.load("UI\ShellGun\DOOD Shell Gun4.png").convert(),
-            pygame.image.load("UI\ShellGun\DOOD Shell Gun5.png").convert(),
-            pygame.image.load("UI\ShellGun\DOOD Shell Gun6.png").convert()
+            pygame.image.load(resource_path("UI\ShellGun\DOOD Shell Gun.png")).convert(),
+            pygame.image.load(resource_path("UI\ShellGun\DOOD Shell Gun2.png")).convert(),
+            pygame.image.load(resource_path("UI\ShellGun\DOOD Shell Gun3.png")).convert(),
+            pygame.image.load(resource_path("UI\ShellGun\DOOD Shell Gun4.png")).convert(),
+            pygame.image.load(resource_path("UI\ShellGun\DOOD Shell Gun5.png")).convert(),
+            pygame.image.load(resource_path("UI\ShellGun\DOOD Shell Gun6.png")).convert()
         ]
     
     def playAnim(self,FRAME):
