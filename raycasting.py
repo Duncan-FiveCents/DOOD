@@ -13,12 +13,12 @@ from resource_path import resource_path
 # I had to jump between tutorials and modify things to work with our mechanics
 # So I can't take full credit for this, but it wasn't like I copy-pasted it in and it just worked
 class RayCasting:
-    def __init__(self,SCREEN,QUALITY,MAPSIZE,MINIMAP):
+    def __init__(self,SCREEN,QUALITY,MINIMAP):
         self.surface = SCREEN
         self.height = self.surface.get_height()
         self.width = self.surface.get_width()
 
-        self.mapSize = MAPSIZE # Width and height of map in tiles
+        self.mapSize = 40
         self.tileSize = int(1600 / self.mapSize)
 
         self.FOV = pi / 2 # Math uses radians by default, so this comes out to 90 degrees

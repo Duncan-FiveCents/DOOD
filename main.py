@@ -12,9 +12,11 @@ from window import Window
 from raycasting import RayCasting
 from player import Player
 from userInterface import HUD
+from level import Level
 import weapon
 
-game_map = [
+level1 = Level(
+    [
     '1111111111111111111111111111111111111111',
     '1111111111111111111111111111111111111111',
     '1111111111111111111111111111111111111111',
@@ -55,16 +57,21 @@ game_map = [
     '1111111111111111111111100000011110000111',
     '1111111111111111111111111111111111111111',
     '1111111111111111111111111111111111111111'
-]
+    ],
+    2,22
+)
+
+levels = [level1]
+activeLevel = 0
 
 WINDOW = Window()
 
 SHOTGUN = weapon.Shotgun()
 UI = HUD(WINDOW,SHOTGUN)
-RAYS = RayCasting(WINDOW.screen,4,len(game_map),UI.minimap)
+RAYS = RayCasting(WINDOW.screen,4,UI.minimap)
 minimapActive = False
 
-PLAYER = Player([RAYS.tileSize * 2,RAYS.tileSize * 22])
+PLAYER = Player(levels[activeLevel].start)
 
 if __name__ == "__main__":
     pygame.init()
@@ -80,7 +87,7 @@ if __name__ == "__main__":
         if (PRESSED[pygame.K_SPACE] or MOUSE[0]) and PLAYER.cooldown == 0:
             PLAYER.cooldown = 15
         
-        if PRESSED[pygame.K_m]:
+        if PRESSED[pygame.K_m]: # Still a little janky
             if minimapActive == False: minimapActive = True
             else: minimapActive = False
 
@@ -91,7 +98,7 @@ if __name__ == "__main__":
 
         # Raycasting
         RAYS.draw3D()
-        RAYS.castRays(game_map,PLAYER.rect.center,PLAYER.angle)
+        RAYS.castRays(levels[activeLevel].layout,PLAYER.rect.center,PLAYER.angle)
 
         # Weapon Animation
         if PLAYER.cooldown != 0:
@@ -102,7 +109,7 @@ if __name__ == "__main__":
         # User Interface
         UI.mainHud(PLAYER.health,PLAYER.sheild)
 
-        RAYS.drawMap(game_map,PLAYER.rect,PLAYER.angle)
+        RAYS.drawMap(levels[activeLevel].layout,PLAYER.rect,PLAYER.angle)
 
         if minimapActive:
             MINIMAP = pygame.transform.scale(UI.minimap,(300,300))

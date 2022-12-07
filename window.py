@@ -13,7 +13,7 @@ class Window:
         self.title = "DOOD"
         self.frame = pygame.time.Clock()
         # The game looks at feels better at this low of a resolution
-        self.screen = pygame.display.set_mode((640,480),pygame.FULLSCREEN|pygame.SCALED|pygame.HWSURFACE|pygame.DOUBLEBUF,0,0,1)
+        self.screen = pygame.display.set_mode((640,480),pygame.FULLSCREEN|pygame.SCALED|pygame.HWSURFACE|pygame.DOUBLEBUF,8,0,1)
         self.bg = pygame.Color(0,0,0)
         self.screen.fill(self.bg)
         pygame.display.set_caption(self.title)
