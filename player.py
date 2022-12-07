@@ -11,7 +11,7 @@ from math import sin,cos,pi
 
 class Player:
     def __init__(self,STARTPOS):
-        self.rect = pygame.rect.Rect(STARTPOS[0],STARTPOS[1],10,10)
+        self.rect = pygame.rect.Rect(STARTPOS[0],STARTPOS[1],20,20)
         self.speed = 3
         self.angle = pi/2
 
@@ -24,14 +24,18 @@ class Player:
         self.sheild = 100
 
     # - Modifiers - #
-    def movePlayer(self,PRESSED):
+    def movePlayer(self,PRESSED,MAP):
         """Move the player around with WASD
 
         Args:
             PRESSED (list): pygame ist of pressed keys
+            MAP (list): list of map rects for collision
         """
 
         # WASD Movement
+
+        currentPos = self.rect.center
+
         if PRESSED[pygame.K_w]:
             # Pygame rects don't allow float coordinates, so rounding it prevents the player from moving sideways if the angle is just slightly off
             self.rect.centerx -= round(sin(self.angle) * self.speed)
@@ -47,6 +51,10 @@ class Player:
             self.rect.centery -= round(cos(self.angle-pi/2) * self.speed)
         
         # Collision
+
+        for i in range(len(MAP)):
+            if self.rect.colliderect(MAP[i]):
+                self.rect.centerx,self.rect.centery = currentPos
 
     def turnPlayer(self,PRESSED,SCREENCENTER):
         """Turns the player either with the mouse or with the arrow keys

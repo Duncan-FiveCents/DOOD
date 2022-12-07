@@ -40,13 +40,13 @@ class RayCasting:
 
     # - Modifiers? I guess? - #
     def drawMap(self,MAP,PLAYERRECT,PLAYERANGLE): # Minimap idea: make map move around player???
-        for i in range(self.mapSize): # Rows
-            for j in range(self.mapSize): # Columns
-                pygame.draw.rect(
-                    self.minimap,
-                    (200,200,200) if MAP[i][j] in ["1","2","3"] else (100,100,100),
-                    (j*self.tileSize,i*self.tileSize,self.tileSize,self.tileSize)
-                )
+        pygame.draw.rect(self.minimap,(100,100,100),(0,0,1600,1600))
+        for i in range(len(MAP)):
+            pygame.draw.rect(
+                self.minimap,
+                (200,200,200),
+                MAP[i]
+            )
 
         pygame.draw.rect(self.minimap,(255,0,0),PLAYERRECT)
         pygame.draw.line(self.minimap,(255,255,255),((PLAYERRECT.centerx,PLAYERRECT.centery)),(PLAYERRECT.centerx-sin(PLAYERANGLE)*30,PLAYERRECT.centery+cos(PLAYERANGLE)*50),3)

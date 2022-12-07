@@ -92,7 +92,7 @@ if __name__ == "__main__":
             else: minimapActive = False
 
         PLAYER.turnPlayer(PRESSED,(WINDOW.screen.get_width()/2,WINDOW.screen.get_height()/2))
-        PLAYER.movePlayer(PRESSED)
+        PLAYER.movePlayer(PRESSED,levels[activeLevel].rects)
 
         WINDOW.clearScreen()
 
@@ -109,7 +109,7 @@ if __name__ == "__main__":
         # User Interface
         UI.mainHud(PLAYER.health,PLAYER.sheild)
 
-        RAYS.drawMap(levels[activeLevel].layout,PLAYER.rect,PLAYER.angle)
+        RAYS.drawMap(levels[activeLevel].rects,PLAYER.rect,PLAYER.angle)
 
         if minimapActive:
             MINIMAP = pygame.transform.scale(UI.minimap,(300,300))
