@@ -8,6 +8,7 @@ date-created: 22/11/2022
 
 import pygame
 from math import sin, cos, pi
+from resource_path import resource_path
 
 # I had to jump between tutorials and modify things to work with our mechanics
 # So I can't take full credit for this, but it wasn't like I copy-pasted it in and it just worked
@@ -32,7 +33,7 @@ class RayCasting:
         self.scale = self.width / self.castedRays
 
         self.textures = {
-            "1":pygame.image.load("textures/testTexture.png").convert()
+            "1":pygame.image.load(resource_path("textures/testTexture.png")).convert()
         }
 
         self.minimap = MINIMAP

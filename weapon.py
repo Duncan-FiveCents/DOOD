@@ -18,7 +18,7 @@ class Weapon(pygame.sprite.Sprite):
 class Shotgun(Weapon):
     def __init__(self):
         Weapon.__init__(self)
-        self.image = pygame.image.load("UI\ShellGun\DOOD Shell Gun.png").convert()
+        self.image = pygame.image.load(resource_path("UI\ShellGun\DOOD Shell Gun.png")).convert()
         self.animation = [
             pygame.image.load(resource_path("UI\ShellGun\DOOD Shell Gun.png")).convert(),
             pygame.image.load(resource_path("UI\ShellGun\DOOD Shell Gun2.png")).convert(),
