@@ -13,13 +13,14 @@ class Level:
         self.layout = LAYOUT
         self.tileSize = 1600 / 40
         self.start = (START_X*self.tileSize,START_Y*self.tileSize)
-        self.rects = []
+        
+        self.rects = [] # Currently just used internally for collision detection
         for i in range(len(LAYOUT)):
             for j in range(len(LAYOUT)):
                 if self.layout[i][j] in ["1","2","3"]:
                     self.rects.append(pygame.rect.Rect(
-                        j * self.tileSize,
                         i * self.tileSize,
+                        j * self.tileSize,
                         self.tileSize,
                         self.tileSize
                     ))
