@@ -13,6 +13,7 @@ from raycasting import RayCasting
 from player import Player
 from userInterface import HUD
 from level import Level
+from enemy import Enemy
 import weapon
 
 level1 = Level(
@@ -72,6 +73,7 @@ RAYS = RayCasting(WINDOW.screen,4,UI.minimap)
 minimapActive = False
 
 PLAYER = Player(levels[activeLevel].start)
+ENEMY = Enemy()
 
 if __name__ == "__main__":
     pygame.init()
@@ -98,7 +100,7 @@ if __name__ == "__main__":
 
         # Raycasting
         RAYS.draw3D()
-        RAYS.castRays(levels[activeLevel].layout,PLAYER.rect.center,PLAYER.angle)
+        RAYS.castRays(levels[activeLevel].layout,PLAYER,[]) # Enemies will be added later i guess
 
         # Weapon Animation
         if PLAYER.cooldown != 0:

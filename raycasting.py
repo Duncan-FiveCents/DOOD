@@ -7,7 +7,7 @@ date-created: 22/11/2022
 '''
 
 import pygame
-from math import sin, cos, pi
+from math import sin, cos, atan2, pi, sqrt
 from resource_path import resource_path
 
 # I had to jump between tutorials and modify things to work with our mechanics
@@ -56,31 +56,21 @@ class RayCasting:
         pygame.draw.rect(self.surface,(100,100,100),(0,self.height/3,self.surface.get_width(),self.height))
         pygame.draw.rect(self.surface,(200,200,200),(0,-self.height/1.75,self.surface.get_width(),self.height))
 
-    def castRays(self,MAP,PLAYERPOS,PLAYERANGLE): # This is where the fun begins.
-        startAngle = PLAYERANGLE - self.half_FOV
+    def castRays(self,MAP,PLAYER,SPRITES): # This is where the fun begins
+        startAngle = PLAYER.angle - self.half_FOV
         
         for ray in range(self.castedRays):
             for depth in range(self.maxDepth):
                 # Find the next square that the ray hits
-                targetX = PLAYERPOS[0] - sin(startAngle) * depth
-                targetY = PLAYERPOS[1] + cos(startAngle) * depth
+                targetX = PLAYER.rect.centerx - sin(startAngle) * depth
+                targetY = PLAYER.rect.centery + cos(startAngle) * depth
 
                 column = int(targetX/self.tileSize)
                 row = int(targetY/self.tileSize)
 
                 if MAP[row][column] in ["1","2","3"]:
-                    # Raycasting code for map
-                    #pygame.draw.rect(
-                    #self.minimap,
-                    #(0,255,0),
-                    #(column*self.tileSize,row*self.tileSize,self.tileSize,self.tileSize))
-
-                    #pygame.draw.line(self.minimap,(255,255,0),(PLAYERPOS),(targetX,targetY))
-
-                    ### --- This is all the 3D Rendering --- ###
-
                     # Fixes the weird fish eye effect
-                    depth *= cos(PLAYERANGLE-startAngle)
+                    depth *= cos(PLAYER.angle-startAngle)
 
                     # Calculate height of wall
                     wallHeight = 21000 / (depth+0.0001) # Initial value is absurdly high to ensure walls are big enough
@@ -91,6 +81,24 @@ class RayCasting:
                     wallColumn = pygame.transform.scale(wallColumn,(self.scale,wallHeight)) # Scales the texture to the correct size
                     self.surface.blit(wallColumn,(ray*self.scale,((self.height/2)-wallHeight/2)*0.8,self.scale*1.5,wallHeight)) # Renders the wall!
 
+                    for sprite in SPRITES:
+                        distanceX,distanceY = sprite.rect.centerx-PLAYER.rect.centerx,sprite.rect.centery-PLAYER.rect.centery
+                        distance = sqrt(distanceX**2 + distanceY**2)
+
+                        angle = atan2(distanceY,distanceX)
+                        offset = angle - sprite.angle
+
+                        distance *= cos(self.half_FOV - ray * angle)
+                        if distance == 0: distance = 1
+
+                        spriteHeight = wallHeight/distance*self.scale
+                        offset *= spriteHeight
+
+                        image = pygame.transform.scale(sprite.image,(spriteHeight,spriteHeight))
+                        self.surface.blit(image,(ray * self.scale*1.5 - spriteHeight/2,self.surface.get_height()/2 - spriteHeight/2 + offset))
+
                     break # Stops the ray from being cast any further
 
+
+            
             startAngle += self.stepAngle

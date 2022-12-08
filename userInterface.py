@@ -7,16 +7,17 @@ date-created: 29/11/2022
 '''
 
 import pygame
+from resource_path import resource_path
 
 class HUD:
     def __init__(self,SCREEN,SHOTGUN):
         pygame.font.init()
         self.window = SCREEN
         self.surface = self.window.screen
-        self.font = "UI\Pixel Combat.otf"
+        self.font = resource_path("UI\Pixel Combat.otf")
 
-        self.HUD = pygame.image.load("UI\DOOD UI1.png").convert()
-        self.crosshair = pygame.image.load("UI\crosshair.png").convert()
+        self.HUD = pygame.image.load(resource_path("UI\DOOD UI1.png")).convert()
+        self.crosshair = pygame.image.load(resource_path("UI\crosshair.png")).convert()
 
         self.weapons = [
             SHOTGUN

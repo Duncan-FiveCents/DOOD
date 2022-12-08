@@ -39,22 +39,34 @@ class Player:
         if PRESSED[pygame.K_w]:
             # Pygame rects don't allow float coordinates, so rounding it prevents the player from moving sideways if the angle is just slightly off
             self.rect.centerx -= round(sin(self.angle) * self.speed)
+            # This collision code is hilariously ineffecientas it checks EVERY WALL ON THE MAP, but it works
+            for i in range(len(MAP)):
+                if MAP[i].collidepoint(self.rect.center): self.rect.centerx = currentPos[0]
             self.rect.centery += round(cos(self.angle) * self.speed)
+            for i in range(len(MAP)):
+                if MAP[i].collidepoint(self.rect.center): self.rect.centery = currentPos[1]
         if PRESSED[pygame.K_s]:
             self.rect.centerx += round(sin(self.angle) * self.speed)
+            for i in range(len(MAP)):
+                if MAP[i].collidepoint(self.rect.center): self.rect.centerx = currentPos[0]
             self.rect.centery -= round(cos(self.angle) * self.speed)
+            for i in range(len(MAP)):
+                if MAP[i].collidepoint(self.rect.center): self.rect.centery = currentPos[1]
         if PRESSED[pygame.K_a]:
             self.rect.centerx += round(sin(self.angle+pi/2) * self.speed)
+            for i in range(len(MAP)):
+                if MAP[i].collidepoint(self.rect.center): self.rect.centerx = currentPos[0]
             self.rect.centery -= round(cos(self.angle+pi/2) * self.speed)
+            for i in range(len(MAP)):
+                if MAP[i].collidepoint(self.rect.center): self.rect.centery = currentPos[1]
         if PRESSED[pygame.K_d]:
             self.rect.centerx += round(sin(self.angle-pi/2) * self.speed)
+            for i in range(len(MAP)):
+                if MAP[i].collidepoint(self.rect.center): self.rect.centerx = currentPos[0]
             self.rect.centery -= round(cos(self.angle-pi/2) * self.speed)
-        
-        # Collision
+            for i in range(len(MAP)):
+                if MAP[i].collidepoint(self.rect.center): self.rect.centery = currentPos[1]
 
-        for i in range(len(MAP)):
-            if self.rect.colliderect(MAP[i]):
-                self.rect.centerx,self.rect.centery = currentPos
 
     def turnPlayer(self,PRESSED,SCREENCENTER):
         """Turns the player either with the mouse or with the arrow keys
