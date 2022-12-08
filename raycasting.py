@@ -33,7 +33,7 @@ class RayCasting:
         self.scale = self.width / self.castedRays
 
         self.textures = {
-            "1":pygame.image.load(resource_path("textures/testTexture.png")).convert()
+            "1":pygame.image.load(resource_path("textures/wall-texture-1.png")).convert()
         }
 
         self.minimap = MINIMAP
