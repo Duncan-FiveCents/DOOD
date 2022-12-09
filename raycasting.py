@@ -53,8 +53,8 @@ class RayCasting:
     
     def draw3D(self): # Maybe put the other 3D rendering code into here?
         # Ceiling and floor
-        pygame.draw.rect(self.surface,(100,100,100),(0,self.height/3,self.surface.get_width(),self.height))
-        pygame.draw.rect(self.surface,(200,200,200),(0,-self.height/1.75,self.surface.get_width(),self.height))
+        pygame.draw.rect(self.surface,(100,100,150),(0,self.height/3,self.surface.get_width(),self.height)) # Floor
+        pygame.draw.rect(self.surface,(55,55,175),(0,-self.height/1.75,self.surface.get_width(),self.height)) # Ceiling
 
     def castRays(self,MAP,PLAYER,SPRITES): # This is where the fun begins
         startAngle = PLAYER.angle - self.half_FOV
