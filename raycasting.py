@@ -19,7 +19,7 @@ class RayCasting:
         self.width = self.surface.get_width()
 
         self.mapSize = 40
-        self.tileSize = 1600 / self.mapSize
+        self.tileSize = 40
 
         self.FOV = pi / 2 # Math uses radians by default, so this comes out to 90 degrees
         self.half_FOV = self.FOV / 2 # Yes this is used often enough to warrant this
@@ -80,12 +80,12 @@ class RayCasting:
             sinAngle = sin(currentAngle)
             cosAngle = cos(currentAngle)
             # Prevents zero values
-            if not sinAngle: sinAngle = 0.000001
-            if not cosAngle: cosAngle = 0.000001
+            if not sinAngle: sinAngle = 0.00001
+            if not cosAngle: cosAngle = 0.00001
 
             # Y axis walls
             gridX,dirX = (playerX + self.tileSize,1) if cosAngle >= 0 else (playerX,-1)
-            for i in range(0,1600,int(self.tileSize)):
+            for i in range(0,500,int(self.tileSize)):
                 depthY = (gridX - PLAYER.rect.centerx) / cosAngle
                 y = PLAYER.rect.centery + depthY * sinAngle
                 tileY = self.alignGrid(gridX + dirX,y)
@@ -97,7 +97,7 @@ class RayCasting:
             
             # X axis walls
             gridY,dirY = (playerY + self.tileSize,1) if sinAngle >= 0 else (playerY,-1)
-            for i in range(0,1600,int(self.tileSize)):
+            for i in range(0,500,int(self.tileSize)):
                 depthX = (gridY - PLAYER.rect.centery) / sinAngle
                 x = PLAYER.rect.centerx + depthX * cosAngle
                 tileX = self.alignGrid(x,gridY + dirY)
@@ -112,11 +112,10 @@ class RayCasting:
                 depth, offset, texture = (depthY, y, textureY) if depthY < depthX else (depthX, x, textureX)
                 offset = int(offset) % self.tileSize
                 depth *= cos(PLAYER.angle - currentAngle)
-                depth = max(depth, 0.000001) # Prevents a zero value
+                depth = max(depth, 0.00001) # Prevents a zero value
                 projectedHeight = min(int(self.wallHeight/depth), 2 * 480)
 
-                print((offset * (640 // self.tileSize),0,(640 // self.tileSize),480))
-                wallColumn = self.textures[texture].subsurface(offset * (480 // self.tileSize),0,(640 // self.tileSize),480)
+                wallColumn = self.textures[texture].subsurface(offset * (480 // self.tileSize),0,(480 // self.tileSize),480)
                 wallColumn = pygame.transform.scale(wallColumn,(self.scale,projectedHeight))
                 self.surface.blit(wallColumn,(ray * self.scale,240 - projectedHeight // 2))
             
