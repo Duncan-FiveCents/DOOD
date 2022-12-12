@@ -24,3 +24,12 @@ class Level:
                         self.tileSize,
                         self.tileSize
                     ))
+        
+        # Stuff needed for raycasting
+        self.worldMap = {}
+        for i, row in enumerate(self.layout):
+            for j, char in enumerate(row):
+                if char != "0":
+                    if char == "1": self.worldMap[(i*self.tileSize,j*self.tileSize)] = "1"
+                    elif char == "2": self.worldMap[(i*self.tileSize,j*self.tileSize)] = "2"
+                    elif char == "3": self.worldMap[(i*self.tileSize,j*self.tileSize)] = "3"

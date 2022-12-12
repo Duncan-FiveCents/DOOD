@@ -100,7 +100,7 @@ if __name__ == "__main__":
 
         # Raycasting
         RAYS.draw3D()
-        RAYS.castRays(levels[activeLevel].layout,PLAYER,[]) # Enemies will be added later i guess
+        RAYS.castRays(levels[activeLevel].worldMap,PLAYER,[]) # Enemies will be added later i guess
 
         # Weapon Animation
         if PLAYER.cooldown != 0:

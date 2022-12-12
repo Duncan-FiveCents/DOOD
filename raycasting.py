@@ -7,7 +7,7 @@ date-created: 22/11/2022
 '''
 
 import pygame
-from math import sin, cos, atan2, pi, sqrt
+from math import sin, cos, tan, pi
 from resource_path import resource_path
 
 # I had to jump between tutorials and modify things to work with our mechanics
@@ -19,7 +19,7 @@ class RayCasting:
         self.width = self.surface.get_width()
 
         self.mapSize = 40
-        self.tileSize = int(1600 / self.mapSize)
+        self.tileSize = 1600 / self.mapSize
 
         self.FOV = pi / 2 # Math uses radians by default, so this comes out to 90 degrees
         self.half_FOV = self.FOV / 2 # Yes this is used often enough to warrant this
@@ -30,7 +30,8 @@ class RayCasting:
         self.stepAngle = self.FOV / self.castedRays
         self.maxDepth = self.mapSize * self.tileSize # Prevents the ray from casting out of bounds
 
-        self.scale = self.width / self.castedRays
+        self.scale = self.width // self.castedRays
+        self.wallHeight = 4 * (self.castedRays / (2*tan(self.half_FOV))) * self.scale
 
         self.textures = {
             "1":pygame.image.load(resource_path("textures/wall-texture-1.png")).convert()
@@ -56,64 +57,68 @@ class RayCasting:
         pygame.draw.rect(self.surface,(100,100,150),(0,self.height/3,self.surface.get_width(),self.height)) # Floor
         pygame.draw.rect(self.surface,(55,55,175),(0,-self.height/1.75,self.surface.get_width(),self.height)) # Ceiling
 
+    def alignGrid(self,x,y):
+        """Aligns the given coordinates to the nearest grid line (helps optimisation)
+
+        Args:
+            x (int): starting x coordinate
+            y (int): starting y coordinate
+
+        Returns:
+            int: aligned x coordinate
+            int: aligned y coordinate
+        """
+        return (x//self.tileSize) * self.tileSize, (y//self.tileSize) * self.tileSize
+
     def castRays(self,MAP,PLAYER,SPRITES): # This is where the fun begins
-        startAngle = PLAYER.angle - self.half_FOV
+        playerX, playerY = self.alignGrid(PLAYER.rect.centerx,PLAYER.rect.centery)
+        currentAngle = PLAYER.angle - self.half_FOV
+        textureX, textureY = self.alignGrid(1,1), self.alignGrid(1,1) # Placeholder values
         
         for ray in range(self.castedRays):
-            for depth in range(self.maxDepth):
-                # Find the next square that the ray hits
-                targetX = PLAYER.rect.centerx - sin(startAngle) * depth
-                targetY = PLAYER.rect.centery + cos(startAngle) * depth
+            rayX, rayY = False, False
+            sinAngle = sin(currentAngle)
+            cosAngle = cos(currentAngle)
+            # Prevents zero values
+            if not sinAngle: sinAngle = 0.000001
+            if not cosAngle: cosAngle = 0.000001
 
-                column = int(targetX/self.tileSize)
-                row = int(targetY/self.tileSize)
-
-                depthX = (column - PLAYER.rect.centerx) / cos(startAngle)
-                depthY = (row - PLAYER.rect.centery) / sin(startAngle)
-
-                if MAP[row][column] in ["1","2","3"] and depthX > 0:
-                    # Fixes the weird fish eye effect
-                    depth *= cos(PLAYER.angle-startAngle)
-
-                    # Calculate height of wall
-                    wallHeight = 21000 / (depthX+0.0001) # Initial value is absurdly high to ensure walls are big enough
-                    if wallHeight > self.surface.get_height(): wallHeight = self.surface.get_height() # Cuts the walls down if they're too big
-
-                    # Textures/Wall Rendering
-                    wallColumn = self.textures[MAP[row][column]].subsurface(int(targetX)%self.tileSize * self.scale,0,int(self.scale),480) # Gets the chunk of the texture to show
-                    wallColumn = pygame.transform.scale(wallColumn,(self.scale,wallHeight)) # Scales the texture to the correct size
-                    self.surface.blit(wallColumn,(ray*self.scale,((self.height/2)-wallHeight/2)*0.8,self.scale*1.5,wallHeight)) # Renders the wall!
-                    break # Stops the ray from being cast any further
-
-                if MAP[row][column] in ["1","2","3"] and depthY > 0:
-                    # Same stuff as before, but on the Y axis
-                    depth *= cos(PLAYER.angle-startAngle)
-
-                    wallHeight = 21000 / (depthY+0.0001)
-                    if wallHeight > self.surface.get_height(): wallHeight = self.surface.get_height()
-                    
-                    wallColumn = self.textures[MAP[row][column]].subsurface(int(targetY)%self.tileSize * self.scale,0,int(self.scale),480)
-                    wallColumn = pygame.transform.scale(wallColumn,(self.scale,wallHeight))
-                    self.surface.blit(wallColumn,(ray*self.scale,((self.height/2)-wallHeight/2)*0.8,self.scale*1.5,wallHeight))
+            # Y axis walls
+            gridX,dirX = (playerX + self.tileSize,1) if cosAngle >= 0 else (playerX,-1)
+            for i in range(0,1600,int(self.tileSize)):
+                depthY = (gridX - PLAYER.rect.centerx) / cosAngle
+                y = PLAYER.rect.centery + depthY * sinAngle
+                tileY = self.alignGrid(gridX + dirX,y)
+                if tileY in MAP:
+                    textureY = MAP[tileY]
+                    rayY = True
                     break
-
-                for sprite in SPRITES: # This is a broken mess
-                    distanceX,distanceY = sprite.rect.centerx-PLAYER.rect.centerx,sprite.rect.centery-PLAYER.rect.centery
-                    distance = sqrt(distanceX**2 + distanceY**2)
-
-                    angle = atan2(distanceY,distanceX)
-                    offset = angle - sprite.angle
-
-                    distance *= cos(self.half_FOV - ray * angle)
-                    if distance == 0: distance = 1
-
-                    spriteHeight = wallHeight/distance*self.scale
-                    offset *= spriteHeight
-
-                    image = pygame.transform.scale(sprite.image,(spriteHeight,spriteHeight))
-                    self.surface.blit(image,(ray * self.scale*1.5 - spriteHeight/2,self.surface.get_height()/2 - spriteHeight/2 + offset))
-
-
-
+                gridX += dirX * self.tileSize
             
-            startAngle += self.stepAngle
+            # X axis walls
+            gridY,dirY = (playerY + self.tileSize,1) if sinAngle >= 0 else (playerY,-1)
+            for i in range(0,1600,int(self.tileSize)):
+                depthX = (gridY - PLAYER.rect.centery) / sinAngle
+                x = PLAYER.rect.centerx + depthX * cosAngle
+                tileX = self.alignGrid(x,gridY + dirY)
+                if tileX in MAP:
+                    textureX = MAP[tileX]
+                    rayX = True
+                    break
+                gridY += dirY * self.tileSize
+
+            # Rendering time!!
+            if rayX or rayY:
+                depth, offset, texture = (depthY, y, textureY) if depthY < depthX else (depthX, x, textureX)
+                offset = int(offset) % self.tileSize
+                depth *= cos(PLAYER.angle - currentAngle)
+                depth = max(depth, 0.000001) # Prevents a zero value
+                projectedHeight = min(int(self.wallHeight/depth), 2 * 480)
+
+                print((offset * (640 // self.tileSize),0,(640 // self.tileSize),480))
+                wallColumn = self.textures[texture].subsurface(offset * (480 // self.tileSize),0,(640 // self.tileSize),480)
+                wallColumn = pygame.transform.scale(wallColumn,(self.scale,projectedHeight))
+                self.surface.blit(wallColumn,(ray * self.scale,240 - projectedHeight // 2))
+            
+            currentAngle += self.stepAngle
+
