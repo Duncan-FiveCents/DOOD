@@ -68,36 +68,51 @@ class RayCasting:
                 column = int(targetX/self.tileSize)
                 row = int(targetY/self.tileSize)
 
-                if MAP[row][column] in ["1","2","3"]:
+                depthX = (column - PLAYER.rect.centerx) / cos(startAngle)
+                depthY = (row - PLAYER.rect.centery) / sin(startAngle)
+
+                if MAP[row][column] in ["1","2","3"] and depthX > 0:
                     # Fixes the weird fish eye effect
                     depth *= cos(PLAYER.angle-startAngle)
 
                     # Calculate height of wall
-                    wallHeight = 21000 / (depth+0.0001) # Initial value is absurdly high to ensure walls are big enough
+                    wallHeight = 21000 / (depthX+0.0001) # Initial value is absurdly high to ensure walls are big enough
                     if wallHeight > self.surface.get_height(): wallHeight = self.surface.get_height() # Cuts the walls down if they're too big
 
-                    # Textures (doesn't display the corners yet but I'll fix it)
-                    wallColumn = self.textures[MAP[row][column]].subsurface(int(row*column-1)%self.tileSize,0,int(self.scale),240) # Gets the chunk of the texture to show
+                    # Textures/Wall Rendering
+                    wallColumn = self.textures[MAP[row][column]].subsurface(int(targetX)%self.tileSize * self.scale,0,int(self.scale),480) # Gets the chunk of the texture to show
                     wallColumn = pygame.transform.scale(wallColumn,(self.scale,wallHeight)) # Scales the texture to the correct size
                     self.surface.blit(wallColumn,(ray*self.scale,((self.height/2)-wallHeight/2)*0.8,self.scale*1.5,wallHeight)) # Renders the wall!
-
-                    for sprite in SPRITES:
-                        distanceX,distanceY = sprite.rect.centerx-PLAYER.rect.centerx,sprite.rect.centery-PLAYER.rect.centery
-                        distance = sqrt(distanceX**2 + distanceY**2)
-
-                        angle = atan2(distanceY,distanceX)
-                        offset = angle - sprite.angle
-
-                        distance *= cos(self.half_FOV - ray * angle)
-                        if distance == 0: distance = 1
-
-                        spriteHeight = wallHeight/distance*self.scale
-                        offset *= spriteHeight
-
-                        image = pygame.transform.scale(sprite.image,(spriteHeight,spriteHeight))
-                        self.surface.blit(image,(ray * self.scale*1.5 - spriteHeight/2,self.surface.get_height()/2 - spriteHeight/2 + offset))
-
                     break # Stops the ray from being cast any further
+
+                if MAP[row][column] in ["1","2","3"] and depthY > 0:
+                    # Same stuff as before, but on the Y axis
+                    depth *= cos(PLAYER.angle-startAngle)
+
+                    wallHeight = 21000 / (depthY+0.0001)
+                    if wallHeight > self.surface.get_height(): wallHeight = self.surface.get_height()
+                    
+                    wallColumn = self.textures[MAP[row][column]].subsurface(int(targetY)%self.tileSize * self.scale,0,int(self.scale),480)
+                    wallColumn = pygame.transform.scale(wallColumn,(self.scale,wallHeight))
+                    self.surface.blit(wallColumn,(ray*self.scale,((self.height/2)-wallHeight/2)*0.8,self.scale*1.5,wallHeight))
+                    break
+
+                for sprite in SPRITES: # This is a broken mess
+                    distanceX,distanceY = sprite.rect.centerx-PLAYER.rect.centerx,sprite.rect.centery-PLAYER.rect.centery
+                    distance = sqrt(distanceX**2 + distanceY**2)
+
+                    angle = atan2(distanceY,distanceX)
+                    offset = angle - sprite.angle
+
+                    distance *= cos(self.half_FOV - ray * angle)
+                    if distance == 0: distance = 1
+
+                    spriteHeight = wallHeight/distance*self.scale
+                    offset *= spriteHeight
+
+                    image = pygame.transform.scale(sprite.image,(spriteHeight,spriteHeight))
+                    self.surface.blit(image,(ray * self.scale*1.5 - spriteHeight/2,self.surface.get_height()/2 - spriteHeight/2 + offset))
+
 
 
             
