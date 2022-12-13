@@ -11,10 +11,10 @@ import pygame
 class Level:
     def __init__(self,LAYOUT,START_X,START_Y):
         self.layout = LAYOUT
-        self.tileSize = 1600 / 40
+        self.tileSize = 10
         self.start = (START_X*self.tileSize,START_Y*self.tileSize)
 
-        self.rects = [] # Currently just used internally for collision detection
+        self.rects = [] # Used for collision detection and minimap rendering
         for i in range(len(LAYOUT)):
             for j in range(len(LAYOUT)):
                 if self.layout[i][j] in ["1","2","3"]:
@@ -30,6 +30,6 @@ class Level:
         for i, row in enumerate(self.layout):
             for j, char in enumerate(row):
                 if char != "0":
-                    if char == "1": self.worldMap[(i*self.tileSize,j*self.tileSize)] = "1"
-                    elif char == "2": self.worldMap[(i*self.tileSize,j*self.tileSize)] = "2"
-                    elif char == "3": self.worldMap[(i*self.tileSize,j*self.tileSize)] = "3"
+                    if char == "1": self.worldMap[(j*self.tileSize,i*self.tileSize)] = "1"
+                    elif char == "2": self.worldMap[(j*self.tileSize,i*self.tileSize)] = "2"
+                    elif char == "3": self.worldMap[(j*self.tileSize,i*self.tileSize)] = "3"

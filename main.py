@@ -69,7 +69,7 @@ WINDOW = Window()
 
 SHOTGUN = weapon.Shotgun()
 UI = HUD(WINDOW,SHOTGUN)
-RAYS = RayCasting(WINDOW.screen,4,UI.minimap)
+RAYS = RayCasting(WINDOW.screen,5,UI.minimap)
 minimapActive = False
 
 PLAYER = Player(levels[activeLevel].start)

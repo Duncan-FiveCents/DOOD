@@ -12,7 +12,7 @@ from math import sin,cos,pi
 class Player:
     def __init__(self,STARTPOS):
         self.rect = pygame.rect.Rect(STARTPOS[0],STARTPOS[1],20,20)
-        self.speed = 3
+        self.speed = 1
         self.angle = pi/2
 
         self.sensitivityMult = 5 # Higher number, lower sensitity. We'll probably just use presets for this to avoid confusion
@@ -38,8 +38,9 @@ class Player:
 
         if PRESSED[pygame.K_w]:
             # Pygame rects don't allow float coordinates, so rounding it prevents the player from moving sideways if the angle is just slightly off
+            # It does cause the player to move unnaturally at times, but I had no better solution
             self.rect.centerx -= round(sin(self.angle) * self.speed)
-            # This collision code is hilariously ineffecientas it checks EVERY WALL ON THE MAP, but it works
+            # This collision code is hilariously ineffecient as it checks EVERY WALL ON THE MAP, but it works
             for i in range(len(MAP)):
                 if MAP[i].collidepoint(self.rect.center): self.rect.centerx = currentPos[0]
             self.rect.centery += round(cos(self.angle) * self.speed)
@@ -76,8 +77,6 @@ class Player:
             SCREENCENTER (list): Coordinates of the center of the screen
         """
         # Mouse Movement
-        # There's mouse lag when turning... BUT ONLY ON WINDOWS 11
-        # FUCK OFF MICROSOFT
         pygame.mouse.set_visible(False) # Makes mouse invisible during gameplay
         mouseMoved = pygame.mouse.get_rel() # Gets distance of mouse movement in pixels
         self.angle += (mouseMoved[0]/100/self.sensitivityMult) # Turns the character
