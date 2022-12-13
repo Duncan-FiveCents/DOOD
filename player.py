@@ -12,7 +12,7 @@ from math import sin,cos,pi
 class Player:
     def __init__(self,STARTPOS):
         self.rect = pygame.rect.Rect(STARTPOS[0],STARTPOS[1],20,20)
-        self.speed = 1
+        self.speed = 3
         self.angle = pi/2
 
         self.sensitivityMult = 5 # Higher number, lower sensitity. We'll probably just use presets for this to avoid confusion

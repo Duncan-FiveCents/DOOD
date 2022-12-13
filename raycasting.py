@@ -18,8 +18,7 @@ class RayCasting:
         self.height = self.surface.get_height()
         self.width = self.surface.get_width()
 
-        self.mapSize = 40
-        self.tileSize = 10
+        self.tileSize = 40
 
         self.FOV = pi / 2 # Math uses radians by default, so this comes out to 90 degrees
         self.half_FOV = self.FOV / 2 # Yes this is used often enough to warrant this
@@ -53,8 +52,8 @@ class RayCasting:
     
     def draw3D(self): # Maybe put the other 3D rendering code into here?
         # Ceiling and floor
-        pygame.draw.rect(self.surface,(100,100,150),(0,self.height/2,self.surface.get_width(),self.height)) # Floor
-        pygame.draw.rect(self.surface,(55,55,175),(0,-self.height/2,self.surface.get_width(),self.height)) # Ceiling
+        pygame.draw.rect(self.surface,(100,100,150),(0,self.height/3,self.surface.get_width(),self.height)) # Floor
+        pygame.draw.rect(self.surface,(55,55,175),(0,-self.height/1.75,self.surface.get_width(),self.height)) # Ceiling
 
     def alignGrid(self,x,y):
         """Aligns the given coordinates to the nearest grid line (helps with raycasting optimisation)
@@ -111,12 +110,13 @@ class RayCasting:
                 depth, offset, texture = (depthY, y, textureY) if depthY < depthX else (depthX, x, textureX)
                 offset = int(offset) % self.tileSize
                 depth *= cos(PLAYER.angle - startAngle)
+                depth /= 4
                 depth = max(depth, 0.00001) # Prevents a zero value
                 projectedHeight = min(int(self.wallHeight/depth), 2 * 480)
 
                 wallColumn = self.textures[texture].subsurface(offset * (480 // self.tileSize),0,(480 // self.tileSize),480)
                 wallColumn = pygame.transform.scale(wallColumn,(self.scale,projectedHeight))
-                self.surface.blit(wallColumn,(ray * self.scale,(240 - projectedHeight // 2)))
+                self.surface.blit(wallColumn,(ray * self.scale,((240 - projectedHeight // 2))*0.85))
             
             startAngle += self.stepAngle
 

@@ -11,7 +11,7 @@ import pygame
 class Level:
     def __init__(self,LAYOUT,START_X,START_Y):
         self.layout = LAYOUT
-        self.tileSize = 10
+        self.tileSize = 40
         self.start = (START_X*self.tileSize,START_Y*self.tileSize)
 
         self.rects = [] # Used for collision detection and minimap rendering
