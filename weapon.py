@@ -14,6 +14,9 @@ class Weapon(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.image = None
         self.rect = pygame.rect.Rect(0,0,640,480)
+    
+    def playAnim(self,FRAME):
+        for i in range(5): self.image = self.animation[FRAME]
 
 class Shotgun(Weapon):
     def __init__(self):
@@ -27,6 +30,16 @@ class Shotgun(Weapon):
             pygame.image.load(resource_path("UI\ShellGun\DOOD Shell Gun5.png")).convert(),
             pygame.image.load(resource_path("UI\ShellGun\DOOD Shell Gun6.png")).convert()
         ]
-    
-    def playAnim(self,FRAME):
-        for i in range(5): self.image = self.animation[FRAME]
+
+class Slug(Weapon):
+    def __init__(self):
+        Weapon.__init__(self)
+        self.image = pygame.image.load(resource_path("UI\SlugGun\DOOD Slug Gun1.png")).convert()
+        self.animation = [
+            pygame.image.load(resource_path("UI\SlugGun\DOOD Slug Gun1.png")).convert(),
+            pygame.image.load(resource_path("UI\SlugGun\DOOD Slug Gun2.png")).convert(),
+            pygame.image.load(resource_path("UI\SlugGun\DOOD Slug Gun3.png")).convert(),
+            pygame.image.load(resource_path("UI\SlugGun\DOOD Slug Gun4.png")).convert(),
+            pygame.image.load(resource_path("UI\SlugGun\DOOD Slug Gun5.png")).convert(),
+            pygame.image.load(resource_path("UI\SlugGun\DOOD Slug Gun6.png")).convert()
+        ]

@@ -68,7 +68,10 @@ activeLevel = 0
 WINDOW = Window()
 
 SHOTGUN = weapon.Shotgun()
-UI = HUD(WINDOW,SHOTGUN)
+SLUG = weapon.Slug()
+WEAPONS = [SHOTGUN,SLUG]
+
+UI = HUD(WINDOW,SHOTGUN,SLUG)
 RAYS = RayCasting(WINDOW.screen,5,UI.minimap)
 minimapActive = False
 
@@ -96,6 +99,11 @@ if __name__ == "__main__":
         PLAYER.turnPlayer(PRESSED,(WINDOW.screen.get_width()/2,WINDOW.screen.get_height()/2))
         PLAYER.movePlayer(PRESSED,levels[activeLevel].rects)
 
+        if PRESSED[pygame.K_1]:
+            PLAYER.swapWeapon(1)
+        elif PRESSED[pygame.K_2]:
+            PLAYER.swapWeapon(2)
+
         WINDOW.clearScreen()
 
         # Raycasting
@@ -104,7 +112,7 @@ if __name__ == "__main__":
 
         # Weapon Animation
         if PLAYER.cooldown != 0:
-            SHOTGUN.playAnim(PLAYER.cooldown//3)
+            WEAPONS[PLAYER.activeWeapon-1].playAnim(PLAYER.cooldown//3)
             PLAYER.cooldown -= 1
         UI.weaponHud(PLAYER.activeWeapon)
 

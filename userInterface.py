@@ -10,7 +10,7 @@ import pygame
 from resource_path import resource_path
 
 class HUD:
-    def __init__(self,SCREEN,SHOTGUN):
+    def __init__(self,SCREEN,SHOTGUN,SLUG):
         pygame.font.init()
         self.window = SCREEN
         self.surface = self.window.screen
@@ -20,7 +20,8 @@ class HUD:
         self.crosshair = pygame.image.load(resource_path("UI\crosshair.png")).convert()
 
         self.weapons = [
-            SHOTGUN
+            SHOTGUN,
+            SLUG
             ]
 
         self.minimap = pygame.surface.Surface((1600,1600))
