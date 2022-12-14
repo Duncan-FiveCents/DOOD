@@ -18,9 +18,9 @@ class RayCasting:
         self.height = self.surface.get_height()
         self.width = self.surface.get_width()
 
-        self.tileSize = 40
+        self.tileSize = 18
 
-        self.FOV = pi / 2 # Math uses radians by default, so this comes out to 90 degrees
+        self.FOV = pi / 3 # Math uses radians by default, so this comes out to 90 degrees
         self.half_FOV = self.FOV / 2 # Yes this is used often enough to warrant this
 
         PRESETS = {1:32,2:80,3:128,4:160,5:320}
