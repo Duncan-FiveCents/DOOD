@@ -35,7 +35,8 @@ class RayCasting:
         self.spriteRaysRange = self.castedRays - 1 + 2 * self.spriteRays
 
         self.textures = {
-            "1":pygame.image.load(resource_path("textures/wall-texture-1.png")).convert()
+            "1":pygame.image.load(resource_path("textures/wall-texture-1.png")).convert(),
+            "2":pygame.image.load(resource_path("textures/wall-texture-2.png")).convert()
         }
 
         self.minimap = MINIMAP
