@@ -35,6 +35,7 @@ class Player:
         # WASD Movement
 
         currentPos = self.rect.center
+        self.angle %= pi*2
 
         if PRESSED[pygame.K_w]:
             # Pygame rects don't allow float coordinates, so rounding it prevents the player from moving sideways if the angle is just slightly off

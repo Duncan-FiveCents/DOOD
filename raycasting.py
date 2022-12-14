@@ -7,7 +7,7 @@ date-created: 22/11/2022
 '''
 
 import pygame
-from math import sin, cos, tan, pi
+from math import sin, cos, tan, atan2, sqrt, pi
 from resource_path import resource_path
 
 # I had to jump between a couple tutorials and modify things to work with our mechanics
@@ -30,6 +30,9 @@ class RayCasting:
 
         self.scale = self.width // self.castedRays # Scales textures and stuff to the right width
         self.wallHeight = 4 * (self.castedRays / (2*tan(self.half_FOV))) * self.scale # Sets max wall height
+
+        self.spriteRays = 100 # Raycasting for sprites is handled seperately
+        self.spriteRaysRange = self.castedRays - 1 + 2 * self.spriteRays
 
         self.textures = {
             "1":pygame.image.load(resource_path("textures/wall-texture-1.png")).convert()
@@ -55,6 +58,13 @@ class RayCasting:
         pygame.draw.rect(self.surface,(100,100,150),(0,self.height/3,self.surface.get_width(),self.height)) # Floor
         pygame.draw.rect(self.surface,(55,55,175),(0,-self.height/1.75,self.surface.get_width(),self.height)) # Ceiling
 
+    def drawObjects(self,OBJECTS):
+        for object in sorted(OBJECTS, key=lambda n: n[0], reverse=True): # Sorts objects by distance so that things are rendered in the right order
+            print(object)
+            if object[0]:
+                AAAAAA, objectSurface, objectPos = object[0]
+                self.surface.blit(objectSurface,objectPos)
+
     def alignGrid(self,x,y):
         """Aligns the given coordinates to the nearest grid line (helps with raycasting optimisation)
 
@@ -68,7 +78,7 @@ class RayCasting:
         """
         return (x//self.tileSize) * self.tileSize, (y//self.tileSize) * self.tileSize
 
-    def castRays(self,MAP,PLAYER,SPRITES): # I rewrote this too many times
+    def castRays(self,MAP,PLAYER): # I rewrote this too many times
         playerX, playerY = self.alignGrid(PLAYER.rect.centerx,PLAYER.rect.centery)
         startAngle = PLAYER.angle - self.half_FOV
         textureX, textureY = MAP[self.alignGrid(1,1)], MAP[self.alignGrid(1,1)] # Placeholder values
@@ -116,7 +126,30 @@ class RayCasting:
 
                 wallColumn = self.textures[texture].subsurface(offset * (480 // self.tileSize),0,(480 // self.tileSize),480)
                 wallColumn = pygame.transform.scale(wallColumn,(self.scale,projectedHeight))
-                self.surface.blit(wallColumn,(ray * self.scale,((240 - projectedHeight // 2))*0.85))
+                self.surface.blit(wallColumn,(ray * self.scale,(240 - projectedHeight // 2)*0.85)) # The multiplier at the end adjusts the "height" of the player themselves
             
             startAngle += self.stepAngle
 
+    def castSprites(self,PLAYER,SPRITE):
+        centerRay = self.castedRays // 2 - 1
+        distanceX,distanceY = SPRITE.rect.centerx - PLAYER.rect.centerx, SPRITE.rect.centery - PLAYER.rect.centery
+        totalDistance = sqrt(distanceX**2 + distanceY**2) # Simple pythagoras to find the distance from the player to the sprite
+
+        angle = atan2(distanceY,distanceX)
+        offsetAngle = angle - PLAYER.angle
+
+        if distanceX > 0 and pi <= PLAYER.angle <= pi*2 or distanceX < 0 and distanceY < 0: offsetAngle += pi*2
+
+        deltaRays = int(offsetAngle/self.stepAngle)
+        currentRay = centerRay + self.stepAngle
+        totalDistance *= cos(self.half_FOV - centerRay * self.stepAngle)
+
+        spriteRay = currentRay + self.spriteRays
+        if 0 <= spriteRay <= self.spriteRaysRange and totalDistance > 30: # No idea what the 30 does, I should look into that
+            projectedHeight = min(int(self.wallHeight/totalDistance*self.scale),480*2)
+            offset = projectedHeight//2 * SPRITE.shift
+
+            drawSprite = pygame.transform.scale(SPRITE.image,(projectedHeight,projectedHeight))
+            self.surface.blit(drawSprite,(currentRay*self.scale-projectedHeight//2,(240-projectedHeight//2)+offset))
+            return int(totalDistance), drawSprite, SPRITE.rect.center
+        else: return False
