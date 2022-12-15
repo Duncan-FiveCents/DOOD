@@ -59,7 +59,7 @@ level1 = Level(
     '1111111111111111111111111111111111111111',
     '1111111111111111111111111111111111111111'
     ],
-    2,22
+    2,21
 )
 
 levels = [level1]
@@ -76,7 +76,7 @@ RAYS = RayCasting(WINDOW.screen,5,UI.minimap)
 minimapActive = False
 
 PLAYER = Player(levels[activeLevel].start)
-ENEMY = Enemy(0.6)
+ENEMY = Enemy(0.001,[4,21])
 ENEMIES = [ENEMY]
 
 OBJECTS = []
@@ -111,11 +111,11 @@ if __name__ == "__main__":
 
         # Raycasting
         RAYS.draw3D()
-        RAYS.castRays(levels[activeLevel].worldMap,PLAYER)
-        #for sprite in ENEMIES:
-        #    temp = [RAYS.castSprites(PLAYER,sprite)]
-        #    if temp[0]: OBJECTS.append(temp)
-        #RAYS.drawObjects(OBJECTS)
+        OBJECTS.append(RAYS.castRays(levels[activeLevel].worldMap,PLAYER))
+        for sprite in ENEMIES:
+            temp = [RAYS.castSprites(PLAYER,sprite)]
+            if temp[0]: OBJECTS.append(temp)
+        RAYS.drawObjects(OBJECTS)
 
         # Weapon Animation
         if PLAYER.cooldown != 0:
@@ -132,4 +132,5 @@ if __name__ == "__main__":
             MINIMAP = pygame.transform.scale(UI.minimap,(300,300))
             WINDOW.screen.blit(MINIMAP,(WINDOW.screen.get_width()/2 - 150,0))
 
+        OBJECTS = []
         WINDOW.updateFrame()

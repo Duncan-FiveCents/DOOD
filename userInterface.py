@@ -7,8 +7,7 @@ date-created: 29/11/2022
 '''
 
 import pygame
-from resource_path import resource_path
-
+from common import *
 class HUD:
     def __init__(self,SCREEN,SHOTGUN,SLUG):
         pygame.font.init()
@@ -24,7 +23,7 @@ class HUD:
             SLUG
             ]
 
-        self.minimap = pygame.surface.Surface((1600,1600))
+        self.minimap = pygame.surface.Surface((720,720))
 
     def mainHud(self,HEALTH,SHIELD):
         # Base Hud

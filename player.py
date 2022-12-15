@@ -12,7 +12,7 @@ from math import sin,cos,pi
 class Player:
     def __init__(self,STARTPOS):
         self.rect = pygame.rect.Rect(STARTPOS[0],STARTPOS[1],20,20)
-        self.speed = 2
+        self.velocity = 0
         self.angle = pi/2
 
         self.sensitivityMult = 5 # Higher number, lower sensitity. We'll probably just use presets for this to avoid confusion
@@ -35,40 +35,41 @@ class Player:
         # WASD Movement
 
         currentPos = self.rect.center
-        self.angle %= pi*2
+        self.angle %= pi*2 # Resets the angle to a value between 0 and 2*pi
+        moved = False
 
         if PRESSED[pygame.K_w]:
             # Pygame rects don't allow float coordinates, so rounding it prevents the player from moving sideways if the angle is just slightly off
             # It does cause the player to move unnaturally at times, but I had no better solution
-            self.rect.centerx -= round(sin(self.angle) * self.speed)
-            # This collision code is hilariously ineffecient as it checks EVERY WALL ON THE MAP, but it works
-            for i in range(len(MAP)):
-                if MAP[i].collidepoint(self.rect.center): self.rect.centerx = currentPos[0]
-            self.rect.centery += round(cos(self.angle) * self.speed)
-            for i in range(len(MAP)):
-                if MAP[i].collidepoint(self.rect.center): self.rect.centery = currentPos[1]
+            if not self.velocity > 2: self.velocity += 0.5
+            self.rect.centerx -= round(sin(self.angle) * self.velocity)
+            self.rect.centery += round(cos(self.angle) * self.velocity)
+            moved = True
         if PRESSED[pygame.K_s]:
-            self.rect.centerx += round(sin(self.angle) * self.speed)
-            for i in range(len(MAP)):
-                if MAP[i].collidepoint(self.rect.center): self.rect.centerx = currentPos[0]
-            self.rect.centery -= round(cos(self.angle) * self.speed)
-            for i in range(len(MAP)):
-                if MAP[i].collidepoint(self.rect.center): self.rect.centery = currentPos[1]
+            if not self.velocity > 2: self.velocity += 0.5
+            self.rect.centerx += round(sin(self.angle) * self.velocity)
+            self.rect.centery -= round(cos(self.angle) * self.velocity)
+            moved = True
         if PRESSED[pygame.K_a]:
-            self.rect.centerx += round(sin(self.angle+pi/2) * self.speed)
-            for i in range(len(MAP)):
-                if MAP[i].collidepoint(self.rect.center): self.rect.centerx = currentPos[0]
-            self.rect.centery -= round(cos(self.angle+pi/2) * self.speed)
-            for i in range(len(MAP)):
-                if MAP[i].collidepoint(self.rect.center): self.rect.centery = currentPos[1]
+            if not self.velocity > 2: self.velocity += 0.5
+            self.rect.centerx += round(sin(self.angle+pi/2) * self.velocity)
+            self.rect.centery -= round(cos(self.angle+pi/2) * self.velocity)
+            moved = True
         if PRESSED[pygame.K_d]:
-            self.rect.centerx += round(sin(self.angle-pi/2) * self.speed)
-            for i in range(len(MAP)):
-                if MAP[i].collidepoint(self.rect.center): self.rect.centerx = currentPos[0]
-            self.rect.centery -= round(cos(self.angle-pi/2) * self.speed)
-            for i in range(len(MAP)):
+            if not self.velocity > 2: self.velocity += 0.5
+            self.rect.centerx += round(sin(self.angle-pi/2) * self.velocity)
+            self.rect.centery -= round(cos(self.angle-pi/2) * self.velocity)
+            moved = True
+        
+        for i in range(len(MAP)):
+            if MAP[i].collidepoint(self.rect.center): self.rect.centerx = currentPos[0]
+        for i in range(len(MAP)):
                 if MAP[i].collidepoint(self.rect.center): self.rect.centery = currentPos[1]
 
+        # The player currently accelerates properly, but deccelerates instantly
+        # I might fix this later, we'll see
+        if self.velocity != 0: self.velocity -= 0.25
+        if not moved: self.velocity = 0
 
     def turnPlayer(self,PRESSED,SCREENCENTER):
         """Turns the player either with the mouse or with the arrow keys

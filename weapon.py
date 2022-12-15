@@ -7,7 +7,7 @@ date-created: 05/12/2022
 '''
 
 import pygame
-from resource_path import resource_path
+from common import *
 
 class Weapon(pygame.sprite.Sprite):
     def __init__(self):
