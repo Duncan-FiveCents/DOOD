@@ -76,7 +76,7 @@ RAYS = RayCasting(WINDOW.screen,5,UI.minimap)
 minimapActive = False
 
 PLAYER = Player(levels[activeLevel].start)
-ENEMY = Enemy(0.001,[4,21])
+ENEMY = Enemy(0.6,[4,21])
 ENEMIES = [ENEMY]
 
 OBJECTS = []
@@ -113,8 +113,8 @@ if __name__ == "__main__":
         RAYS.draw3D()
         OBJECTS.append(RAYS.castRays(levels[activeLevel].worldMap,PLAYER))
         for sprite in ENEMIES:
-            temp = [RAYS.castSprites(PLAYER,sprite)]
-            if temp[0]: OBJECTS.append(temp)
+            temp = RAYS.castSprites(PLAYER,sprite)
+            if temp[0]: OBJECTS[0].append(temp)
         RAYS.drawObjects(OBJECTS)
 
         # Weapon Animation

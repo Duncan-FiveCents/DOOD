@@ -136,22 +136,22 @@ class RayCasting:
         angle = atan2(distanceY,distanceX)
         offsetAngle = angle - PLAYER.angle
 
-        if distanceX > 0 and 180 <= degrees(PLAYER.angle) <= 360 or distanceX < 0 and distanceY < 0: offsetAngle += pi*2 
+        if (distanceX > 0 and 180 <= degrees(PLAYER.angle) <= 360) or (distanceX < 0 and distanceY < 0): offsetAngle += pi*2 
 
-        deltaRays = int(offsetAngle/self.stepAngle)
+        deltaRays = int(offsetAngle/degrees(self.stepAngle))
         currentRay = centerRay + deltaRays
-        totalDistance *= cos(self.half_FOV - centerRay * self.stepAngle)
+        totalDistance *= cos(self.half_FOV - currentRay * self.stepAngle)
 
         spriteRay = currentRay + self.spriteRays
-        if 0 <= spriteRay <= self.spriteRaysRange and totalDistance > 30: # No idea what the 30 does, I should look into that
+        if 0 <= spriteRay <= self.spriteRaysRange and totalDistance > 10: # The 10 stops rendering the sprite if its too close to the player
             projectedHeight = min(int(self.wallHeight/totalDistance*self.scale),480*2)
             offset = projectedHeight//2 * SPRITE.shift
 
             spriteSurface = pygame.transform.scale(SPRITE.image,(projectedHeight,projectedHeight))
             spritePosition = (currentRay*self.scale-projectedHeight//2,(240-projectedHeight//2)+offset)
 
-            return totalDistance, spriteSurface, spritePosition
-        else: return False
+            return [totalDistance, spriteSurface, spritePosition]
+        else: return [False]
 
     def drawObjects(self,OBJECTS):
         SORT_STUFF = []
