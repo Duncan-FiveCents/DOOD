@@ -29,6 +29,7 @@ class RayCasting:
         self.stepAngle = self.FOV / self.castedRays # Angle to rotate between rays
 
         self.scale = self.width // self.castedRays # Scales textures and stuff to the right width
+        self.textureScale = self.height/self.tileSize
         self.wallHeight = 4 * (self.castedRays / (2*tan(self.half_FOV))) * self.scale # Sets max wall height
 
         self.spriteRays = 100 # Raycasting for sprites is handled seperately
@@ -42,7 +43,7 @@ class RayCasting:
         self.minimap = MINIMAP
 
     # - Modifiers? I guess? - #
-    def drawMap(self,MAP,PLAYERRECT,PLAYERANGLE): # Minimap idea: make map move around player???
+    def drawMap(self,MAP,PLAYERRECT,SPRITES): # Minimap idea: make map move around player???
         pygame.draw.rect(self.minimap,(100,100,100),(0,0,1600,1600))
         for i in range(len(MAP)):
             pygame.draw.rect(
@@ -51,7 +52,9 @@ class RayCasting:
                 MAP[i]
             )
 
-        pygame.draw.rect(self.minimap,(255,0,0),PLAYERRECT)
+        pygame.draw.rect(self.minimap,(255,255,255),PLAYERRECT)
+        for i in range(len(SPRITES)):
+            pygame.draw.rect(self.minimap,(255,0,0),SPRITES[i].rect)
     
     def draw3D(self): # Maybe put the other 3D rendering code into here?
         # Ceiling and floor
@@ -118,7 +121,7 @@ class RayCasting:
                 depth = max(depth, 0.00001) # Prevents a zero value
                 projectedHeight = min(int(self.wallHeight/depth), 2 * 480)
 
-                wallColumn = self.textures[texture].subsurface(offset * (480 // self.tileSize),0,(480 // self.tileSize),480)
+                wallColumn = self.textures[texture].subsurface(offset * (self.textureScale),0,(self.textureScale),480)
                 wallColumn = pygame.transform.scale(wallColumn,(self.scale,projectedHeight))
                 wallPosition = (ray * self.scale,(240 - projectedHeight // 2)*0.85) # The multiplier at the end adjusts the "height" of the player
 
@@ -131,33 +134,37 @@ class RayCasting:
     def castSprites(self,PLAYER,SPRITE):
         centerRay = self.castedRays // 2 - 1
         distanceX,distanceY = SPRITE.rect.centerx - PLAYER.rect.centerx, SPRITE.rect.centery - PLAYER.rect.centery
-        totalDistance = sqrt(distanceX**2 + distanceY**2) # Simple pythagoras to find the distance from the player to the sprite
+        totalDistance = sqrt(distanceX**2 + distanceY**2)
 
         angle = atan2(distanceY,distanceX)
         offsetAngle = angle - PLAYER.angle
 
-        if (distanceX > 0 and 180 <= degrees(PLAYER.angle) <= 360) or (distanceX < 0 and distanceY < 0): offsetAngle += pi*2 
+        if (distanceX > 0 and pi <= PLAYER.angle <= 2*pi) or (distanceX < 0 and distanceY < 0): offsetAngle += pi*2
 
         deltaRays = int(offsetAngle/degrees(self.stepAngle))
         currentRay = centerRay + deltaRays
         totalDistance *= cos(self.half_FOV - currentRay * self.stepAngle)
 
         spriteRay = currentRay + self.spriteRays
-        if 0 <= spriteRay <= self.spriteRaysRange and totalDistance > 10: # The 10 stops rendering the sprite if its too close to the player
-            projectedHeight = min(int(self.wallHeight/totalDistance*self.scale),480*2)
-            offset = projectedHeight//2 * SPRITE.shift
+        if 0 <= spriteRay <= self.spriteRaysRange and totalDistance > 10: # 10 is the minimum distance the enemy must be from the player to render
+            projectedHeight = min(int(self.wallHeight/totalDistance*SPRITE.scale),480*2)
+            halfProjectedHeight = projectedHeight//2
+            offset = halfProjectedHeight * SPRITE.shift
 
             spriteSurface = pygame.transform.scale(SPRITE.image,(projectedHeight,projectedHeight))
-            spritePosition = (currentRay*self.scale-projectedHeight//2,(240-projectedHeight//2)+offset)
-
+            spritePosition = ((currentRay*self.scale-halfProjectedHeight),(240-halfProjectedHeight)+offset)
+            
             return [totalDistance, spriteSurface, spritePosition]
         else: return [False]
 
     def drawObjects(self,OBJECTS):
+        # Sorts objects by distance
         SORT_STUFF = []
         for i in range(len(OBJECTS[0])): SORT_STUFF.append(OBJECTS[0][i])
         SORT_STUFF = quickSort(SORT_STUFF,0,len(SORT_STUFF)-1)
 
+        # Actually draws stuff
         for object in SORT_STUFF:
             AAAAAA, objectSurface, objectPos = object
+            #if objectSurface.get_width() != 2: print(object)
             self.surface.blit(objectSurface,objectPos)

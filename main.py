@@ -76,7 +76,7 @@ RAYS = RayCasting(WINDOW.screen,5,UI.minimap)
 minimapActive = False
 
 PLAYER = Player(levels[activeLevel].start)
-ENEMY = Enemy(0.6,[4,21])
+ENEMY = Enemy([4,22])
 ENEMIES = [ENEMY]
 
 OBJECTS = []
@@ -126,7 +126,7 @@ if __name__ == "__main__":
         # User Interface
         UI.mainHud(PLAYER.health,PLAYER.sheild)
 
-        RAYS.drawMap(levels[activeLevel].rects,PLAYER.rect,PLAYER.angle)
+        RAYS.drawMap(levels[activeLevel].rects,PLAYER.rect,[ENEMY])
 
         if minimapActive:
             MINIMAP = pygame.transform.scale(UI.minimap,(300,300))
