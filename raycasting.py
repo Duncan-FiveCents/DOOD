@@ -152,7 +152,7 @@ class RayCasting:
             offset = halfProjectedHeight * SPRITE.shift
 
             spriteSurface = pygame.transform.scale(SPRITE.image,(projectedHeight,projectedHeight))
-            spritePosition = ((currentRay*self.scale-halfProjectedHeight),(240-halfProjectedHeight)+offset)
+            spritePosition = ((currentRay*self.scale-halfProjectedHeight),(240-halfProjectedHeight+offset)*0.85)
             
             return [totalDistance, spriteSurface, spritePosition]
         else: return [False]
