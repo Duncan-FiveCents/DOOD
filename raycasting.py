@@ -32,7 +32,7 @@ class RayCasting:
         self.textureScale = self.height/self.tileSize
         self.wallHeight = 4 * (self.castedRays / (2*tan(self.half_FOV))) * self.scale # Sets max wall height
 
-        self.spriteRays = 100 # Raycasting for sprites is handled seperately
+        self.spriteRays = 100
         self.spriteRaysRange = self.castedRays - 1 + 2 * self.spriteRays
 
         self.textures = {
@@ -117,7 +117,7 @@ class RayCasting:
                 depth, offset, texture = (depthY, y, textureY) if depthY < depthX else (depthX, x, textureX)
                 offset = int(offset) % self.tileSize
                 depth *= cos(PLAYER.angle - startAngle)
-                depth /= 4
+                depth /= 4 # Flat value that fixes some scaling issues
                 depth = max(depth, 0.00001) # Prevents a zero value
                 projectedHeight = min(int(self.wallHeight/depth), 2 * 480)
 
@@ -125,7 +125,7 @@ class RayCasting:
                 wallColumn = pygame.transform.scale(wallColumn,(self.scale,projectedHeight))
                 wallPosition = (ray * self.scale,(240 - projectedHeight // 2)*0.85) # The multiplier at the end adjusts the "height" of the player
 
-                walls.append([depth,wallColumn,wallPosition])            
+                walls.append([depth,wallColumn,wallPosition])          
 
             startAngle += self.stepAngle
         
@@ -136,12 +136,12 @@ class RayCasting:
         distanceX,distanceY = SPRITE.rect.centerx - PLAYER.rect.centerx, SPRITE.rect.centery - PLAYER.rect.centery
         totalDistance = sqrt(distanceX**2 + distanceY**2)
 
-        angle = atan2(distanceY,distanceX)
+        angle = atan2(distanceX,distanceY)
         offsetAngle = angle - PLAYER.angle
 
         if (distanceX > 0 and pi <= PLAYER.angle <= 2*pi) or (distanceX < 0 and distanceY < 0): offsetAngle += pi*2
 
-        deltaRays = int(offsetAngle/degrees(self.stepAngle))
+        deltaRays = int(angle/degrees(self.stepAngle))
         currentRay = centerRay + deltaRays
         totalDistance *= cos(self.half_FOV - currentRay * self.stepAngle)
 
@@ -166,5 +166,4 @@ class RayCasting:
         # Actually draws stuff
         for object in SORT_STUFF:
             AAAAAA, objectSurface, objectPos = object
-            #if objectSurface.get_width() != 2: print(object)
             self.surface.blit(objectSurface,objectPos)

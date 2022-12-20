@@ -18,5 +18,5 @@ class Enemy(pygame.sprite.Sprite):
         self.image = pygame.image.load(resource_path("enemies\skeleton-enemy1.png")).convert()
         self.angle = pi/2
 
-        self.shift = 0.4 # Adjusts the perceived height of the enemy
-        self.scale = 2
+        self.shift = 0.6 # Adjusts the perceived height of the enemy
+        self.scale = 20 # Seems to adjust the rate at which the enemy shrinks with distance
