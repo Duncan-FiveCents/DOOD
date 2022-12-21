@@ -126,7 +126,7 @@ if __name__ == "__main__":
         # User Interface
         UI.mainHud(PLAYER.health,PLAYER.sheild)
 
-        RAYS.drawMap(levels[activeLevel].rects,PLAYER.rect,[ENEMY])
+        RAYS.drawMap(levels[activeLevel].rects,PLAYER,ENEMIES)
 
         if minimapActive:
             MINIMAP = pygame.transform.scale(UI.minimap,(300,300))

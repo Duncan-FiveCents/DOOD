@@ -7,7 +7,7 @@ date-created: 22/11/2022
 '''
 
 import pygame
-from math import sin, cos, tan, atan2, sqrt, pi, degrees
+from math import sin, cos, tan, atan2, sqrt, pi, degrees, radians
 from common import *
 
 # I had to jump between a couple tutorials and modify things to work with our mechanics
@@ -33,7 +33,7 @@ class RayCasting:
         self.wallHeight = 4 * (self.castedRays / (2*tan(self.half_FOV))) * self.scale # Sets max wall height
 
         self.spriteRays = 100
-        self.spriteRaysRange = self.castedRays - 1 + 2 * self.spriteRays
+        self.spriteRaysRange = self.castedRays - 1 + self.spriteRays * 2
 
         self.textures = {
             "1":pygame.image.load(resource_path("textures/wall-texture-1.png")).convert(),
@@ -43,7 +43,7 @@ class RayCasting:
         self.minimap = MINIMAP
 
     # - Modifiers? I guess? - #
-    def drawMap(self,MAP,PLAYERRECT,SPRITES): # Minimap idea: make map move around player???
+    def drawMap(self,MAP,PLAYER,SPRITES): # Minimap idea: make map move around player???
         pygame.draw.rect(self.minimap,(100,100,100),(0,0,1600,1600))
         for i in range(len(MAP)):
             pygame.draw.rect(
@@ -52,7 +52,7 @@ class RayCasting:
                 MAP[i]
             )
 
-        pygame.draw.rect(self.minimap,(255,255,255),PLAYERRECT)
+        self.minimap.blit(PLAYER.minimapIcon,PLAYER.rect.center)
         for i in range(len(SPRITES)):
             pygame.draw.rect(self.minimap,(255,0,0),SPRITES[i].rect)
     
@@ -77,7 +77,7 @@ class RayCasting:
     def castRays(self,MAP,PLAYER): # I rewrote this too many times
         walls = []
         playerX, playerY = self.alignGrid(PLAYER.rect.centerx,PLAYER.rect.centery)
-        startAngle = PLAYER.angle - self.half_FOV
+        startAngle = radians(PLAYER.angle) - self.half_FOV
         textureX, textureY = MAP[self.alignGrid(1,1)], MAP[self.alignGrid(1,1)] # Placeholder values
 
         for ray in range(self.castedRays):
@@ -116,7 +116,7 @@ class RayCasting:
             if rayX or rayY:
                 depth, offset, texture = (depthY, y, textureY) if depthY < depthX else (depthX, x, textureX)
                 offset = int(offset) % self.tileSize
-                depth *= cos(PLAYER.angle - startAngle)
+                depth *= cos(radians(PLAYER.angle) - startAngle)
                 depth /= 4 # Flat value that fixes some scaling issues
                 depth = max(depth, 0.00001) # Prevents a zero value
                 projectedHeight = min(int(self.wallHeight/depth), 2 * 480)
@@ -133,15 +133,14 @@ class RayCasting:
 
     def castSprites(self,PLAYER,SPRITE):
         centerRay = self.castedRays // 2 - 1
-        distanceX,distanceY = SPRITE.rect.centerx - PLAYER.rect.centerx, SPRITE.rect.centery - PLAYER.rect.centery
+        distanceX,distanceY = PLAYER.rect.centerx - SPRITE.rect.centerx, PLAYER.rect.centery - SPRITE.rect.centery
         totalDistance = sqrt(distanceX**2 + distanceY**2)
 
-        angle = atan2(distanceX,distanceY)
-        offsetAngle = angle - PLAYER.angle
+        offsetAngle = atan2(distanceX,distanceY) - radians(PLAYER.angle)
 
-        if (distanceX > 0 and pi <= PLAYER.angle <= 2*pi) or (distanceX < 0 and distanceY < 0): offsetAngle += pi*2
+        if distanceX > 0 and 180 <= PLAYER.angle <= 360 or distanceX < 0 and distanceY < 0: offsetAngle += pi*2
 
-        deltaRays = int(angle/degrees(self.stepAngle))
+        deltaRays = int(offsetAngle/self.stepAngle)
         currentRay = centerRay + deltaRays
         totalDistance *= cos(self.half_FOV - currentRay * self.stepAngle)
 
