@@ -138,7 +138,7 @@ class RayCasting:
 
         offsetAngle = atan2(distanceX,distanceY) - radians(PLAYER.angle)
 
-        if distanceX > 0 and 180 <= PLAYER.angle <= 360 or distanceX < 0 and distanceY < 0: offsetAngle += pi*2
+        if distanceX > 0 and 180 <= PLAYER.angle <= 360 or (distanceX < 0 and distanceY < 0): offsetAngle += pi*2
 
         deltaRays = int(offsetAngle/self.stepAngle)
         currentRay = centerRay + deltaRays
@@ -157,12 +157,7 @@ class RayCasting:
         else: return [False]
 
     def drawObjects(self,OBJECTS):
-        # Sorts objects by distance
-        SORT_STUFF = []
-        for i in range(len(OBJECTS[0])): SORT_STUFF.append(OBJECTS[0][i])
-        SORT_STUFF = quickSort(SORT_STUFF,0,len(SORT_STUFF)-1)
-
-        # Actually draws stuff
-        for object in SORT_STUFF:
-            AAAAAA, objectSurface, objectPos = object
-            self.surface.blit(objectSurface,objectPos)
+        for object in sorted(OBJECTS[0],key=lambda n: n[0],reverse=True):
+            if object[0]:
+                distance, objectSurface, objectPos = object
+                self.surface.blit(objectSurface,objectPos)
