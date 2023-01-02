@@ -17,7 +17,6 @@ class Game:
         self.map = Map(self,level1)
         self.player = Player(self,self.map.metadata)
         self.raycasting = RayCasting(self)
-        print(self.map.worldMap)
 
     def update(self):
         self.player.movement()
@@ -27,8 +26,8 @@ class Game:
     
     def draw(self):
         self.screen.fill((0,0,0))
-        #self.map.draw()
-        #self.player.draw()
+        self.map.draw()
+        self.player.draw()
     
     def run(self):
         while True:

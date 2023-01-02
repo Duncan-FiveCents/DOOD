@@ -6,47 +6,59 @@ class RayCasting:
     def __init__(self,GAME):
         self.game = GAME
 
-    def alignGrid(self,x,y): return (x//tilesize)*tilesize,(y//tilesize)*tilesize
-
     def castRays(self):
         walls = []
-        playerX,playerY = self.alignGrid(self.game.player.x,self.game.player.y)
-        startAngle = m.radians(self.game.player.angle) - half_fov
+        playerX,playerY = self.game.player.x,self.game.player.y
+        mapX,mapY = int(playerX),int(playerY)
+        startAngle = self.game.player.angle - half_fov + 0.00001
 
-        for ray in range((castedRays[quality])):
-            rayX,rayY = False,False
+        for ray in range(castedRays):
             sinAngle = m.sin(startAngle)
             cosAngle = m.cos(startAngle)
             if not sinAngle: sinAngle = 0.00001
             if not cosAngle: cosAngle = 0.00001
 
-            gridX,dirX = (playerX+tilesize,1) if cosAngle >=0 else (playerX,-1)
-            for i in range(0,600,tilesize):
-                depthY = (gridX - self.game.player.x)/cosAngle
-                y = self.game.player.y + depthY * sinAngle
-                tileY = self.alignGrid(gridX + dirX,y)
-                if tileY in self.game.map.worldMap:
-                    textureY = self.game.map.worldMap[tileY]
-                    rayY = True
-                    break
-            
-            gridY,dirY = (playerY+tilesize,1) if sinAngle >=0 else (playerY,-1)
-            for i in range(0,600,tilesize):
-                depthX = (gridY - self.game.player.y)/sinAngle
-                x = self.game.player.x + depthX * cosAngle
-                tileX = self.alignGrid(x,gridY+dirY)
-                if tileX in self.game.map.worldMap:
-                    textureX = self.game.map.worldMap[tileX]
-                    rayX = True
-                    break
-            
-            if rayX or rayY:
-                depth, offset, texture = (depthY,y,textureY) if depthY < depthX else (depthX,x,textureX)
-                offset = int(offset) % tilesize
-                depth *= m.cos(m.radians(self.game.player.angle)-startAngle)
-                projectedHeight = screenDist / depth + 0.00001
+            # Horizontals
+            horzY,dirY = (mapY+1,1) if sinAngle >= 0 else (mapY-0.00001,-1)
 
-                pygame.draw.rect(self.game.screen,(255,255,255),
-                    (ray*scale,halfHeight-projectedHeight//2,scale,projectedHeight))
+            horizontalDepth = (horzY - playerY) / sinAngle
+            horzX = playerX + horizontalDepth * cosAngle
 
-                
+            deltaDepth = dirY / sinAngle
+            dirX = deltaDepth * cosAngle
+
+            for i in range(40):
+                horizontalTile = int(horzX),int(horzY)
+                if horizontalTile in self.game.map.worldMap:
+                    break
+                horzX += dirX
+                horzY += dirY
+                horizontalDepth += deltaDepth
+
+            # Verticals
+            vertX,dirX = (mapX+1,1) if cosAngle >= 0 else (mapX-0.00001,-1)
+            
+            verticalDepth = (vertX - playerX) / cosAngle
+            vertY = playerY + verticalDepth * sinAngle
+
+            deltaDepth = dirX / cosAngle
+            dirY = deltaDepth * sinAngle
+
+            for i in range(40):
+                verticalTile = int(vertX),int(vertY)
+                if verticalTile in self.game.map.worldMap:
+                    break
+                vertX += dirX
+                vertY += dirY
+                verticalDepth += deltaDepth
+
+            depth = min(verticalDepth,horizontalDepth)
+
+            pygame.draw.line(self.game.screen,(255,255,0),(tilesize*self.game.player.x,tilesize*self.game.player.y),(tilesize*self.game.player.x+tilesize*depth*cosAngle,tilesize*self.game.player.y+tilesize*depth*sinAngle),1)
+
+            projectedHeight = screenDist / depth + 0.00001
+
+            #pygame.draw.rect(self.game.screen,(255,255,255),
+                #(ray*scale,halfHeight-projectedHeight//2,scale,projectedHeight))
+
+            startAngle += stepAngle

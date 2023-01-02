@@ -5,9 +5,9 @@ from settings import *
 class Player():
     def __init__(self,GAME,START):
         self.game = GAME
-        self.x,self.y = START[0]*tilesize,START[1]*tilesize
+        self.x,self.y = START[0],START[1]
         self.angle = START[2]
-        self.speed = 3
+        self.speed = 0.25
 
     def movement(self):
         sinA = math.sin(self.angle)
@@ -33,9 +33,9 @@ class Player():
             dx -= speedSin
             dy += speedCos
         
-        if (int(self.x + dx)//tilesize,int(self.y)//tilesize) not in self.game.map.worldMap:
+        if (int(self.x + dx),int(self.y)) not in self.game.map.worldMap:
             self.x += dx
-        if (int(self.x)//tilesize,int(self.y + dy)//tilesize) not in self.game.map.worldMap:
+        if (int(self.x),int(self.y + dy)) not in self.game.map.worldMap:
             self.y += dy
 
         # Key based turning
@@ -46,4 +46,4 @@ class Player():
         self.angle %= math.tau
     
     def draw(self):
-        pygame.draw.circle(self.game.screen,(255,255,0),(self.x,self.y),2)
+        pygame.draw.circle(self.game.screen,(255,255,0),(self.x*tilesize,self.y*tilesize),2)
