@@ -12,14 +12,21 @@ halfWidth,halfHeight = resX//2,resY//2
 fps = 30
 
 tilesize = 12
+playerSize = 2
 
-sensitivity = 0.1
+sensitivity = 0.01
+maxTurn = 20
+mouseBorderLeft = 50
+mouseBorderRight = resX - mouseBorderLeft
 
 fov = math.pi/2
 half_fov = fov/2
 castedRays = 320
 half_rays = castedRays // 2
 stepAngle = fov / castedRays
+
+floorColour = (100,100,150)
+roofColour = (55,55,175)
 
 screenDist = halfWidth/math.tan(half_fov)
 scale = resX / castedRays

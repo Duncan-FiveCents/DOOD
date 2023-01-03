@@ -5,10 +5,12 @@ from levels import *
 from player import *
 from raycasting import *
 from renderer import *
+from sprite import *
 
 class Game:
     def __init__(self):
         pygame.init()
+        pygame.mouse.set_visible(False)
         self.screen = pygame.display.set_mode(resolution,pygame.SCALED|pygame.FULLSCREEN)
         self.clock = pygame.time.Clock()
         self.deltaTime = 1
@@ -19,15 +21,17 @@ class Game:
         self.player = Player(self,self.map.metadata)
         self.renderer = Renderer(self)
         self.raycasting = RayCasting(self)
+        self.sprite = Sprite(self,"resources/enemies/skeleton-enemy1.png",(4.5,21.5))
 
     def update(self):
         self.player.movement()
         self.raycasting.castRays()
+        self.sprite.locateSprite()
         self.deltaTime = self.clock.tick(fps)
         pygame.display.flip()
     
     def draw(self):
-        self.screen.fill((0,0,0))
+        self.renderer.drawBackground()
         self.renderer.renderObjects()
         #self.map.draw()
         #self.player.draw()

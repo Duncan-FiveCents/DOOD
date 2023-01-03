@@ -33,17 +33,25 @@ class Player():
             dx -= speedSin
             dy += speedCos
         
-        if (int(self.x + dx),int(self.y)) not in self.game.map.worldMap:
+        # Collision
+        if (int(self.x + dx * playerSize),int(self.y)) not in self.game.map.worldMap:
             self.x += dx
-        if (int(self.x),int(self.y + dy)) not in self.game.map.worldMap:
+        if (int(self.x),int(self.y + dy * playerSize)) not in self.game.map.worldMap:
             self.y += dy
 
         # Key based turning
         if keysPressed[pygame.K_LEFT]:
-            self.angle -= sensitivity
+            self.angle -= 0.1
         if keysPressed[pygame.K_RIGHT]:
-            self.angle += sensitivity
+            self.angle += 0.1
         self.angle %= math.tau
+
+        # Mouse Turning
+        mouseX,mouseY = pygame.mouse.get_pos()
+        if mouseX < mouseBorderLeft or mouseX > mouseBorderRight: pygame.mouse.set_pos(halfWidth,halfHeight)
+        mouseMovement = pygame.mouse.get_rel()[0]
+        mouseMovement = max(-maxTurn,min(maxTurn,mouseMovement))
+        self.angle += mouseMovement * sensitivity
     
     def draw(self):
         pygame.draw.circle(self.game.screen,(255,255,0),(self.x*tilesize,self.y*tilesize),2)
