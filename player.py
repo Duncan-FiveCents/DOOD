@@ -7,7 +7,7 @@ class Player():
         self.game = GAME
         self.x,self.y = START[0],START[1]
         self.angle = START[2]
-        self.speed = 0.25
+        self.speed = 0.15
 
     def movement(self):
         sinA = math.sin(self.angle)

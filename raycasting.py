@@ -5,12 +5,15 @@ from settings import *
 class RayCasting:
     def __init__(self,GAME):
         self.game = GAME
+        self.renderObjects = []
+        self.textures = self.game.renderer.textures
 
     def castRays(self):
-        walls = []
+        self.renderObjects = []
         playerX,playerY = self.game.player.x,self.game.player.y
         mapX,mapY = int(playerX),int(playerY)
         startAngle = self.game.player.angle - half_fov + 0.00001
+        verticalTexture,horizontalTexture = "1","1"
 
         for ray in range(castedRays):
             sinAngle = m.sin(startAngle)
@@ -20,16 +23,15 @@ class RayCasting:
 
             # Horizontals
             horzY,dirY = (mapY+1,1) if sinAngle >= 0 else (mapY-0.00001,-1)
-
             horizontalDepth = (horzY - playerY) / sinAngle
             horzX = playerX + horizontalDepth * cosAngle
-
             deltaDepth = dirY / sinAngle
             dirX = deltaDepth * cosAngle
 
             for i in range(40):
                 horizontalTile = int(horzX),int(horzY)
                 if horizontalTile in self.game.map.worldMap:
+                    horizontalTexture = self.game.map.worldMap[horizontalTile]
                     break
                 horzX += dirX
                 horzY += dirY
@@ -47,18 +49,30 @@ class RayCasting:
             for i in range(40):
                 verticalTile = int(vertX),int(vertY)
                 if verticalTile in self.game.map.worldMap:
+                    verticalTexture = self.game.map.worldMap[verticalTile]
                     break
                 vertX += dirX
                 vertY += dirY
                 verticalDepth += deltaDepth
 
-            depth = min(verticalDepth,horizontalDepth)
 
-            pygame.draw.line(self.game.screen,(255,255,0),(tilesize*self.game.player.x,tilesize*self.game.player.y),(tilesize*self.game.player.x+tilesize*depth*cosAngle,tilesize*self.game.player.y+tilesize*depth*sinAngle),1)
+            if verticalDepth < horizontalDepth:
+                depth, texture = verticalDepth, verticalTexture
+                vertY %= 1
+                offset = vertY if cosAngle > 0 else (1-vertY)
+            else:
+                depth, texture = horizontalDepth, horizontalTexture
+                horzX %= 1
+                offset = (1-horzX) if sinAngle > 0 else horzX
+            
+            depth *= m.cos(self.game.player.angle - startAngle)
 
             projectedHeight = screenDist / depth + 0.00001
 
-            #pygame.draw.rect(self.game.screen,(255,255,255),
-                #(ray*scale,halfHeight-projectedHeight//2,scale,projectedHeight))
+            wallColumn = self.textures[texture].subsurface(offset * (480-scale),0,scale,480)
+            wallColumn = pygame.transform.scale(wallColumn,(scale,projectedHeight))
+            wallPosition = (ray * scale,240 - projectedHeight // 2)
+
+            self.renderObjects.append((depth,wallColumn,wallPosition))
 
             startAngle += stepAngle

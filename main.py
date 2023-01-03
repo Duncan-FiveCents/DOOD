@@ -4,6 +4,7 @@ from settings import *
 from levels import *
 from player import *
 from raycasting import *
+from renderer import *
 
 class Game:
     def __init__(self):
@@ -16,28 +17,32 @@ class Game:
     def newGame(self):
         self.map = Map(self,level1)
         self.player = Player(self,self.map.metadata)
+        self.renderer = Renderer(self)
         self.raycasting = RayCasting(self)
 
     def update(self):
         self.player.movement()
         self.raycasting.castRays()
-        pygame.display.flip()
         self.deltaTime = self.clock.tick(fps)
+        pygame.display.flip()
     
     def draw(self):
         self.screen.fill((0,0,0))
-        self.map.draw()
-        self.player.draw()
+        self.renderer.renderObjects()
+        #self.map.draw()
+        #self.player.draw()
     
+    def eventLoop(self):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
+                pygame.quit()
+                exit()
+
     def run(self):
         while True:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
-                    pygame.quit()
-                    exit()
-
-            self.update()
+            self.eventLoop()
             self.draw()
+            self.update()
 
 if __name__ == "__main__":
     GAME = Game()
