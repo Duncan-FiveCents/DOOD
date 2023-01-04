@@ -21,7 +21,7 @@ mouseBorderRight = resX - mouseBorderLeft
 
 fov = math.pi/2
 half_fov = fov/2
-castedRays = 320
+castedRays = 640
 half_rays = castedRays // 2
 stepAngle = fov / castedRays
 
