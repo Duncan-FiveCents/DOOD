@@ -1,13 +1,42 @@
 import pygame
 import math
 from settings import *
+from weapon import *
 
 class Player():
     def __init__(self,GAME,START):
         self.game = GAME
         self.x,self.y = START[0],START[1]
         self.angle = START[2]
-        self.speed = 0.15
+        self.speed = 0.10
+        self.weapons = [Shotgun(GAME),Sluggun(GAME)]
+        self.activeWeapon = 0
+
+        self.swapAnim = [
+            pygame.image.load(resource_path("resources/UI/GunTransition/DOOD Gun Swap1.png")).convert_alpha(),
+            pygame.image.load(resource_path("resources/UI/GunTransition/DOOD Gun Swap2.png")).convert_alpha(),
+            pygame.image.load(resource_path("resources/UI/GunTransition/DOOD Gun Swap3.png")).convert_alpha(),
+            pygame.image.load(resource_path("resources/UI/GunTransition/DOOD Gun Swap4.png")).convert_alpha(),
+            pygame.image.load(resource_path("resources/UI/GunTransition/DOOD Gun Swap5.png")).convert_alpha(),
+            pygame.image.load(resource_path("resources/UI/GunTransition/DOOD Gun Swap6.png")).convert_alpha(),
+            pygame.image.load(resource_path("resources/UI/GunTransition/DOOD Gun Swap7.png")).convert_alpha(),
+            pygame.image.load(resource_path("resources/UI/GunTransition/DOOD Gun Swap8.png")).convert_alpha(),
+            pygame.image.load(resource_path("resources/UI/GunTransition/DOOD Gun Swap9.png")).convert_alpha(),
+            pygame.image.load(resource_path("resources/UI/GunTransition/DOOD Gun Swap10.png")).convert_alpha(),
+            pygame.image.load(resource_path("resources/UI/GunTransition/DOOD Gun Swap11.png")).convert_alpha(),
+            pygame.image.load(resource_path("resources/UI/GunTransition/DOOD Gun Swap12.png")).convert_alpha(),
+            pygame.image.load(resource_path("resources/UI/GunTransition/DOOD Gun Swap13.png")).convert_alpha(),
+            pygame.image.load(resource_path("resources/UI/GunTransition/DOOD Gun Swap14.png")).convert_alpha(),
+            pygame.image.load(resource_path("resources/UI/GunTransition/DOOD Gun Swap15.png")).convert_alpha(),
+            pygame.image.load(resource_path("resources/UI/GunTransition/DOOD Gun Swap16.png")).convert_alpha(),
+            pygame.image.load(resource_path("resources/UI/GunTransition/DOOD Gun Swap17.png")).convert_alpha(),
+            pygame.image.load(resource_path("resources/UI/GunTransition/DOOD Gun Swap18.png")).convert_alpha()
+        ]
+        self.swapping = False
+        self.swapTimer = 0
+
+        self.health = 100
+        self.shield = 0
 
     def movement(self):
         sinA = math.sin(self.angle)
@@ -53,5 +82,26 @@ class Player():
         mouseMovement = max(-maxTurn,min(maxTurn,mouseMovement))
         self.angle += mouseMovement * sensitivity
     
+    def weaponSwap(self):
+        keys = pygame.key.get_pressed()
+        if self.activeWeapon == 1 and keys[pygame.K_1] and self.swapping == False:
+            self.swapping = True
+            self.activeWeapon = 0
+            self.swapTimer = 36
+        elif self.activeWeapon == 0 and keys[pygame.K_2] and self.swapping == False:
+            self.swapping = True
+            self.activeWeapon = 1
+            self.swapTimer = 0
+    
+    def weaponSwapAnim(self):
+        if self.swapTimer in [-1,37]: self.swapping = False
+        if self.swapping:
+            if self.activeWeapon == 1:
+                self.game.screen.blit(self.swapAnim[(self.swapTimer//2)-1],(0,0))
+                self.swapTimer += 1
+            elif self.activeWeapon == 0:
+                self.game.screen.blit(self.swapAnim[(self.swapTimer//2)-1],(0,0))
+                self.swapTimer -= 1
+
     def draw(self):
         pygame.draw.circle(self.game.screen,(255,255,0),(self.x*tilesize,self.y*tilesize),2)

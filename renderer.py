@@ -11,9 +11,10 @@ class Renderer:
         }
 
     def renderObjects(self):
-        objects = self.game.raycasting.renderObjects
-        for depth, surface, position in objects:
-            self.screen.blit(surface,position)
+        objects = sorted(self.game.raycasting.renderObjects,key=lambda n:n[0],reverse=True)
+        if objects:
+            for depth, surface, position in objects:
+                self.screen.blit(surface,position)
 
     def drawBackground(self):
         pygame.draw.rect(self.screen,roofColour,(0,-halfHeight,resX,resY))
