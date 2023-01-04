@@ -91,17 +91,16 @@ class Player():
         elif self.activeWeapon == 0 and keys[pygame.K_2] and self.swapping == False:
             self.swapping = True
             self.activeWeapon = 1
-            self.swapTimer = 1
+            self.swapTimer = 35
     
     def weaponSwapAnim(self):
-        if self.swapTimer in [0,36]: self.swapping = False
+        if self.swapTimer == 0: self.swapping = False
         if self.swapping:
             if self.activeWeapon == 1:
-                self.game.screen.blit(self.swapAnim[(self.swapTimer//2)],(0,0))
-                self.swapTimer += 1
+                self.game.screen.blit(self.swapAnim[(35-self.swapTimer)//2],(0,0))
             elif self.activeWeapon == 0:
                 self.game.screen.blit(self.swapAnim[(self.swapTimer//2)],(0,0))
-                self.swapTimer -= 1
+            self.swapTimer -= 1
 
     def draw(self):
         pygame.draw.circle(self.game.screen,(255,255,0),(self.x*tilesize,self.y*tilesize),2)

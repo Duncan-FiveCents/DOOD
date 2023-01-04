@@ -17,5 +17,5 @@ class Renderer:
                 self.screen.blit(surface,position)
 
     def drawBackground(self):
-        pygame.draw.rect(self.screen,roofColour,(0,-halfHeight,resX,resY))
-        pygame.draw.rect(self.screen,floorColour,(0,halfHeight,resX,resY))
+        pygame.draw.rect(self.screen,roofColour,(0,-halfHeight*0.85,resX,resY))
+        pygame.draw.rect(self.screen,floorColour,(0,halfHeight*0.85,resX,resY))

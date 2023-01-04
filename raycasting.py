@@ -71,7 +71,7 @@ class RayCasting:
 
             wallColumn = self.textures[texture].subsurface(offset * (480-scale),0,scale,480)
             wallColumn = pygame.transform.scale(wallColumn,(scale,projectedHeight))
-            wallPosition = (ray * scale,240 - projectedHeight // 2)
+            wallPosition = (ray * scale,(240 - projectedHeight // 2)*0.85)
 
             self.renderObjects.append((depth,wallColumn,wallPosition))
 

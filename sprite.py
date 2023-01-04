@@ -31,7 +31,7 @@ class Sprite:
             projectionWidth,projectionHeight = projection*self.imageRatio,projection # Needed for sprites with a non-1:1 aspect ratio
 
             spriteImage = pygame.transform.scale(self.image,(projectionWidth,projectionHeight))
-            spritePos = screenX - projectionWidth//2,(halfHeight - projectionHeight//2) + projectionHeight*self.spriteShift
+            spritePos = screenX - projectionWidth//2,((halfHeight - projectionHeight//2) + projectionHeight*self.spriteShift)*0.85
 
             self.game.raycasting.renderObjects.append((totalDistance,spriteImage,spritePos))
 

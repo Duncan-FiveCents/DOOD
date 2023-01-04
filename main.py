@@ -37,7 +37,9 @@ class Game:
     def draw(self):
         self.renderer.drawBackground()
         self.renderer.renderObjects()
-        if self.player.swapping: self.player.weaponSwapAnim()
+        if self.player.swapping:
+            self.HUD.swapAnim()
+            self.player.weaponSwapAnim()
         else: self.player.weapons[self.player.activeWeapon].draw()
         self.HUD.drawHud()
         #self.map.draw()
