@@ -87,20 +87,20 @@ class Player():
         if self.activeWeapon == 1 and keys[pygame.K_1] and self.swapping == False:
             self.swapping = True
             self.activeWeapon = 0
-            self.swapTimer = 36
+            self.swapTimer = 35
         elif self.activeWeapon == 0 and keys[pygame.K_2] and self.swapping == False:
             self.swapping = True
             self.activeWeapon = 1
-            self.swapTimer = 0
+            self.swapTimer = 1
     
     def weaponSwapAnim(self):
-        if self.swapTimer in [-1,37]: self.swapping = False
+        if self.swapTimer in [0,36]: self.swapping = False
         if self.swapping:
             if self.activeWeapon == 1:
-                self.game.screen.blit(self.swapAnim[(self.swapTimer//2)-1],(0,0))
+                self.game.screen.blit(self.swapAnim[(self.swapTimer//2)],(0,0))
                 self.swapTimer += 1
             elif self.activeWeapon == 0:
-                self.game.screen.blit(self.swapAnim[(self.swapTimer//2)-1],(0,0))
+                self.game.screen.blit(self.swapAnim[(self.swapTimer//2)],(0,0))
                 self.swapTimer -= 1
 
     def draw(self):
