@@ -32,6 +32,7 @@ class Game:
         self.player.movement()
         self.raycasting.castRays()
         for enemy in self.enemies: enemy.locateSprite()
+        for sprite in self.sprites: sprite.locateSprite()
         if not self.player.swapping and not self.player.weapons[self.player.activeWeapon].cooldown: self.player.weaponSwap()
         if not self.player.swapping: self.player.weapons[self.player.activeWeapon].fire()
         self.deltaTime = self.clock.tick(fps)

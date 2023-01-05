@@ -1,4 +1,5 @@
 import pygame
+import math
 from sprite import *
 
 class WeaponBase:
@@ -15,6 +16,7 @@ class WeaponBase:
 
     def fire(self):
         if (pygame.mouse.get_pressed()[0] or pygame.key.get_pressed()[pygame.K_SPACE]) and not self.cooldown:
+            self.spawnProjectile()
             self.cooldown = True
             self.timer = 18
         elif self.timer != 0: 
@@ -48,3 +50,6 @@ class Sluggun(WeaponBase):
             pygame.image.load(resource_path("resources/UI/SlugGun/DOOD Slug Gun5.png")).convert_alpha(),
             pygame.image.load(resource_path("resources/UI/SlugGun/DOOD Slug Gun6.png")).convert_alpha()
         ]
+
+    def spawnProjectile(self):
+        self.game.sprites.append(Projectile(self.game,(self.game.player.x+(math.cos(self.game.player.angle)),self.game.player.y+(math.sin(self.game.player.angle))),0.8,self.game.player.angle))

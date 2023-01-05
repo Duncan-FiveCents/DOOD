@@ -35,6 +35,12 @@ class Sprite:
 
             self.game.raycasting.renderObjects.append((totalDistance,spriteImage,spritePos))
 
+class Projectile(Sprite):
+    def __init__(self,GAME,POSITION,SPEED,ANGLE):
+        Sprite.__init__(self,GAME,"resources/enemies/bullet.png",POSITION,0.5,0)
+        self.speed = SPEED
+        self.angle = ANGLE
+
 class Skeleton(Sprite):
     def __init__(self,GAME,POSITION):
         Sprite.__init__(self,GAME,"resources/enemies/skeleton-enemy1.png",POSITION,1,0.25)
