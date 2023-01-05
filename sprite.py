@@ -44,7 +44,7 @@ class Skeleton(Sprite):
             pygame.image.load(resource_path("resources/enemies/skeleton-enemy3.png")).convert_alpha(),
             pygame.image.load(resource_path("resources/enemies/skeleton-enemy4.png")).convert_alpha()
         ]
-        self.walkCycle = 10
+        self.health = 100
 
     def move(self):
         pass

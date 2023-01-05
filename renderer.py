@@ -7,7 +7,9 @@ class Renderer:
         self.screen = GAME.screen
         self.textures = {
             "1":pygame.image.load(resource_path("resources/textures/wall-texture-1.png")).convert_alpha(),
-            "2":pygame.image.load(resource_path("resources/textures/wall-texture-2.png")).convert_alpha()
+            "2":pygame.image.load(resource_path("resources/textures/wall-texture-2.png")).convert_alpha(),
+            "3":pygame.image.load(resource_path("resources/textures/door.png")).convert_alpha(),
+            "4":pygame.image.load(resource_path("resources/textures/button.png")).convert_alpha()
         }
 
     def renderObjects(self):
