@@ -8,10 +8,15 @@ class Sprite:
         self.game = GAME
         self.player = GAME.player
         self.x,self.y = POSITION
+
         self.image = pygame.image.load(resource_path(PATH)).convert_alpha()
         self.imageRatio = self.image.get_width()/self.image.get_height()
+
         self.spriteScale = SCALE # Simple scaling (ie 0.5 is half size)
         self.spriteShift = SHIFT # Adjusts vertical offset, 0.25 seems decent for standard enemies
+
+        self.health = 100
+        self.size = 2 # Default hitbox size for enemies
     
     def locateSprite(self):
         distanceX,distanceY = self.x - self.player.x,self.y - self.player.y
@@ -36,10 +41,17 @@ class Sprite:
             self.game.raycasting.renderObjects.append((totalDistance,spriteImage,spritePos))
 
 class Projectile(Sprite):
-    def __init__(self,GAME,POSITION,SPEED,ANGLE):
+    def __init__(self,GAME,POSITION,SPEED,ANGLE,TYPE):
         Sprite.__init__(self,GAME,"resources/enemies/bullet.png",POSITION,0.5,0)
         self.speed = SPEED
         self.angle = ANGLE
+        self.x,self.y = POSITION
+        self.type = TYPE
+        self.size = 1
+
+    def move(self):
+        self.x += self.speed*math.cos(self.angle)
+        self.y += self.speed*math.sin(self.angle)
 
 class Skeleton(Sprite):
     def __init__(self,GAME,POSITION):
@@ -50,7 +62,14 @@ class Skeleton(Sprite):
             pygame.image.load(resource_path("resources/enemies/skeleton-enemy3.png")).convert_alpha(),
             pygame.image.load(resource_path("resources/enemies/skeleton-enemy4.png")).convert_alpha()
         ]
-        self.health = 100
 
     def move(self):
         pass
+
+    def hitCheck(self,PROJECTILE):
+        boundsX = (self.x-self.size//2,self.x+self.size//2)
+        boundsY = (self.y-self.size//2,self.y+self.size//2)
+        if boundsX[0] <= PROJECTILE.x <= boundsX[1] and boundsY[0] <= PROJECTILE.y <= boundsY[1]:
+            if PROJECTILE.type == "slug": self.health -= 50
+            return True
+        else: return False

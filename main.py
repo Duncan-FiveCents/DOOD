@@ -25,14 +25,36 @@ class Game:
         self.HUD = HUD(self)
         self.enemies = []
         self.sprites = []
+        self.projectiles = []
         for enemy in self.map.metadata[3]:
             if enemy[0] == "Skeleton": self.enemies.append(Skeleton(self,enemy[1]))
 
     def update(self):
+        # Basic Stufffffffff
         self.player.movement()
         self.raycasting.castRays()
-        for enemy in self.enemies: enemy.locateSprite()
+
+        # Health, Shield, and Ammo Pickups
         for sprite in self.sprites: sprite.locateSprite()
+
+        # Projectiles
+        for projectile in self.projectiles:
+            forDeletion = False
+            projectile.move()
+            projectile.locateSprite()
+            for enemy in self.enemies:
+                if enemy.hitCheck(projectile): forDeletion = True
+            if (int(projectile.x),int(projectile.y)) in self.map.worldMap or forDeletion:
+                self.projectiles.remove(projectile)
+                del projectile
+        
+        # Enemies
+        for enemy in self.enemies:
+            enemy.locateSprite()
+            if enemy.health <= 0:
+                self.enemies.remove(enemy)
+                del enemy
+
         if not self.player.swapping and not self.player.weapons[self.player.activeWeapon].cooldown: self.player.weaponSwap()
         if not self.player.swapping: self.player.weapons[self.player.activeWeapon].fire()
         self.deltaTime = self.clock.tick(fps)
