@@ -45,8 +45,7 @@ class Game:
             self.player.weaponSwapAnim()
         else: self.player.weapons[self.player.activeWeapon].draw()
         self.HUD.drawHud()
-        #self.map.draw()
-        #self.player.draw()
+        self.HUD.drawMinimap()
     
     def eventLoop(self):
         for event in pygame.event.get():

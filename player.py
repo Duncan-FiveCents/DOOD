@@ -101,6 +101,3 @@ class Player():
             elif self.activeWeapon == 0:
                 self.game.screen.blit(self.swapAnim[(self.swapTimer//2)],(0,0))
             self.swapTimer -= 1
-
-    def draw(self):
-        pygame.draw.circle(self.game.screen,(255,255,0),(self.x*tilesize,self.y*tilesize),2)

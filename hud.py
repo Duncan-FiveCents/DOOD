@@ -15,6 +15,8 @@ class HUD:
         self.crosshair = pygame.image.load(resource_path("resources/UI/crosshair.png")).convert_alpha()
         self.font = resource_path("resources/UI/Pixel Combat.otf")
 
+        self.mapIcon = pygame.image.load(resource_path("resources/UI/dood map sprite.png")).convert_alpha()
+
     def drawHud(self):
         # Base Stuff
         self.screen.blit(self.image,(0,0))
@@ -47,3 +49,17 @@ class HUD:
     
     def swapAnim(self):
         self.image = self.frames[(self.game.player.swapTimer//9)]
+    
+    def drawMinimap(self):
+        self.minimap = pygame.surface.Surface((len(self.game.map.levelMap[0])*tilesize,len(self.game.map.levelMap)*tilesize))
+        self.minimap.fill((7,7,7))
+        for pos in self.game.map.worldMap: pygame.draw.rect(self.minimap,(100,100,100),(pos[0]*tilesize,pos[1]*tilesize,tilesize,tilesize),1)
+        self.minimap.blit(self.mapIcon,((self.game.player.x*tilesize)-self.mapIcon.get_width()//2,(self.game.player.y*tilesize)-self.mapIcon.get_height()//2))
+        self.minimap = self.minimap.subsurface((
+            self.game.player.x*tilesize-5*tilesize*1.48 if self.game.player.x*tilesize-5*tilesize*1.48 >= 0 else 0,
+            self.game.player.y*tilesize-5*tilesize if self.game.player.y*tilesize-5*tilesize >= 0 else 0,
+            10*tilesize*1.48, # If there's ever an error here, increase the saftey margin on the right and/or bottom of map
+            10*tilesize
+        ))
+        self.minimap = pygame.transform.scale(self.minimap,(98,66))
+        self.screen.blit(self.minimap,(528,400))
