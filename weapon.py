@@ -14,7 +14,7 @@ class WeaponBase:
         self.screen.blit(self.image,(0,0))
 
     def fire(self):
-        if pygame.mouse.get_pressed()[0] and not self.cooldown:
+        if (pygame.mouse.get_pressed()[0] or pygame.key.get_pressed()[pygame.K_SPACE]) and not self.cooldown:
             self.cooldown = True
             self.timer = 18
         elif self.timer != 0: 

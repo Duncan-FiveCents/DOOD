@@ -39,10 +39,10 @@ class Skeleton(Sprite):
     def __init__(self,GAME,POSITION):
         Sprite.__init__(self,GAME,"resources/enemies/skeleton-enemy1.png",POSITION,1,0.25)
         self.frames = [
-            pygame.image.load(resource_path("resources/enemies/skeleton-enemy1")).convert_alpha(),
-            pygame.image.load(resource_path("resources/enemies/skeleton-enemy2")).convert_alpha(),
-            pygame.image.load(resource_path("resources/enemies/skeleton-enemy3")).convert_alpha(),
-            pygame.image.load(resource_path("resources/enemies/skeleton-enemy4")).convert_alpha()
+            pygame.image.load(resource_path("resources/enemies/skeleton-enemy1.png")).convert_alpha(),
+            pygame.image.load(resource_path("resources/enemies/skeleton-enemy2.png")).convert_alpha(),
+            pygame.image.load(resource_path("resources/enemies/skeleton-enemy3.png")).convert_alpha(),
+            pygame.image.load(resource_path("resources/enemies/skeleton-enemy4.png")).convert_alpha()
         ]
         self.walkCycle = 10
 

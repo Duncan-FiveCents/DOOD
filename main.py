@@ -23,13 +23,16 @@ class Game:
         self.renderer = Renderer(self)
         self.raycasting = RayCasting(self)
         self.HUD = HUD(self)
-        self.sprite = Sprite(self,"resources/enemies/skeleton-enemy1.png",(4.5,21.5),1,0.25)
+        self.enemies = []
+        self.sprites = []
+        for enemy in self.map.metadata[3]:
+            if enemy[0] == "Skeleton": self.enemies.append(Skeleton(self,enemy[1]))
 
     def update(self):
         self.player.movement()
         self.raycasting.castRays()
-        self.sprite.locateSprite()
-        if not self.player.swapping: self.player.weaponSwap()
+        for enemy in self.enemies: enemy.locateSprite()
+        if not self.player.swapping and not self.player.weapons[self.player.activeWeapon].cooldown: self.player.weaponSwap()
         if not self.player.swapping: self.player.weapons[self.player.activeWeapon].fire()
         self.deltaTime = self.clock.tick(fps)
         pygame.display.flip()
