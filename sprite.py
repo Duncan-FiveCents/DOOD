@@ -117,14 +117,16 @@ class Skeleton(Sprite):
         ]
         self.walkTimer,self.walkFrame = 10,0
         self.playerSearch = False
+        self.cooldown = 60
 
     def hitCheck(self,PROJECTILE):
         boundsX = (self.x-self.size/2,self.x+self.size/2)
         boundsY = (self.y-self.size/2,self.y+self.size/2)
         if boundsX[0] <= PROJECTILE.x <= boundsX[1] and boundsY[0] <= PROJECTILE.y <= boundsY[1]:
-            if PROJECTILE.type == "slug": self.health -= 50
-            if PROJECTILE.type == "shell": self.health -= 20
-            return True
+            if PROJECTILE.type in ["shell","slug"]:
+                if PROJECTILE.type == "slug": self.health -= 50
+                if PROJECTILE.type == "shell": self.health -= 20
+                return True
         else: return False
     
     def movement(self):
@@ -143,14 +145,26 @@ class Skeleton(Sprite):
             self.walkTimer = 10
         else: self.walkTimer -= 1
 
+    def attack(self):
+        if not self.cooldown:
+            self.firing = True
+            self.image = self.frames[3]
+            self.cooldown = 60
+
     def runLogic(self):
         self.vision = self.playerSight()
-        if self.vision and self.playerDistance > 4:
+        if self.vision and self.playerDistance <= 6 and not self.cooldown:
+            self.image = self.frames[0]
+            self.attack()
+        elif self.vision and self.playerDistance <= 6 and self.cooldown == 40:
+            angle = (math.atan2(self.y-self.player.y,self.x-self.player.x)+math.pi) % math.tau
+            self.game.projectiles.append(Projectile(self.game,(self.x+math.cos(angle)*0.5,self.y+math.sin(angle)*0.5),0.5,angle,"skeletonBlast"))
+        elif self.vision and self.playerDistance > 6 and not self.cooldown:
             self.playerSearch = True
             self.movement()
-        elif self.playerSearch and not self.vision:
+        elif self.playerSearch and not self.vision and not self.cooldown:
             self.movement()
-        else: self.image = self.frames[0]
+        if self.cooldown: self.cooldown -= 1
 
 class Projectile(Sprite):
     def __init__(self,GAME,POSITION,SPEED,ANGLE,TYPE):

@@ -46,7 +46,7 @@ class Game:
             projectile.move()
             projectile.locateSprite()
             for enemy in self.enemies:
-                if enemy.hitCheck(projectile): forDeletion = True
+                if enemy.hitCheck(projectile) or self.player.hitCheck(projectile): forDeletion = True
             if (int(projectile.x),int(projectile.y)) in self.map.worldMap or forDeletion:
                 self.projectiles.remove(projectile)
                 del projectile
