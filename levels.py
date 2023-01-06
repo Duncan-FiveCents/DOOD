@@ -52,11 +52,10 @@ level1 = [
     ['1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1']
     ],
     [1.5,21.5,0,100,0,10,10, # Player Start (X,Y,Angle (0 = right),Health,Shield,Shells,Slugs) Starting conditions for future levels will be saved in advance
-    [["Skeleton",(4.5,21.5)],["Skeleton",(6.5,21.5)]], # Enemies (Type,(X,Y))
+    [["Skeleton",(13.5,16.5)]], # Enemies (Type,(X,Y))
     [[]] # Health & Ammo Pickups (Type,(X,Y))
     ]]
 
-# Remember to finish and adjust this one's formatting later
 level2 = [
     [
     ['1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1'],
@@ -113,7 +112,7 @@ class Map:
         self.createMap()
     
     def createMap(self):
-        for i, row in enumerate(self.levelMap):
-            for j, char in enumerate(row):
-                if char != "0":
-                    self.worldMap[(j,i)] = char
+        for y, row in enumerate(self.levelMap):
+            for x, column in enumerate(row):
+                if column != "0":
+                    self.worldMap[(x,y)] = column

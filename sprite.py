@@ -17,12 +17,14 @@ class Sprite:
 
         self.health = 100
         self.size = 1 # Default hitbox size for enemies
+        self.speed = 0.075
+        self.theta,self.playerDistance = 0,0
     
     def locateSprite(self):
         distanceX,distanceY = self.x - self.player.x,self.y - self.player.y
-        theta = math.atan2(distanceY,distanceX)
+        self.theta = math.atan2(distanceY,distanceX)
         
-        delta = theta - self.player.angle
+        delta = self.theta - self.player.angle
         if (distanceX > 0  and self.player.angle > math.pi) or (distanceX < 0 and distanceY < 0): delta += math.tau
 
         deltaRays = delta / stepAngle
@@ -39,19 +41,70 @@ class Sprite:
             spritePos = screenX - projectionWidth//2,((halfHeight - projectionHeight//2) + projectionHeight*self.spriteShift)*0.85
 
             self.game.raycasting.renderObjects.append((totalDistance,spriteImage,spritePos))
+    
+    def playerSight(self):
+        if (int(self.x),int(self.y)) == (int(self.game.player.x),int(self.game.player.y)): return True
 
-class Projectile(Sprite):
-    def __init__(self,GAME,POSITION,SPEED,ANGLE,TYPE):
-        Sprite.__init__(self,GAME,"resources/enemies/bullet.png",POSITION,0.5,0)
-        self.speed = SPEED
-        self.angle = ANGLE
-        self.x,self.y = POSITION
-        self.type = TYPE
-        self.size = 0.5
+        verticalWallDistance,horizontalWallDistance = 0,0
+        verticalPlayerDistance,horizontalPlayerDistance = 0,0
 
-    def move(self):
-        self.x += self.speed*math.cos(self.angle)
-        self.y += self.speed*math.sin(self.angle)
+        playerX,playerY = self.game.player.x,self.game.player.y
+        mapX,mapY = int(playerX),int(playerY)
+
+        startAngle = self.theta
+
+        for ray in range(castedRays):
+            sinAngle = math.sin(startAngle)
+            cosAngle = math.cos(startAngle)
+            if not sinAngle: sinAngle = 0.00001
+            if not cosAngle: cosAngle = 0.00001
+
+            # Horizontals
+            horzY,dirY = (mapY+1,1) if sinAngle >= 0 else (mapY-0.00001,-1)
+            horizontalDepth = (horzY - playerY) / sinAngle
+            horzX = playerX + horizontalDepth * cosAngle
+            deltaDepth = dirY / sinAngle
+            dirX = deltaDepth * cosAngle
+
+            for i in range(40):
+                horizontalTile = int(horzX),int(horzY)
+                if horizontalTile == (int(self.x),int(self.y)):
+                    horizontalPlayerDistance = horizontalDepth
+                    break
+                if horizontalTile in self.game.map.worldMap:
+                    horizontalWallDistance = horizontalDepth
+                    break
+                horzX += dirX
+                horzY += dirY
+                horizontalDepth += deltaDepth
+
+            # Verticals
+            vertX,dirX = (mapX+1,1) if cosAngle >= 0 else (mapX-0.00001,-1)
+            
+            verticalDepth = (vertX - playerX) / cosAngle
+            vertY = playerY + verticalDepth * sinAngle
+
+            deltaDepth = dirX / cosAngle
+            dirY = deltaDepth * sinAngle
+
+            for i in range(40):
+                verticalTile = int(vertX),int(vertY)
+                if verticalTile == (int(self.x),int(self.y)):
+                    verticalPlayerDistance = verticalDepth
+                    break
+                if verticalTile in self.game.map.worldMap:
+                    verticalWallDistance = verticalDepth
+                    break
+                vertX += dirX
+                vertY += dirY
+                verticalDepth += deltaDepth
+            
+            self.playerDistance = max(verticalPlayerDistance,horizontalPlayerDistance)
+            wallDistance = max(verticalWallDistance,horizontalWallDistance)
+
+            if 0 < self.playerDistance < wallDistance or not wallDistance:
+                return True
+            return False
 
 class Skeleton(Sprite):
     def __init__(self,GAME,POSITION):
@@ -62,9 +115,8 @@ class Skeleton(Sprite):
             pygame.image.load(resource_path("resources/enemies/skeleton-enemy3.png")).convert_alpha(),
             pygame.image.load(resource_path("resources/enemies/skeleton-enemy4.png")).convert_alpha()
         ]
-
-    def move(self):
-        pass
+        self.walkTimer,self.walkFrame = 10,0
+        self.playerSearch = False
 
     def hitCheck(self,PROJECTILE):
         boundsX = (self.x-self.size/2,self.x+self.size/2)
@@ -74,3 +126,41 @@ class Skeleton(Sprite):
             if PROJECTILE.type == "shell": self.health -= 20
             return True
         else: return False
+    
+    def movement(self):
+        nextPosition =self.game.pathfinding.getPath((int(self.x),int(self.y)),(int(self.player.x),int(self.player.y)))
+        nextX,nextY = nextPosition
+        angle = math.atan2(nextY+0.5-self.y,nextX+0.5-self.x)
+        distanceX = math.cos(angle)*self.speed
+        distanceY = math.sin(angle)*self.speed
+        if (int(self.x + distanceX * self.size),int(self.y)) not in self.game.map.worldMap:
+            self.x += distanceX
+        if (int(self.x),int(self.y + distanceY * self.size)) not in self.game.map.worldMap:
+            self.y += distanceY
+        if self.walkTimer == 0:
+            if self.walkFrame == 0: self.image,self.walkFrame = self.frames[2],1
+            else: self.image,self.walkFrame = self.frames[1],0
+            self.walkTimer = 10
+        else: self.walkTimer -= 1
+
+    def runLogic(self):
+        self.vision = self.playerSight()
+        if self.vision and self.playerDistance > 4:
+            self.playerSearch = True
+            self.movement()
+        elif self.playerSearch and not self.vision:
+            self.movement()
+        else: self.image = self.frames[0]
+
+class Projectile(Sprite):
+    def __init__(self,GAME,POSITION,SPEED,ANGLE,TYPE):
+        Sprite.__init__(self,GAME,"resources/enemies/bullet.png",POSITION,0.5,0)
+        self.speed = SPEED
+        self.angle = ANGLE
+        self.x,self.y = POSITION
+        self.type = TYPE
+        self.size = 0.25
+
+    def move(self):
+        self.x += self.speed*math.cos(self.angle)
+        self.y += self.speed*math.sin(self.angle)

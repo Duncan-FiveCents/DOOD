@@ -7,6 +7,7 @@ from raycasting import *
 from renderer import *
 from sprite import *
 from hud import *
+from pathfinding import *
 
 class Game:
     def __init__(self):
@@ -29,6 +30,7 @@ class Game:
         self.projectiles = []
         for enemy in self.map.metadata[7]:
             if enemy[0] == "Skeleton": self.enemies.append(Skeleton(self,enemy[1]))
+        self.pathfinding = Pathfinding(self)
 
     def update(self):
         # Basic Stufffffffff
@@ -52,6 +54,7 @@ class Game:
         # Enemies
         for enemy in self.enemies:
             enemy.locateSprite()
+            enemy.runLogic()
             if enemy.health <= 0:
                 self.enemies.remove(enemy)
                 del enemy

@@ -42,11 +42,11 @@ class Shotgun(WeaponBase):
         ]
     
     def spawnProjectile(self):
-        self.game.projectiles.append(Projectile(self.game,(self.game.player.x+(math.cos(self.game.player.angle)*0.5),self.game.player.y+(math.sin(self.game.player.angle)*0.5)),0.8,self.game.player.angle+0.2,"shell"))
-        self.game.projectiles.append(Projectile(self.game,(self.game.player.x+(math.cos(self.game.player.angle)*0.5),self.game.player.y+(math.sin(self.game.player.angle)*0.5)),0.8,self.game.player.angle+0.1,"shell"))
+        self.game.projectiles.append(Projectile(self.game,(self.game.player.x+(math.cos(self.game.player.angle)*0.5),self.game.player.y+(math.sin(self.game.player.angle)*0.5)),0.8,self.game.player.angle+0.25,"shell"))
+        self.game.projectiles.append(Projectile(self.game,(self.game.player.x+(math.cos(self.game.player.angle)*0.5),self.game.player.y+(math.sin(self.game.player.angle)*0.5)),0.8,self.game.player.angle+0.15,"shell"))
         self.game.projectiles.append(Projectile(self.game,(self.game.player.x+(math.cos(self.game.player.angle)*0.5),self.game.player.y+(math.sin(self.game.player.angle)*0.5)),0.8,self.game.player.angle,"shell"))
-        self.game.projectiles.append(Projectile(self.game,(self.game.player.x+(math.cos(self.game.player.angle)*0.5),self.game.player.y+(math.sin(self.game.player.angle)*0.5)),0.8,self.game.player.angle-0.1,"shell"))
-        self.game.projectiles.append(Projectile(self.game,(self.game.player.x+(math.cos(self.game.player.angle)*0.5),self.game.player.y+(math.sin(self.game.player.angle)*0.5)),0.8,self.game.player.angle-0.2,"shell"))
+        self.game.projectiles.append(Projectile(self.game,(self.game.player.x+(math.cos(self.game.player.angle)*0.5),self.game.player.y+(math.sin(self.game.player.angle)*0.5)),0.8,self.game.player.angle-0.15,"shell"))
+        self.game.projectiles.append(Projectile(self.game,(self.game.player.x+(math.cos(self.game.player.angle)*0.5),self.game.player.y+(math.sin(self.game.player.angle)*0.5)),0.8,self.game.player.angle-0.25,"shell"))
 
 class Sluggun(WeaponBase):
     def __init__(self,GAME):
