@@ -37,6 +37,13 @@ class Shotgun(WeaponBase):
             pygame.image.load(resource_path("resources/UI/ShellGun/DOOD Shell Gun5.png")).convert_alpha(),
             pygame.image.load(resource_path("resources/UI/ShellGun/DOOD Shell Gun6.png")).convert_alpha()
         ]
+    
+    def spawnProjectile(self):
+        self.game.projectiles.append(Projectile(self.game,(self.game.player.x+(math.cos(self.game.player.angle)*0.5),self.game.player.y+(math.sin(self.game.player.angle)*0.5)),0.8,self.game.player.angle+0.2,"shell"))
+        self.game.projectiles.append(Projectile(self.game,(self.game.player.x+(math.cos(self.game.player.angle)*0.5),self.game.player.y+(math.sin(self.game.player.angle)*0.5)),0.8,self.game.player.angle+0.1,"shell"))
+        self.game.projectiles.append(Projectile(self.game,(self.game.player.x+(math.cos(self.game.player.angle)*0.5),self.game.player.y+(math.sin(self.game.player.angle)*0.5)),0.8,self.game.player.angle,"shell"))
+        self.game.projectiles.append(Projectile(self.game,(self.game.player.x+(math.cos(self.game.player.angle)*0.5),self.game.player.y+(math.sin(self.game.player.angle)*0.5)),0.8,self.game.player.angle-0.1,"shell"))
+        self.game.projectiles.append(Projectile(self.game,(self.game.player.x+(math.cos(self.game.player.angle)*0.5),self.game.player.y+(math.sin(self.game.player.angle)*0.5)),0.8,self.game.player.angle-0.2,"shell"))
 
 class Sluggun(WeaponBase):
     def __init__(self,GAME):
@@ -52,4 +59,4 @@ class Sluggun(WeaponBase):
         ]
 
     def spawnProjectile(self):
-        self.game.projectiles.append(Projectile(self.game,(self.game.player.x+(math.cos(self.game.player.angle)),self.game.player.y+(math.sin(self.game.player.angle))),0.8,self.game.player.angle,"slug"))
+        self.game.projectiles.append(Projectile(self.game,(self.game.player.x+(math.cos(self.game.player.angle)*0.5),self.game.player.y+(math.sin(self.game.player.angle)*0.5)),0.8,self.game.player.angle,"slug"))

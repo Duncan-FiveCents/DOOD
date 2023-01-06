@@ -71,5 +71,6 @@ class Skeleton(Sprite):
         boundsY = (self.y-self.size//2,self.y+self.size//2)
         if boundsX[0] <= PROJECTILE.x <= boundsX[1] and boundsY[0] <= PROJECTILE.y <= boundsY[1]:
             if PROJECTILE.type == "slug": self.health -= 50
+            if PROJECTILE.type == "shell": self.health -= 20
             return True
         else: return False
