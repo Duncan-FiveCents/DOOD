@@ -66,7 +66,7 @@ class Sprite:
             deltaDepth = dirY / sinAngle
             dirX = deltaDepth * cosAngle
 
-            for i in range(40):
+            for i in range(15):
                 horizontalTile = int(horzX),int(horzY)
                 if horizontalTile == (int(self.x),int(self.y)):
                     horizontalPlayerDistance = horizontalDepth
@@ -87,7 +87,7 @@ class Sprite:
             deltaDepth = dirX / cosAngle
             dirY = deltaDepth * sinAngle
 
-            for i in range(40):
+            for i in range(15):
                 verticalTile = int(vertX),int(vertY)
                 if verticalTile == (int(self.x),int(self.y)):
                     verticalPlayerDistance = verticalDepth
@@ -105,6 +105,17 @@ class Sprite:
             if 0 < self.playerDistance < wallDistance or not wallDistance:
                 return True
             return False
+
+class Item(Sprite):
+    def __init__(self,GAME,TYPE,POSITION):
+        spriteDictionary = {
+            "Health":"resources/pickups/DOOD HP Pickup.png",
+            "Shield":"resources/pickups/DOOD Shield Pickup.png",
+            "Shell":"resources/pickups/DOOD Shell Pickup.png",
+            "Slug":"resources/pickups/DOOD Slug Pickup.png"
+        }
+        Sprite.__init__(self,GAME,spriteDictionary[TYPE],POSITION,0.5,0.75)
+        self.type = TYPE
 
 class Skeleton(Sprite):
     def __init__(self,GAME,POSITION):
@@ -158,7 +169,7 @@ class Skeleton(Sprite):
             self.attack()
         elif self.vision and self.playerDistance <= 6 and self.cooldown == 40:
             angle = (math.atan2(self.y-self.player.y,self.x-self.player.x)+math.pi) % math.tau
-            self.game.projectiles.append(Projectile(self.game,(self.x+math.cos(angle)*0.5,self.y+math.sin(angle)*0.5),0.5,angle,"skeletonBlast"))
+            self.game.projectiles.append(Projectile(self.game,(self.x+math.cos(angle)*0.5,self.y+math.sin(angle)*0.5),0.3,angle,"skeletonBlast"))
         elif self.vision and self.playerDistance > 6 and not self.cooldown:
             self.playerSearch = True
             self.movement()

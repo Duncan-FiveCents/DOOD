@@ -29,44 +29,44 @@ class HUD:
         self.screen.blit(self.crosshair,(0,0))
 
         # Status
-        healthText = pygame.font.SysFont(self.font,40).render(str(self.game.player.health),False,(0,255,0))
-        self.screen.blit(pygame.font.SysFont(self.font,28).render("WILLPOWER",False,(255,0,0)),(139,450))
+        healthText = pygame.font.SysFont(self.font,40).render(str(self.game.player.health),False,(255,0,0))
+        self.screen.blit(pygame.font.SysFont(self.font,28).render("WILLPOWER",False,(255,255,255)),(139,450))
         self.screen.blit(healthText,((self.healthRect.left+(self.healthRect.width//2))-healthText.get_width()//2,(self.healthRect.top+(self.healthRect.height//2))-healthText.get_height()//2))
 
-        shieldText = pygame.font.SysFont(self.font,40).render(str(self.game.player.shield),False,(0,0,255))
-        self.screen.blit(pygame.font.SysFont(self.font,28).render("SHIELD",False,(255,0,0)),(405,450))
+        shieldText = pygame.font.SysFont(self.font,40).render(str(self.game.player.shield),False,(0,255,0))
+        self.screen.blit(pygame.font.SysFont(self.font,28).render("SHIELD",False,(255,255,255)),(405,450))
         self.screen.blit(shieldText,((self.shieldRect.left+(self.shieldRect.width//2))-shieldText.get_width()//2,(self.shieldRect.top+(self.shieldRect.height//2))-shieldText.get_height()//2))
 
         # Ammo Text
         if not self.game.player.swapping:
             if self.game.player.activeWeapon == 0:
-                primaryAmmoText = pygame.font.SysFont(self.font,40).render(str(self.game.player.shells),False,(255,0,0))
-                secondaryAmmoText = pygame.font.SysFont(self.font,22).render(str(self.game.player.slugs),False,(255,0,0))
-                self.screen.blit(pygame.font.SysFont(self.font,28).render("SHELLS",False,(255,0,0)),(24,450))
+                primaryAmmoText = pygame.font.SysFont(self.font,40).render(str(self.game.player.shells),False,(0,0,255))
+                secondaryAmmoText = pygame.font.SysFont(self.font,22).render(str(self.game.player.slugs),False,(0,0,255))
+                self.screen.blit(pygame.font.SysFont(self.font,28).render("SHELLS",False,(255,255,255)),(24,450))
                 self.screen.blit(primaryAmmoText,((self.primaryAmmoRect.left+(self.primaryAmmoRect.width//2))-primaryAmmoText.get_width()//2,(self.primaryAmmoRect.top+(self.primaryAmmoRect.height//2))-primaryAmmoText.get_height()//2))
-                self.screen.blit(pygame.font.SysFont(self.font,22).render("SLUGS",False,(255,0,0)),(55,364))
+                self.screen.blit(pygame.font.SysFont(self.font,22).render("SLUGS",False,(255,255,255)),(55,364))
                 self.screen.blit(secondaryAmmoText,((self.secondaryAmmoRect.left+(self.secondaryAmmoRect.width//2))-secondaryAmmoText.get_width()//2,(self.secondaryAmmoRect.top+(self.secondaryAmmoRect.height//2))-secondaryAmmoText.get_height()//2))
 
             if self.game.player.activeWeapon == 1:
-                primaryAmmoText = pygame.font.SysFont(self.font,40).render(str(self.game.player.slugs),False,(255,0,0))
-                secondaryAmmoText = pygame.font.SysFont(self.font,22).render(str(self.game.player.shells),False,(255,0,0))
-                self.screen.blit(pygame.font.SysFont(self.font,28).render("SLUGS",False,(255,0,0)),(29,450))
+                primaryAmmoText = pygame.font.SysFont(self.font,40).render(str(self.game.player.slugs),False,(0,0,255))
+                secondaryAmmoText = pygame.font.SysFont(self.font,22).render(str(self.game.player.shells),False,(0,0,255))
+                self.screen.blit(pygame.font.SysFont(self.font,28).render("SLUGS",False,(255,255,255)),(29,450))
                 self.screen.blit(primaryAmmoText,((self.primaryAmmoRect.left+(self.primaryAmmoRect.width//2))-primaryAmmoText.get_width()//2,(self.primaryAmmoRect.top+(self.primaryAmmoRect.height//2))-primaryAmmoText.get_height()//2))
-                self.screen.blit(pygame.font.SysFont(self.font,22).render("SHELLS",False,(255,0,0)),(52,364))
+                self.screen.blit(pygame.font.SysFont(self.font,22).render("SHELLS",False,(255,255,255)),(52,364))
                 self.screen.blit(secondaryAmmoText,((self.secondaryAmmoRect.left+(self.secondaryAmmoRect.width//2))-secondaryAmmoText.get_width()//2,(self.secondaryAmmoRect.top+(self.secondaryAmmoRect.height//2))-secondaryAmmoText.get_height()//2))
 
         else:
             timer = (self.game.player.swapTimer//9)
             if self.game.player.activeWeapon == 1:
-                if timer == 0: self.screen.blit(pygame.font.SysFont(self.font,28).render("SLUGS",False,(255,0,0)),(5,450))
+                if timer == 0: self.screen.blit(pygame.font.SysFont(self.font,28).render("SLUGS",False,(255,255,255)),(5,450))
                 if timer == 1: pass
-                if timer == 2: self.screen.blit(pygame.font.SysFont(self.font,28).render("SHELLS",False,(255,0,0)),(-40,450))
-                if timer == 3: self.screen.blit(pygame.font.SysFont(self.font,28).render("SHELLS",False,(255,0,0)),(-8,450))
+                if timer == 2: self.screen.blit(pygame.font.SysFont(self.font,28).render("SHELLS",False,(255,255,255)),(-40,450))
+                if timer == 3: self.screen.blit(pygame.font.SysFont(self.font,28).render("SHELLS",False,(255,255,255)),(-8,450))
             if self.game.player.activeWeapon == 0:
-                if timer == 0: self.screen.blit(pygame.font.SysFont(self.font,28).render("SHELLS",False,(255,0,0)),(-8,450))
+                if timer == 0: self.screen.blit(pygame.font.SysFont(self.font,28).render("SHELLS",False,(255,255,255)),(-8,450))
                 if timer == 1: pass
-                if timer == 2: self.screen.blit(pygame.font.SysFont(self.font,28).render("SLUGS",False,(255,0,0)),(-30,450))
-                if timer == 3: self.screen.blit(pygame.font.SysFont(self.font,28).render("SLUGS",False,(255,0,0)),(5,450))             
+                if timer == 2: self.screen.blit(pygame.font.SysFont(self.font,28).render("SLUGS",False,(255,255,255)),(-30,450))
+                if timer == 3: self.screen.blit(pygame.font.SysFont(self.font,28).render("SLUGS",False,(255,255,255)),(5,450))             
     
     def swapAnim(self):
         self.image = self.frames[(self.game.player.swapTimer//9)]

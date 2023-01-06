@@ -30,6 +30,8 @@ class Game:
         self.projectiles = []
         for enemy in self.map.metadata[7]:
             if enemy[0] == "Skeleton": self.enemies.append(Skeleton(self,enemy[1]))
+        for sprite in self.map.metadata[8]:
+            self.sprites.append(Item(self,sprite[0],sprite[1]))
         self.pathfinding = Pathfinding(self)
 
     def update(self):
@@ -38,15 +40,22 @@ class Game:
         self.raycasting.castRays()
 
         # Health, Shield, and Ammo Pickups
-        for sprite in self.sprites: sprite.locateSprite()
+        for sprite in self.sprites:
+            sprite.locateSprite()
+            if self.player.hitCheck(sprite):
+                self.sprites.remove(sprite)
+                del sprite
 
         # Projectiles
         for projectile in self.projectiles:
             forDeletion = False
             projectile.move()
             projectile.locateSprite()
+            # Bug here: having 2 living enemies will double damage, 3 will triple, so on
             for enemy in self.enemies:
-                if enemy.hitCheck(projectile) or self.player.hitCheck(projectile): forDeletion = True
+                if enemy.hitCheck(projectile) or self.player.hitCheck(projectile):
+                    forDeletion = True
+                    break
             if (int(projectile.x),int(projectile.y)) in self.map.worldMap or forDeletion:
                 self.projectiles.remove(projectile)
                 del projectile

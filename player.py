@@ -127,4 +127,11 @@ class Player():
                 
                 if self.health <= 0: exit("EXIT: Temporary exit until i program in dying")
                 return True
+            # I can pretty much just reuse the projectile code for pickups
+            elif PROJECTILE.type in ["Health","Shield","Shell","Slug"]:
+                if PROJECTILE.type == "Health": self.health += 20 if self.health < 100 else 10
+                elif PROJECTILE.type == "Shield": self.shield += 10 if self.shield < 50 else 5
+                elif PROJECTILE.type == "Shell": self.shells += 5
+                elif PROJECTILE.type == "Slug": self.slugs += 5
+                return True
         else: return False
