@@ -16,9 +16,12 @@ class WeaponBase:
 
     def fire(self):
         if (pygame.mouse.get_pressed()[0] or pygame.key.get_pressed()[pygame.K_SPACE]) and not self.cooldown:
-            self.spawnProjectile()
-            self.cooldown = True
-            self.timer = 18
+            if (self.game.player.activeWeapon == 0 and self.game.player.shells != 0) or (self.game.player.activeWeapon == 1 and self.game.player.slugs != 0):
+                self.spawnProjectile()
+                self.cooldown = True
+                self.timer = 18
+                if self.game.player.activeWeapon == 0: self.game.player.shells -= 1
+                if self.game.player.activeWeapon == 1: self.game.player.slugs -= 1
         elif self.timer != 0: 
             self.image = self.frames[(self.timer//3)-1]
             self.timer -= 1

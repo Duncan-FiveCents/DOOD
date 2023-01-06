@@ -35,8 +35,10 @@ class Player():
         self.swapping = False
         self.swapTimer = 0
 
-        self.health = 100
-        self.shield = 0
+        self.health = START[3]
+        self.shield = START[4]
+        self.shells = START[5]
+        self.slugs = START[6]
 
     def movement(self):
         sinA = math.sin(self.angle)

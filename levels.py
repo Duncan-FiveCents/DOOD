@@ -49,7 +49,7 @@ level1 = [[
     '111111111111111111111111111111111111111111111',
     '111111111111111111111111111111111111111111111'
     ],
-    [1.5,21.5,0, # Player Start (X,Y,Angle (0 = right))
+    [1.5,21.5,0,100,0,10,10, # Player Start (X,Y,Angle (0 = right),Health,Shield,Shells,Slugs) Starting conditions for future levels will be saved in advance
     [["Skeleton",(4.5,21.5)],["Skeleton",(6.5,21.5)]], # Enemies (Type,(X,Y))
     [[]] # Health & Ammo Pickups (Type,(X,Y))
     ]]

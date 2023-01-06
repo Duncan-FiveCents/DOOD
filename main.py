@@ -26,7 +26,7 @@ class Game:
         self.enemies = []
         self.sprites = []
         self.projectiles = []
-        for enemy in self.map.metadata[3]:
+        for enemy in self.map.metadata[7]:
             if enemy[0] == "Skeleton": self.enemies.append(Skeleton(self,enemy[1]))
 
     def update(self):
