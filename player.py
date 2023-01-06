@@ -103,3 +103,9 @@ class Player():
             elif self.activeWeapon == 0:
                 self.game.screen.blit(self.swapAnim[(self.swapTimer//2)],(0,0))
             self.swapTimer -= 1
+
+    def interactionCheck(self,ANGLE,POS):
+        # I wrote this and I don't even quite know how it works
+        tempAngles = [ANGLE-(math.pi/2),self.angle,(ANGLE+(math.pi/2))]
+        if ANGLE-0.17<0: tempAngles[0] == ANGLE+math.tau-(math.pi/2)
+        return (int(self.x),int(self.y)) == POS and pygame.key.get_pressed()[pygame.K_e] and (((tempAngles[0]<tempAngles[1]) or (ANGLE==0 and tempAngles[1]+(math.pi/2)<tempAngles[0]+(math.pi/2))) and tempAngles[1]<tempAngles[2])
