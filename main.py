@@ -18,7 +18,7 @@ class Game:
         self.newGame()
     
     def newGame(self):
-        self.map = Map(self,level1)
+        self.map = Map(self,level2)
         self.player = Player(self,self.map.metadata)
         self.renderer = Renderer(self)
         self.raycasting = RayCasting(self)

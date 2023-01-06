@@ -16,7 +16,7 @@ class Sprite:
         self.spriteShift = SHIFT # Adjusts vertical offset, 0.25 seems decent for standard enemies
 
         self.health = 100
-        self.size = 2 # Default hitbox size for enemies
+        self.size = 1 # Default hitbox size for enemies
     
     def locateSprite(self):
         distanceX,distanceY = self.x - self.player.x,self.y - self.player.y
@@ -47,7 +47,7 @@ class Projectile(Sprite):
         self.angle = ANGLE
         self.x,self.y = POSITION
         self.type = TYPE
-        self.size = 1
+        self.size = 0.5
 
     def move(self):
         self.x += self.speed*math.cos(self.angle)
@@ -67,8 +67,8 @@ class Skeleton(Sprite):
         pass
 
     def hitCheck(self,PROJECTILE):
-        boundsX = (self.x-self.size//2,self.x+self.size//2)
-        boundsY = (self.y-self.size//2,self.y+self.size//2)
+        boundsX = (self.x-self.size/2,self.x+self.size/2)
+        boundsY = (self.y-self.size/2,self.y+self.size/2)
         if boundsX[0] <= PROJECTILE.x <= boundsX[1] and boundsY[0] <= PROJECTILE.y <= boundsY[1]:
             if PROJECTILE.type == "slug": self.health -= 50
             if PROJECTILE.type == "shell": self.health -= 20

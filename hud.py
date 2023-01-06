@@ -20,8 +20,8 @@ class HUD:
         # These are used for the positioning of text later
         self.healthRect = pygame.rect.Rect(144,402,114,36)
         self.shieldRect = pygame.rect.Rect(386,402,114,36)
-        self.primaryAmmoRect = pygame.rect.Rect(16,402,110,36)
-        self.secondaryAmmoRect = pygame.rect.Rect(6,360,34,24)
+        self.primaryAmmoRect = pygame.rect.Rect(16,402,98,36)
+        self.secondaryAmmoRect = pygame.rect.Rect(10,364,26,16)
 
     def drawHud(self):
         # Base Stuff
