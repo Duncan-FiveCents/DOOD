@@ -12,6 +12,9 @@ class HUD:
             pygame.image.load(resource_path("resources/UI/DOOD UI3.png")).convert_alpha(),
             pygame.image.load(resource_path("resources/UI/DOOD UI2.png")).convert_alpha()
         ]
+        self.doodFrames = [
+            
+        ]
         self.crosshair = pygame.image.load(resource_path("resources/UI/crosshair.png")).convert_alpha()
         self.font = resource_path("resources/UI/Roboto-Bold.ttf")
 
@@ -54,7 +57,6 @@ class HUD:
                 self.screen.blit(primaryAmmoText,((self.primaryAmmoRect.left+(self.primaryAmmoRect.width//2))-primaryAmmoText.get_width()//2,(self.primaryAmmoRect.top+(self.primaryAmmoRect.height//2))-primaryAmmoText.get_height()//2))
                 self.screen.blit(pygame.font.SysFont(self.font,22).render("SHELLS",False,(255,255,255)),(52,364))
                 self.screen.blit(secondaryAmmoText,((self.secondaryAmmoRect.left+(self.secondaryAmmoRect.width//2))-secondaryAmmoText.get_width()//2,(self.secondaryAmmoRect.top+(self.secondaryAmmoRect.height//2))-secondaryAmmoText.get_height()//2))
-
         else:
             timer = (self.game.player.swapTimer//9)
             if self.game.player.activeWeapon == 1:

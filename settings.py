@@ -14,8 +14,8 @@ fps = 30
 tilesize = 12
 playerSize = 2
 
-sensitivity = 0.01
-maxTurn = 20
+sensitivity = 0.005
+maxTurn = 30
 mouseBorderLeft = 50
 mouseBorderRight = resX - mouseBorderLeft
 

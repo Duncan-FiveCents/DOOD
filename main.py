@@ -70,7 +70,7 @@ class Game:
 
         if not self.player.swapping and not self.player.weapons[self.player.activeWeapon].cooldown: self.player.weaponSwap()
         if not self.player.swapping: self.player.weapons[self.player.activeWeapon].fire()
-        self.deltaTime = self.clock.tick(fps)
+        self.clock.tick(fps)
         pygame.display.flip()
     
     def draw(self):
@@ -91,7 +91,8 @@ class Game:
             if event.type == pygame.KEYDOWN and event.key == pygame.K_p: print(int(self.player.x),int(self.player.y)) # Used to test player tile
 
     def newLevel(self):
-        # Insert Loading screen here
+        self.screen.blit(pygame.image.load(resource_path("resources/UI/loading_screen.png")).convert_alpha(),(0,0))
+        pygame.display.flip()
         sleep(5) # Yes the loading screen is fake, but we need the retro aesthetic shut up
         if self.activeLevel < 1: self.activeLevel += 1
         else: exit("There are no more levels. Thanks for playing! Not sure if you'll even see this...") # Remove this when/if we get an end screen
@@ -106,16 +107,20 @@ class Game:
             # Level-Specific Exit and Buttons (these must be done manually because I can't be bothered to add a framework for it)
             if self.activeLevel == 0:
                 if self.player.interactionCheck(math.pi*3/2,(20,6)):
+                    level1[0][5][20] = '5'
                     level1[0][17][20] = '0'
                     self.map = Map(self,level1)
                 if self.player.interactionCheck(0,(38,32)):self.newLevel()
             if self.activeLevel == 1:
                 if self.player.interactionCheck(math.pi/2,(5,19)):
+                    level2[0][20][5] = '5'
                     level2[0][18][12] = '0'
                     self.map = Map(self,level2)
                 if self.player.interactionCheck(math.pi,(38,6)):
+                    level2[0][6][37] = '5'
                     level2[0][8][29] = '0'
                     self.map = Map(self,level2)
+                if self.player.interactionCheck(math.pi*3/2,(21,1)):self.newLevel()
 
 
 if __name__ == "__main__":
