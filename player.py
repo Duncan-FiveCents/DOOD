@@ -124,6 +124,7 @@ class Player():
                     if self.shield < 0:
                         self.health -= abs(self.shield)
                         self.shield = 0
+                self.game.sound.doodHurt.play()
                 
                 if self.health <= 0: exit("EXIT: Temporary exit until i program in dying")
                 return True

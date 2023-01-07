@@ -8,6 +8,7 @@ from renderer import *
 from sprite import *
 from hud import *
 from pathfinding import *
+from sound import *
 
 class Game:
     def __init__(self):
@@ -34,6 +35,7 @@ class Game:
         for sprite in self.map.metadata[8]:
             self.sprites.append(Item(self,sprite[0],sprite[1]))
         self.pathfinding = Pathfinding(self)
+        self.sound = SoundEngine(self)
 
     def update(self):
         # Basic Stufffffffff
