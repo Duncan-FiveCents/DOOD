@@ -98,7 +98,14 @@ class Game:
         pygame.display.flip()
         sleep(3) # Yes the loading screen is fake, but we need the retro aesthetic shut up
         if self.activeLevel < len(self.levels)-1: self.activeLevel += 1
-        else: exit("There are no more levels. Thanks for playing! Not sure if you'll even see this...") # Remove this when/if we get an end screen
+        else:
+            self.sound.doodTude.play()
+            self.screen.blit(pygame.image.load(resource_path("resources/UI/complete.png")).convert_alpha(),(0,0))
+            self.clock.tick(fps)
+            pygame.display.flip()
+            sleep(5)
+            pygame.quit()
+            exit()
         self.levels[self.activeLevel][1][3:7] = self.player.health,self.player.shield,self.player.shells,self.player.slugs
         self.newGame()
         self.sound.doodinTime.play()

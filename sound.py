@@ -19,3 +19,4 @@ class SoundEngine:
         self.levelExit = pygame.mixer.Sound(resource_path("resources/sounds/levelFinish.wav"))
 
         self.doodinTime = pygame.mixer.Sound(resource_path("resources/sounds/doodinTime.wav"))
+        self.doodTude = pygame.mixer.Sound(resource_path("resources/sounds/doodTude.wav"))
