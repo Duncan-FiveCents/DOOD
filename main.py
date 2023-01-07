@@ -122,10 +122,10 @@ class Game:
             keys = pygame.key.get_pressed()
             if keys[pygame.K_s] and cooldown == 0:
                 if currentChoice != 2: currentChoice += 1
-                cooldown = 10
+                cooldown = 5
             elif keys[pygame.K_w] and not cooldown:
                 if currentChoice != 0: currentChoice -= 1
-                cooldown = 10
+                cooldown = 5
             else:
                 if cooldown != 0: cooldown -= 1
 
@@ -155,7 +155,7 @@ class Game:
                     level1[0][5][20] = '5'
                     level1[0][17][20] = '0'
                     self.map = Map(self,level1)
-                if self.player.interactionCheck(0,(38,32)):self.newLevel()
+                if self.player.interactionCheck(math.tau,(38,32)):self.newLevel()
             if self.activeLevel == 1:
                 if self.player.interactionCheck(math.pi/2,(5,19)):
                     level2[0][20][5] = '5'
