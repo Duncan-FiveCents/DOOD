@@ -14,6 +14,7 @@ class Game:
         pygame.init()
         pygame.mouse.set_visible(False)
         self.screen = pygame.display.set_mode(resolution,pygame.SCALED|pygame.FULLSCREEN)
+        pygame.display.set_caption("DOOD")
         self.clock = pygame.time.Clock()
         self.activeLevel = 0
         self.levels = [level1,level2]
@@ -100,6 +101,50 @@ class Game:
         self.newGame()
 
     def run(self):
+        # Main Menu Shenanigans
+        currentChoice = 0
+        cooldown = 0
+        menuBase = [
+            pygame.image.load(resource_path("resources/UI/TitleScreen/TitleScreen BG.png")).convert_alpha(),
+            pygame.image.load(resource_path("resources/UI/TitleScreen/TitleScreen Dood.png")).convert_alpha(),
+            pygame.image.load(resource_path("resources/UI/TitleScreen/TitleScreen Fade.png")).convert_alpha(),
+            pygame.image.load(resource_path("resources/UI/TitleScreen/TitleScreen Logo.png")).convert_alpha()
+        ]
+        menuOptions = [
+            pygame.image.load(resource_path("resources/UI/TitleScreen/TitleScreen Buttons2.png")).convert_alpha(),
+            pygame.image.load(resource_path("resources/UI/TitleScreen/TitleScreen Buttons3.png")).convert_alpha(),
+            pygame.image.load(resource_path("resources/UI/TitleScreen/TitleScreen Buttons4.png")).convert_alpha()
+        ]
+        while True:
+            for item in menuBase: self.screen.blit(item,(0,0))
+            self.screen.blit(menuOptions[currentChoice],(0,0))
+
+            keys = pygame.key.get_pressed()
+            if keys[pygame.K_s] and cooldown == 0:
+                if currentChoice != 2: currentChoice += 1
+                cooldown = 10
+            elif keys[pygame.K_w] and not cooldown:
+                if currentChoice != 0: currentChoice -= 1
+                cooldown = 10
+            else:
+                if cooldown != 0: cooldown -= 1
+
+            if keys[pygame.K_SPACE] or pygame.mouse.get_pressed()[0]:
+                if currentChoice == 0:
+                    self.screen.blit(pygame.image.load(resource_path("resources/UI/loading_screen.png")).convert_alpha(),(0,0))
+                    pygame.display.flip()
+                    sleep(5)
+                    break
+                if currentChoice == 1: pass # Yes, there is currently no settings menu
+                if currentChoice == 2:
+                    pygame.quit()
+                    exit()
+
+            self.eventLoop()
+            self.clock.tick(fps)
+            pygame.display.flip()
+
+        # The actual game
         while True:
             self.eventLoop()
             self.update()
