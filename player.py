@@ -100,8 +100,12 @@ class Player():
         if self.swapping:
             if self.activeWeapon == 1:
                 self.game.screen.blit(self.swapAnim[(35-self.swapTimer)//2],(0,0))
+                if self.swapTimer == 8: self.game.sound.weaponSwap1.play()
+                if self.swapTimer == 26: self.game.sound.weaponSwap2.play()
             elif self.activeWeapon == 0:
                 self.game.screen.blit(self.swapAnim[(self.swapTimer//2)],(0,0))
+                if self.swapTimer == 26: self.game.sound.weaponSwap1.play()
+                if self.swapTimer == 8: self.game.sound.weaponSwap2.play()
             self.swapTimer -= 1
 
     def interactionCheck(self,ANGLE,POS):
@@ -124,15 +128,18 @@ class Player():
                     if self.shield < 0:
                         self.health -= abs(self.shield)
                         self.shield = 0
-                self.game.sound.doodHurt.play()
+                if not self.health <= 0:self.game.sound.doodHurt.play()
                 
-                if self.health <= 0: exit("EXIT: Temporary exit until i program in dying")
                 return True
             # I can pretty much just reuse the projectile code for pickups
             elif PROJECTILE.type in ["Health","Shield","Shell","Slug"]:
                 if PROJECTILE.type == "Health": self.health += 20 if self.health < 100 else 10
                 elif PROJECTILE.type == "Shield": self.shield += 10 if self.shield < 50 else 5
-                elif PROJECTILE.type == "Shell": self.shells += 5
-                elif PROJECTILE.type == "Slug": self.slugs += 5
+                elif PROJECTILE.type == "Shell":
+                    self.shells += 5
+                    self.game.sound.ammoPickup.play()
+                elif PROJECTILE.type == "Slug":
+                    self.slugs += 5
+                    self.game.sound.ammoPickup.play()
                 return True
         else: return False

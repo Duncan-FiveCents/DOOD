@@ -96,11 +96,12 @@ class Game:
     def newLevel(self):
         self.screen.blit(pygame.image.load(resource_path("resources/UI/loading_screen.png")).convert_alpha(),(0,0))
         pygame.display.flip()
-        sleep(5) # Yes the loading screen is fake, but we need the retro aesthetic shut up
-        if self.activeLevel < 1: self.activeLevel += 1
+        sleep(3) # Yes the loading screen is fake, but we need the retro aesthetic shut up
+        if self.activeLevel < len(self.levels)-1: self.activeLevel += 1
         else: exit("There are no more levels. Thanks for playing! Not sure if you'll even see this...") # Remove this when/if we get an end screen
         self.levels[self.activeLevel][1][3:7] = self.player.health,self.player.shield,self.player.shells,self.player.slugs
         self.newGame()
+        self.sound.doodinTime.play()
 
     def run(self):
         # Main Menu Shenanigans
@@ -125,17 +126,21 @@ class Game:
             if keys[pygame.K_s] and cooldown == 0:
                 if currentChoice != 2: currentChoice += 1
                 cooldown = 5
+                self.sound.buttonPress.play()
             elif keys[pygame.K_w] and not cooldown:
                 if currentChoice != 0: currentChoice -= 1
                 cooldown = 5
+                self.sound.buttonPress.play()
             else:
                 if cooldown != 0: cooldown -= 1
 
             if keys[pygame.K_SPACE] or pygame.mouse.get_pressed()[0]:
+                self.sound.buttonPress.play()
                 if currentChoice == 0:
                     self.screen.blit(pygame.image.load(resource_path("resources/UI/loading_screen.png")).convert_alpha(),(0,0))
                     pygame.display.flip()
-                    sleep(5)
+                    sleep(3)
+                    self.sound.doodinTime.play()
                     break
                 if currentChoice == 1: pass # Yes, there is currently no settings menu
                 if currentChoice == 2:
@@ -147,29 +152,48 @@ class Game:
             pygame.display.flip()
 
         # The actual game
+        button1,button2,button3 = False,False,False
+
         while True:
             self.eventLoop()
             self.update()
+            if self.player.health <= 0:
+                self.sound.doodDeath.play()
+                self.screen.blit(pygame.image.load(resource_path("resources/UI/game_over.png")).convert_alpha(),(0,0))
+                self.clock.tick(fps)
+                pygame.display.flip()
+                sleep(5)
+                break
             self.draw()
             # Level-Specific Exit and Buttons (these must be done manually because I can't be bothered to add a framework for it)
             if self.activeLevel == 0:
-                if self.player.interactionCheck(math.pi*3/2,(20,6)):
+                if self.player.interactionCheck(math.pi*3/2,(20,6)) and not button1:
+                    self.sound.buttonPress.play()
+                    button1 = True
                     level1[0][5][20] = '5'
                     level1[0][17][20] = '0'
                     self.map = Map(self,level1)
-                if self.player.interactionCheck(math.tau,(38,32)):self.newLevel()
+                if self.player.interactionCheck(math.tau,(38,32)):
+                    self.sound.levelExit.play()
+                    self.newLevel()
             if self.activeLevel == 1:
-                if self.player.interactionCheck(math.pi/2,(5,19)):
+                if self.player.interactionCheck(math.pi/2,(5,19)) and not button2:
+                    self.sound.buttonPress.play()
+                    button2 = True
                     level2[0][20][5] = '5'
                     level2[0][18][12] = '0'
                     self.map = Map(self,level2)
-                if self.player.interactionCheck(math.pi,(38,6)):
+                if self.player.interactionCheck(math.pi,(38,6)) and not button3:
+                    button3 = True
+                    self.sound.buttonPress.play()
                     level2[0][6][37] = '5'
                     level2[0][8][29] = '0'
                     self.map = Map(self,level2)
-                if self.player.interactionCheck(math.pi*3/2,(21,1)):self.newLevel()
-
+                if self.player.interactionCheck(math.pi*3/2,(21,1)):
+                    self.sound.levelExit.play()
+                    self.newLevel()
 
 if __name__ == "__main__":
     GAME = Game()
-    GAME.run()
+    while True:
+        GAME.run()
