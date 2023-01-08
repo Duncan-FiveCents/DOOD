@@ -12,9 +12,15 @@ class HUD:
             pygame.image.load(resource_path("resources/UI/DOOD UI3.png")).convert_alpha(),
             pygame.image.load(resource_path("resources/UI/DOOD UI2.png")).convert_alpha()
         ]
+
+        self.doodImage = None
+        self.doodHeadTimer = 0
         self.doodFrames = [
-            
+            pygame.image.load(resource_path("resources/UI/UI DOOD Head1.png")).convert_alpha(),
+            pygame.image.load(resource_path("resources/UI/UI DOOD Head2.png")).convert_alpha(),
+            pygame.image.load(resource_path("resources/UI/UI DOOD Head3.png")).convert_alpha()
         ]
+
         self.crosshair = pygame.image.load(resource_path("resources/UI/crosshair.png")).convert_alpha()
         self.font = resource_path("resources/UI/Roboto-Bold.ttf")
 
@@ -39,6 +45,15 @@ class HUD:
         shieldText = pygame.font.SysFont(self.font,40).render(str(self.game.player.shield),False,(0,255,0))
         self.screen.blit(pygame.font.SysFont(self.font,28).render("SHIELD",False,(255,255,255)),(405,450))
         self.screen.blit(shieldText,((self.shieldRect.left+(self.shieldRect.width//2))-shieldText.get_width()//2,(self.shieldRect.top+(self.shieldRect.height//2))-shieldText.get_height()//2))
+
+        # DOOD Head
+        if not self.doodHeadTimer:
+            self.doodHeadTimer = 150
+            self.doodImage = self.doodFrames[0]
+        elif self.doodHeadTimer == 60: self.doodImage = self.doodFrames[1]
+        elif self.doodHeadTimer == 30: self.doodImage = self.doodFrames[2]
+        self.doodHeadTimer -= 1
+        self.screen.blit(self.doodImage,(0,0))
 
         # Ammo Text
         if not self.game.player.swapping:
