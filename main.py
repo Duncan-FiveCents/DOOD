@@ -16,6 +16,7 @@ class Game:
         pygame.mouse.set_visible(False)
         self.screen = pygame.display.set_mode(resolution,pygame.SCALED|pygame.FULLSCREEN)
         pygame.display.set_caption("DOOD")
+        pygame.event.set_grab(True)
         self.clock = pygame.time.Clock()
         self.activeLevel = 0
         self.levels = [level1,level2]

@@ -78,10 +78,7 @@ class Player():
         self.angle %= math.tau
 
         # Mouse Turning
-        mouseX,mouseY = pygame.mouse.get_pos()
-        if mouseX < mouseBorderLeft or mouseX > mouseBorderRight: pygame.mouse.set_pos(halfWidth,halfHeight)
         mouseMovement = pygame.mouse.get_rel()[0]
-        mouseMovement = max(-maxTurn,min(maxTurn,mouseMovement))
         self.angle += mouseMovement * sensitivity
     
     def weaponSwap(self):
