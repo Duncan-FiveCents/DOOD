@@ -137,7 +137,7 @@ class Skeleton(Sprite):
             if PROJECTILE.type in ["shell","slug"]:
                 self.game.sound.skeletonHurt.play()
                 if PROJECTILE.type == "slug": self.health -= 50
-                if PROJECTILE.type == "shell": self.health -= 20
+                if PROJECTILE.type == "shell": self.health -= 25
                 return True
         else: return False
     
