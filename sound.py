@@ -14,7 +14,10 @@ class SoundEngine:
         self.weaponSwap1 = pygame.mixer.Sound(resource_path("resources/sounds/switch1.wav"))
         self.weaponSwap2 = pygame.mixer.Sound(resource_path("resources/sounds/switch2.wav"))
 
+        self.healthPickup = pygame.mixer.Sound(resource_path("resources/sounds/healthPickup.wav"))
+        self.shieldPickup = pygame.mixer.Sound(resource_path("resources/sounds/shieldPickup.wav"))
         self.ammoPickup = pygame.mixer.Sound(resource_path("resources/sounds/ammoPickup.wav"))
+
         self.buttonPress = pygame.mixer.Sound(resource_path("resources/sounds/buttonPress.wav"))
         self.levelExit = pygame.mixer.Sound(resource_path("resources/sounds/levelFinish.wav"))
 

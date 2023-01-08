@@ -133,8 +133,12 @@ class Player():
                 return True
             # I can pretty much just reuse the projectile code for pickups
             elif PROJECTILE.type in ["Health","Shield","Shell","Slug"]:
-                if PROJECTILE.type == "Health": self.health += 20 if self.health < 100 else 10
-                elif PROJECTILE.type == "Shield": self.shield += 10 if self.shield < 50 else 5
+                if PROJECTILE.type == "Health":
+                    self.game.sound.healthPickup.play()
+                    self.health += 20 if self.health < 100 else 10
+                elif PROJECTILE.type == "Shield":
+                    self.game.sound.shieldPickup.play()
+                    self.shield += 10 if self.shield < 50 else 5
                 elif PROJECTILE.type == "Shell":
                     self.shells += 5
                     self.game.sound.ammoPickup.play()
