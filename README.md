@@ -19,13 +19,13 @@ There are no system requirements per se, but don't complain if you run this on y
 Plus, the game runs at 640x480 and 30fps, to really sell the retro shooter aesthetic! And in case my optimisation wasn't good enough.
 
 To run the game, you must have the latest version of both Python and Pygame installed, along with these modules:
-- os
 - time
 - math
 - collections
 All of these are included in most default Python installs.
+Once all of these have been installed, run main.py
 
-**ALTERNATIVELY, RUN DOOD.EXE! THIS IS A FULLY COMPILED VERSION OF THE GAME AND I'M VERY PROUD THAT IT EXISTS**
+**ALTERNATIVELY, RUN DOOD.EXE! THIS IS A FULLY COMPILED VERSION IN AN EXECUTABLE FORMAT AND I'M VERY PROUD THAT IT EXISTS**
 
 ## Playing DOOD
 
@@ -89,6 +89,6 @@ Graphics & Art - Jack Townsend
 
 **NOTE ABOUT THE SOUNDS**
 
-Weapon sounds, health/shield pickups, and the level exit sounds are all originally from Doom (1993).Since Doom (1993) was released under a shareware license, this might be okay? I don't think Bethesda is gonna assassinate me for this, so whatever.
+Weapon sounds, health/shield pickups, and the level exit sounds are all originally from Doom (1993). Since Doom (1993) was released under a shareware license, this might be okay? I don't think Bethesda is gonna assassinate me for this, so whatever.
 
 On the other hand, all other sounds were created by Duncan! This includes the ammo pickup, button press, and enemy hit sounds. And yes, he did also do the voice for the Dood Man Guy, including hurt/death sounds! Go give those a listen, they're funny.

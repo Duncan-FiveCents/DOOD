@@ -4,13 +4,14 @@ from settings import *
 class SoundEngine:
     def __init__(self,GAME):
         self.game = GAME
-        pygame.mixer.init()
+        pygame.mixer.init(channels=1)
         self.doodHurt = pygame.mixer.Sound(resource_path("resources/sounds/doodOuch.wav"))
         self.doodDeath = pygame.mixer.Sound(resource_path("resources/sounds/doodDeath.wav"))
         self.skeletonHurt = pygame.mixer.Sound(resource_path("resources/sounds/skeletonHurt.wav"))
 
         self.shellFire = pygame.mixer.Sound(resource_path("resources/sounds/shellFire.wav"))
         self.slugFire = pygame.mixer.Sound(resource_path("resources/sounds/shellFire.wav"))
+        self.skeletonAttack = pygame.mixer.Sound(resource_path("resources/sounds/skeletonAttack.wav"))
         self.weaponSwap1 = pygame.mixer.Sound(resource_path("resources/sounds/switch1.wav"))
         self.weaponSwap2 = pygame.mixer.Sound(resource_path("resources/sounds/switch2.wav"))
 

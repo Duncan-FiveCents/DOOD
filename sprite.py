@@ -1,7 +1,5 @@
 import pygame
 from settings import *
-import os
-from collections import deque
 
 class Sprite:
     def __init__(self,GAME,PATH,POSITION,SCALE,SHIFT):
@@ -171,6 +169,7 @@ class Skeleton(Sprite):
         elif self.vision and self.playerDistance <= 6 and self.cooldown == 40:
             angle = (math.atan2(self.y-self.player.y,self.x-self.player.x)+math.pi) % math.tau
             self.game.projectiles.append(Projectile(self.game,(self.x+math.cos(angle)*0.5,self.y+math.sin(angle)*0.5),0.3,angle,"skeletonBlast"))
+            self.game.sound.skeletonAttack.play()
         elif self.vision and self.playerDistance > 6 and not self.cooldown:
             self.playerSearch = True
             self.movement()
