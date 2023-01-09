@@ -2,7 +2,7 @@
 
 ## Overview
 
-Welcome to DOOD! A first person shooter where you play as the Dood Man Guy, a cybernetically enhanced dude, in space, fighting through hordes of robot demons, who are also possesed by ghosts!
+Welcome to DOOD! A first person shooter where you play as the Dood Man Guy, a cybernetically enhanced frat bro, in space, fighting through hordes of robot demons, who are also possesed by ghosts!
 
 The game currently features:
 - Two Levels
