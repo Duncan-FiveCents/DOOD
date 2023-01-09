@@ -181,7 +181,7 @@ class Game:
                     level1[0][5][20] = '5'
                     level1[0][17][20] = '0'
                     self.map = Map(self,level1)
-                if self.player.interactionCheck(math.tau,(38,32)):
+                if self.player.interactionCheck(0,(38,32)):
                     self.sound.levelExit.play()
                     self.newLevel()
             if self.activeLevel == 1:

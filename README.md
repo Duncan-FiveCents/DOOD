@@ -22,8 +22,8 @@ To run the game, you must have the latest version of both Python and Pygame inst
 - time
 - math
 - collections
-All of these are included in most default Python installs.
-Once all of these have been installed, run main.py
+
+All of these are included in most default Python installs. Once all of these have been installed, run main.py
 
 **ALTERNATIVELY, RUN DOOD.EXE! THIS IS A FULLY COMPILED VERSION IN AN EXECUTABLE FORMAT AND I'M VERY PROUD THAT IT EXISTS**
 
@@ -33,7 +33,8 @@ DOOD is a first person shooter, with similar controls to other retro shooters. H
 - WASD to move
 - Mouse OR Left/Right arrow keys to turn
 - Spacebar/Left Mouse Button to fire your weapon
-- E to interact with buttons and level exits **(INTERACTIONS ARE SOMEWHAT BUGGED. IF AN INTERACTION DOES NOT WORK, TURN SLIGHTLY TO THE LEFT AND TRY AGAIN.)**
+- E to interact with buttons and level exits
+- Escape can be used to exit the game at any time
 
 ### Enemies
 
@@ -83,7 +84,7 @@ Airlocks are the exits for each level. Walk up to it and press E to complete the
 
 While we each did a bit of everything, here's the summary.
 
-Programming & Sound - Duncan Nickel
+Programming - Duncan Nickel
 
 Graphics & Art - Jack Townsend
 
