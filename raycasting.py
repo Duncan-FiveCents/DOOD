@@ -68,6 +68,7 @@ class RayCasting:
             depth *= m.cos(self.game.player.angle - startAngle)
 
             projectedHeight = screenDist / depth + 0.00001
+            projectedHeight = min(projectedHeight,resY*2)
 
             wallColumn = self.textures[texture].subsurface(offset * (480-scale),0,scale,480)
             wallColumn = pygame.transform.scale(wallColumn,(scale,projectedHeight))

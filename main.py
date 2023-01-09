@@ -98,15 +98,7 @@ class Game:
         self.screen.blit(pygame.image.load(resource_path("resources/UI/loading_screen.png")).convert_alpha(),(0,0))
         pygame.display.flip()
         sleep(3) # Yes the loading screen is fake, but we need the retro aesthetic shut up
-        if self.activeLevel < len(self.levels)-1: self.activeLevel += 1
-        else:
-            self.sound.doodTude.play()
-            self.screen.blit(pygame.image.load(resource_path("resources/UI/complete.png")).convert_alpha(),(0,0))
-            self.clock.tick(fps)
-            pygame.display.flip()
-            sleep(5)
-            pygame.quit()
-            exit()
+        self.activeLevel += 1
         self.levels[self.activeLevel][1][3:7] = self.player.health,self.player.shield,self.player.shells,self.player.slugs
         self.newGame()
         self.sound.doodinTime.play()
@@ -183,7 +175,14 @@ class Game:
                     self.map = Map(self,level1)
                 if self.player.interactionCheck(0,(38,32)):
                     self.sound.levelExit.play()
-                    self.newLevel()
+                    try: self.newLevel()
+                    except IndexError:
+                        self.sound.doodTude.play()
+                        self.screen.blit(pygame.image.load(resource_path("resources/UI/complete.png")).convert_alpha(),(0,0))
+                        self.clock.tick(fps)
+                        pygame.display.flip()
+                        sleep(5)
+                        break
             if self.activeLevel == 1:
                 if self.player.interactionCheck(math.pi/2,(5,19)) and not button2:
                     self.sound.buttonPress.play()
@@ -199,9 +198,18 @@ class Game:
                     self.map = Map(self,level2)
                 if self.player.interactionCheck(math.pi*3/2,(21,1)):
                     self.sound.levelExit.play()
-                    self.newLevel()
+                    try: self.newLevel()
+                    except IndexError:
+                        self.sound.doodTude.play()
+                        self.screen.blit(pygame.image.load(resource_path("resources/UI/complete.png")).convert_alpha(),(0,0))
+                        self.clock.tick(fps)
+                        pygame.display.flip()
+                        sleep(5)
+                        break
 
 if __name__ == "__main__":
     GAME = Game()
     while True:
         GAME.run()
+        del GAME
+        GAME = Game()
